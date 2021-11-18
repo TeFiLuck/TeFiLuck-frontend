@@ -1,9 +1,8 @@
+import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
 import { FC } from 'react';
 
 const Page: FC = () => {
-  return (
-    <div>Coin flip</div>
-  );
-}
+  return <BaseLayout>Coin flip</BaseLayout>;
+};
 
 export default Page;

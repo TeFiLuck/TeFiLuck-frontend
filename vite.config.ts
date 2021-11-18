@@ -48,7 +48,11 @@ export default defineConfig(({ mode }) => ({
       less: {
         javascriptEnabled: true,
         modifyVars: {
-          'primary-color': '#1DA57A',
+          'primary-color': 'rgba(192,0,255,1)',
+          'text-color': 'rgba(146,147,166,1)',
+          'font-family': 'Inter, sans-serif',
+          'font-size-base': '12px',
+          'btn-font-weight': 700,
         },
       },
     },
