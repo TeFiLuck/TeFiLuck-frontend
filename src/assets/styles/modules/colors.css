@@ -1,0 +1,14 @@
+html {
+  --dark-color-1: rgba(26,28,36,1);
+  --dark-color-2: rgba(36,37,47,1);
+  --dark-color-3: rgba(55,58,71,1);
+  --gray-color-1: rgba(124,125,142,1);
+  --gray-color-2: rgba(146,147,166,1);
+  --light-color-1: rgba(220,220,220,1);
+  --white-color: rgba(255,255,255,1);
+  --yellow-color-1: rgba(233,177,11,1);
+  --green-color-1: rgba(2,191,77,1);
+  --red-color-1: rgba(251,93,71,1);
+
+  --global-app-bg-color: var(--dark-color-1);
+}
