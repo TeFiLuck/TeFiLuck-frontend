@@ -36,7 +36,7 @@
         "ObjectExpression": 1,
         "SwitchCase": 1,
         "VariableDeclarator": 1,
-        "flatTernaryExpressions": false,
+        "flatTernaryExpressions": true,
         "offsetTernaryExpressions": false,
         "ignoreComments": false,
         "outerIIFEBody": 1
