@@ -39,13 +39,13 @@ const WrapperStyled = styled.div<{
   grid-template-columns: 280px 1fr;
 
   ${({ fixed }) =>
-    (fixed &&
-      `
+    fixed
+      ? `
     position: fixed;
     top: 0;
     left: 0;
-  `) ||
-    ''}
+  `
+      : ''}
 `;
 
 const LogoContainerStyled = styled.div`
