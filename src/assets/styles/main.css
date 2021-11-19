@@ -8,9 +8,28 @@ html {
   --global-app-bg-color: var(--dark-color-1);
   --global-base-component-bg-color: var(--dark-color-2);
   --global-primary-color: var(--purple-color-1);
+  --global-alternative-color: var(--purple-color-2);
+  --global-danger-color: var(--red-color-1);
   --global-text-color: var(--gray-color-2);
 }
 
 body {
   background: var(--global-app-bg-color) !important;
+}
+
+/* Utility color classes*/
+.text-color-primary {
+  color: var(--global-primary-color);
+}
+
+.text-color-alternative {
+  color: var(--global-alternative-color);
+}
+
+.text-color-white {
+  color: var(--white-color);
+}
+
+.text-color-danger {
+  color: var(--global-danger-color);
 }

@@ -1,5 +1,5 @@
 import { UiLink, UiLogo } from '@/components/ui';
-import WalletConnectButton from '@/components/WalletConnectButton/WalletConnectButton';
+import WalletManagement from '@/components/WalletManagement/WalletManagement';
 import { FC } from 'react';
 import styled from 'styled-components';
 import { AppHeaderProps } from '../../types';
@@ -20,7 +20,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
         </SubMenuContainerStyled>
         <MainMenuContainerStyled>
           <MainMenu />
-          <WalletConnectButton />
+          <WalletManagement />
         </MainMenuContainerStyled>
       </MenusContainerStyled>
     </WrapperStyled>

@@ -63,6 +63,10 @@ export const UiLink: FC<UiLinkProps> = ({
     if (e.key === 'Enter') handleClick(e);
   }
 
+  /*
+    Be aware of react-dom warning: Received `true|false` for a non-boolean attribute.
+    The reason uppercase flag is passed as 0 | 1;
+  */
   return (
     <UiLinkWrapperStyled
       as={wrapperElementsMap[mode]}
@@ -71,7 +75,7 @@ export const UiLink: FC<UiLinkProps> = ({
       tabIndex={disabled ? -1 : 0}
       className={`${active && 'active'}`}
       disabled={disabled}
-      uppercase={uppercase}
+      uppercase={uppercase ? 1 : 0}
       fontSize={fontSize}
       fontWeight={fontWeight}
       onClick={handleClick}
@@ -85,7 +89,7 @@ export const UiLink: FC<UiLinkProps> = ({
 const UiLinkWrapperStyled = styled(NavLink)<{
   theme: Theme;
   disabled: boolean;
-  uppercase: boolean;
+  uppercase: 0 | 1;
   fontSize: CSS.Property.FontSize;
   fontWeight: CSS.Property.FontWeight;
 }>`

@@ -50,6 +50,7 @@ export default defineConfig(({ mode }) => ({
         modifyVars: {
           'primary-color': 'rgba(192,0,255,1)',
           'text-color': 'rgba(146,147,166,1)',
+          'error-color': 'rgba(251,93,71,1)',
           'font-family': 'Inter, sans-serif',
           'font-size-base': '12px',
           'btn-font-weight': 700,
