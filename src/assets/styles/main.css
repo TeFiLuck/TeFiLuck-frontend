@@ -17,6 +17,15 @@ body {
   background: var(--global-app-bg-color) !important;
 }
 
+/* Wallet connect modal */
+section.desktop h1 {
+  color: #000000;
+}
+
+section.mobile h1 {
+  color: #000000;
+}
+
 /* Utility color classes*/
 .text-color-primary {
   color: var(--global-primary-color);

@@ -6,7 +6,4 @@ import { registerSW } from 'virtual:pwa-register';
 
 registerSW();
 
-ReactDOM.render(
-  <App />,
-  document.querySelector('#root'),
-);
+ReactDOM.render(<App />, document.querySelector('#root'));
