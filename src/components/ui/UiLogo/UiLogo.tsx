@@ -53,25 +53,25 @@ const LogoStyled = styled.div<{
 
   ${({ size }) => `
     ${
-  size === 'small'
-    ? `
+  (size === 'small' &&
+        `
       --ui-logo-font-size: 24px;
       --ui-logo-picture-height: 32px;
       --ui-logo-picture-offset: 8px;
-    `
-    : ''
+    `) ||
+      ''
 }
   
 
     ${
-  size === 'large'
-    ? `
+  (size === 'large' &&
+        `
       --ui-logo-font-size: 42px;
       --ui-logo-picture-height: 54px;
       --ui-logo-picture-offset: 12px;
       --ui-logo-name-parts-offset: 4px;
-    `
-    : ''
+    `) ||
+      ''
 }
   `}
 `;

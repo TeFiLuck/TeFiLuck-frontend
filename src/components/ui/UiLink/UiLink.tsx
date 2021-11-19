@@ -101,13 +101,7 @@ const UiLinkWrapperStyled = styled(NavLink)<{
     font-weight: ${fontWeight};
     font-size: ${fontSize};
 
-    ${
-  uppercase
-    ? `
-      text-transform: uppercase;
-    `
-    : ''
-}
+    ${(uppercase && 'text-transform: uppercase;') || ''} 
   `}
 
   color: var(--ui-link-color);
