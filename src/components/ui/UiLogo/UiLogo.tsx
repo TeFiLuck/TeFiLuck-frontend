@@ -1,5 +1,5 @@
 import LOGO_PICTURE from '@/assets/images/logo-picture.png';
-import { BaseSize } from '@/typings/general';
+import { BaseSize } from '@/typings/app';
 import { FC } from 'react';
 import styled from 'styled-components';
 

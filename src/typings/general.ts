@@ -1,1 +1,3 @@
-export type BaseSize = 'small' | 'medium' | 'large';
+export type Partial<T> = {
+  [P in keyof T]?: T[P];
+};

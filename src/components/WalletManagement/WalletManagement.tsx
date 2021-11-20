@@ -1,5 +1,4 @@
-import { UST_SYMBOL } from '@/config/coins';
-import { useAddress, useBalances } from '@/hooks';
+import { useAddress, useTokens } from '@/hooks';
 import * as format from '@/utils/format';
 import { WalletOutlined } from '@ant-design/icons';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
@@ -13,7 +12,7 @@ const WalletConnectButton: FC = () => {
   const connectedWallet = useConnectedWallet();
   const buttonType = connectedWallet ? 'default' : 'primary';
   const address = useAddress();
-  const { ustBalance } = useBalances();
+  const { mainToken } = useTokens();
 
   return (
     <Dropdown
@@ -32,7 +31,7 @@ const WalletConnectButton: FC = () => {
             </Space>
             <span className="text-color-primary">|</span>
             <span className="text-color-primary">
-              {format.round(ustBalance, 3)} {UST_SYMBOL}
+              {format.round(mainToken.balance, 3)} {mainToken.symbol}
             </span>
           </Space>
         ) : (

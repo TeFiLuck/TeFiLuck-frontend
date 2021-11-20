@@ -1,6 +1,11 @@
-import { Network, NetworkKey } from '@/typings/finance-management';
+import { Network } from '@/typings/finance-management';
 
-export const Networks: Record<NetworkKey, Network> = {
+export enum NetworkKey {
+  MAINNET = 'mainnet',
+  TESTNET = 'testnet',
+}
+
+export const Networks: Record<NetworkKey, Network> = <const>{
   [NetworkKey.MAINNET]: {
     name: 'mainnet',
     chainID: 'columbus-5',
@@ -14,7 +19,7 @@ export const Networks: Record<NetworkKey, Network> = {
 };
 
 export const DEFAULT_NETWORK = Networks[NetworkKey.MAINNET];
-export const WALLET_CONNECT_CHAIN_IDS: Record<number, Network> = {
+export const WALLET_CONNECT_CHAIN_IDS = <const>{
   0: Networks[NetworkKey.TESTNET],
   1: Networks[NetworkKey.MAINNET],
 };

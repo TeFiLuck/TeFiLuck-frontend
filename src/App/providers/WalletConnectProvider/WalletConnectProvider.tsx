@@ -1,4 +1,4 @@
-import { DEFAULT_NETWORK, WALLET_CONNECT_CHAIN_IDS } from '@/config/networks';
+import { DEFAULT_NETWORK, WALLET_CONNECT_CHAIN_IDS } from '@/constants/networks';
 import { WalletProvider } from '@terra-money/wallet-provider';
 import { FC } from 'react';
 

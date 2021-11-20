@@ -1,37 +1,13 @@
-import { fetchNativeTokensBalancesFromAddress } from '@/api/terra';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { useEffect, useState } from 'react';
-import { useLCDClient } from './useLCDClient';
+import { useAppDispatch, useAppSelector } from '@/state';
+import { updateBalances as updateBalancesState } from '@/state/finance-management';
 
 export function useBalances() {
-  const LCDCClient = useLCDClient();
-  const connectedWallet = useConnectedWallet();
-  const [balanceUpdateRenderCounter, setBalanceUpdateRenderCounter] = useState(1);
-
-  const [lunaBalance, setLunaBalance] = useState(0);
-  const [ustBalance, setUstBalance] = useState(0);
-
-  useEffect(() => {
-    if (connectedWallet && LCDCClient) {
-      fetchNativeTokensBalancesFromAddress(LCDCClient, connectedWallet.walletAddress).then(
-        (balances) => {
-          setLunaBalance(balances.luna);
-          setUstBalance(balances.ust);
-        },
-      );
-    } else {
-      resetBalances();
-    }
-  }, [connectedWallet, LCDCClient, balanceUpdateRenderCounter]);
-
-  function resetBalances(): void {
-    setLunaBalance(0);
-    setUstBalance(0);
-  }
+  const dispatch = useAppDispatch();
+  const { balances } = useAppSelector((state) => state.financeManagement);
 
   function updateBalances(): void {
-    setBalanceUpdateRenderCounter(balanceUpdateRenderCounter + 1);
+    dispatch(updateBalancesState());
   }
 
-  return { lunaBalance, ustBalance, updateBalances };
+  return { balances, updateBalances };
 }

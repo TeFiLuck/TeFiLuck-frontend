@@ -4,7 +4,7 @@ import { FC } from 'react';
 
 const MainMenu: FC = () => {
   return (
-    <Space size={24}>
+    <Space size={24} className="nowrap">
       <UiLink to="/" uppercase fontSize="12px">
         Coinflip
       </UiLink>

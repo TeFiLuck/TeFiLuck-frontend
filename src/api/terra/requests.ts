@@ -1,23 +1,27 @@
-import { LUNA_DENOM, UST_DENOM } from '@/config/coins';
-import { TERRA_DECIMALS } from '@/config/networks';
+import { TERRA_NATIVE_TOKENS, TokenSymbol } from '@/constants/tokens';
+import { NativeTokensBalances } from '@/typings/finance-management';
+import { getTokenSymbolByDenom } from '@/utils/tokens';
 import { LCDClient } from '@terra-money/terra.js';
+import { getTokenAmountNumber } from './utils';
 
-export async function fetchNativeTokensBalancesFromAddress(client: LCDClient, address: string) {
-  const [coins] = await client.bank.balance(address);
-  const result = {
-    luna: 0,
-    ust: 0,
-  };
+export async function fetchNativeTokensBalancesFromAddress(
+  client: LCDClient,
+  address: string,
+): Promise<NativeTokensBalances> {
+  const [tokens] = await client.bank.balance(address);
+  const result = {} as NativeTokensBalances;
 
-  coins.map((coin) => {
-    const amount = Number(
-      coin
-        .toDecCoin()
-        .div(10 ** TERRA_DECIMALS)
-        .toData().amount,
-    );
-    if (coin.denom === LUNA_DENOM) result.luna = amount;
-    if (coin.denom === UST_DENOM) result.ust = amount;
+  TERRA_NATIVE_TOKENS.forEach((symbol) => {
+    result[symbol] = 0;
+  });
+
+  tokens.map((token) => {
+    const amount = getTokenAmountNumber(token);
+    const tokenSymbol = getTokenSymbolByDenom(token.denom) as TokenSymbol;
+
+    if (TERRA_NATIVE_TOKENS.includes(tokenSymbol)) {
+      result[tokenSymbol] = amount;
+    }
   });
 
   return result;

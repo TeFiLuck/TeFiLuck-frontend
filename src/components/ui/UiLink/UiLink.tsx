@@ -12,7 +12,7 @@ type LinkProps = {
 };
 
 export interface UiLinkProps {
-  to: string;
+  to?: string;
   mode?: Mode;
   theme?: Theme;
   openHtmlLinkSeparately?: boolean;
@@ -26,7 +26,7 @@ export interface UiLinkProps {
 
 export const UiLink: FC<UiLinkProps> = ({
   children,
-  to,
+  to = '/',
   mode = 'router',
   theme = 'default',
   openHtmlLinkSeparately = false,

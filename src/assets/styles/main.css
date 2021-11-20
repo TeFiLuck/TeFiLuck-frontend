@@ -42,3 +42,30 @@ section.mobile h1 {
 .text-color-danger {
   color: var(--global-danger-color);
 }
+
+/* Flex utility classes */
+.flex {
+  display: flex;
+}
+
+.flex-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.flex-align-center {
+  align-items: center;
+}
+
+.flex-justify-center {
+  justify-content: center;
+}
+
+.flex-justify-between {
+  justify-content: space-between;
+}
+
+/* General utility classes */
+.nowrap {
+  white-space: nowrap;
+}

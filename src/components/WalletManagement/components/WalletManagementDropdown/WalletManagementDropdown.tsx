@@ -1,6 +1,12 @@
 import { ReactComponent as TerraStationExtensionIcon } from '@/assets/images/terra-station-extension.svg';
 import { ReactComponent as TerraStationMobileIcon } from '@/assets/images/terra-station-mobile.svg';
-import { ImportOutlined } from '@ant-design/icons';
+import { UiLink } from '@/components/ui';
+import { useTokens } from '@/hooks';
+import { useAppDispatch } from '@/state';
+import { setMainTokenSymbol } from '@/state/finance-management';
+import { Token } from '@/typings/finance-management';
+import * as format from '@/utils/format';
+import { ImportOutlined, PushpinFilled } from '@ant-design/icons';
 import { ConnectType, useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
 import { Menu, Space } from 'antd';
 import { FC } from 'react';
@@ -13,6 +19,7 @@ export interface WalletManagementDropdownProps {
 const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
   setDropdownVisibility = () => {},
 }) => {
+  const dispatch = useAppDispatch();
   const connectedWallet = useConnectedWallet();
   const { availableConnectTypes, availableInstallTypes, install, connect, disconnect } =
     useWallet();
@@ -37,10 +44,11 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
     !connectedWallet && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
   const canInstallMobile = availableInstallTypes.includes(ConnectType.WALLETCONNECT);
 
+  const showTokensBalances = !!connectedWallet;
   const showDisconnect = !!connectedWallet;
 
   function handleDropdownItemClick({ key }: any): void {
-    const clickHandlersMap: Record<DropdownItemsKeys, () => void> = {
+    const clickHandlersMap: { [key in DropdownItemsKeys]?: () => void } = {
       [DropdownItemsKeys.CONNECT_EXTENSION]: () => connect(ConnectType.CHROME_EXTENSION),
       [DropdownItemsKeys.INSTALL_EXTENSION]: () => install(ConnectType.CHROME_EXTENSION),
       [DropdownItemsKeys.CONNECT_MOBILE]: () => connect(ConnectType.WALLETCONNECT),
@@ -48,7 +56,17 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
       [DropdownItemsKeys.DISCONNECT_WALLET]: disconnect,
     };
 
-    clickHandlersMap[key as DropdownItemsKeys]();
+    clickHandlersMap[key as DropdownItemsKeys]?.();
+    setDropdownVisibility(false);
+  }
+
+  const { supportedTokens, mainToken } = useTokens();
+  const dropdownVisibleTokens = supportedTokens.filter(
+    (token) => token.symbol !== mainToken.symbol,
+  );
+
+  function handleTokenPin(token: Token): void {
+    dispatch(setMainTokenSymbol(token.symbol));
     setDropdownVisibility(false);
   }
 
@@ -68,7 +86,11 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
       )}
 
       {showInstallExtension && (
-        <Menu.Item key={DropdownItemsKeys.INSTALL_EXTENSION} disabled={!canInstallExtension}>
+        <Menu.Item
+          key={DropdownItemsKeys.INSTALL_EXTENSION}
+          disabled={!canInstallExtension}
+          className={!canInstallExtension ? 'disabled-menu-item' : ''}
+        >
           <OptionStyled>
             <Space>
               <IconContainerStyled>
@@ -94,7 +116,11 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
       )}
 
       {showInstallMobile && (
-        <Menu.Item key={DropdownItemsKeys.INSTALL_MOBILE} disabled={!canInstallMobile}>
+        <Menu.Item
+          key={DropdownItemsKeys.INSTALL_MOBILE}
+          disabled={!canInstallMobile}
+          className={!canInstallMobile ? 'disabled-menu-item' : ''}
+        >
           <OptionStyled>
             <Space>
               <IconContainerStyled>
@@ -106,17 +132,48 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
         </Menu.Item>
       )}
 
+      {showTokensBalances &&
+        dropdownVisibleTokens.map((token) => (
+          <Menu.Item
+            key={`TOKEN_DISPLAY_${token.symbol}`}
+            disabled
+            className="token-balance-menu-item"
+          >
+            <OptionStyled>
+              <Space className="token-balance-menu-item__space">
+                <IconContainerStyled>
+                  <img src={token.logo} className="icon" alt="" />
+                </IconContainerStyled>
+                <div className="flex flex-align-center flex-justify-between">
+                  <div>
+                    {format.round(token.balance, 3)}&nbsp;
+                    {token.symbol}
+                  </div>
+                  <div>
+                    <UiLink mode="empty" onClick={() => handleTokenPin(token)}>
+                      <PushpinFilled style={{ fontSize: '14px' }} />
+                    </UiLink>
+                  </div>
+                </div>
+              </Space>
+            </OptionStyled>
+          </Menu.Item>
+        ))}
+
       {showDisconnect && (
-        <Menu.Item key={DropdownItemsKeys.DISCONNECT_WALLET}>
-          <OptionStyled className="text-color-danger">
-            <Space>
-              <IconContainerStyled>
-                <ImportOutlined className="icon" />
-              </IconContainerStyled>
-              <div>Disconnect</div>
-            </Space>
-          </OptionStyled>
-        </Menu.Item>
+        <>
+          <Menu.Divider />
+          <Menu.Item key={DropdownItemsKeys.DISCONNECT_WALLET}>
+            <OptionStyled className="text-color-danger">
+              <Space>
+                <IconContainerStyled>
+                  <ImportOutlined className="icon" />
+                </IconContainerStyled>
+                <div>Disconnect</div>
+              </Space>
+            </OptionStyled>
+          </Menu.Item>
+        </>
       )}
     </WrapperStyled>
   );
@@ -125,6 +182,29 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
 const WrapperStyled = styled(Menu)`
   width: 100%;
   min-width: 200px;
+  border-right: none;
+
+  .disabled-menu-item:active {
+    background: transparent;
+  }
+
+  .token-balance-menu-item {
+    color: var(--white-color) !important;
+    cursor: default;
+    font-weight: 500;
+
+    &__space {
+      width: 100%;
+
+      .ant-space-item:last-child {
+        width: 100%;
+      }
+    }
+
+    &:active {
+      background: transparent;
+    }
+  }
 
   .ant-menu-item:not(:last-child) {
     margin-bottom: 4px;

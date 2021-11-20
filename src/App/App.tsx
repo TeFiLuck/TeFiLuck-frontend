@@ -1,15 +1,17 @@
+import { useFinanceManagementStore } from '@/state/finance-management';
 import { FC } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AppProviders } from './providers';
+import { useAppMessagesDisplay } from './hooks';
 import { Routes } from './routes';
 
 const App: FC = () => {
+  useFinanceManagementStore();
+  useAppMessagesDisplay();
+
   return (
-    <AppProviders>
-      <Router>
-        <Routes />
-      </Router>
-    </AppProviders>
+    <Router>
+      <Routes />
+    </Router>
   );
 };
 
