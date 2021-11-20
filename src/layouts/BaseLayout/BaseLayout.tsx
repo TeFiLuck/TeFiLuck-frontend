@@ -7,7 +7,10 @@ const BaseLayout: FC = ({ children }) => {
     <WrapperStyled>
       <AppHeader fixed />
 
-      <ContentStyled>{children}</ContentStyled>
+      <ContentStyled>
+        <MainStyled>{children}</MainStyled>
+        <footer>Footer</footer>
+      </ContentStyled>
     </WrapperStyled>
   );
 };
@@ -17,7 +20,17 @@ const WrapperStyled = styled.div`
 `;
 
 const ContentStyled = styled.div`
-  height: calc(100vh - var(--global-app-header-height));
+  min-height: calc(100vh - var(--global-app-header-height));
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+`;
+
+const MainStyled = styled.main`
+  padding: var(--global-standard-vertical-offset) 0;
+  max-width: 1600px;
+  width: 100%;
+  margin: 0 auto;
 `;
 
 export default BaseLayout;

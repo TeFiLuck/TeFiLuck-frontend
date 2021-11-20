@@ -27,7 +27,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
   );
 };
 
-const WrapperStyled = styled.div<{
+const WrapperStyled = styled.header<{
   fixed: boolean;
 }>`
   width: 100%;

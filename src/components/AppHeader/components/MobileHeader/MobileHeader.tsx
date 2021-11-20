@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { AppHeaderProps } from '../../types';
 
 const MobileHeader: FC<AppHeaderProps> = () => {
-  return <div>Mobile header</div>;
+  return <header>Mobile header</header>;
 };
 
 export default MobileHeader;

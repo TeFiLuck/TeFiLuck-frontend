@@ -4,6 +4,8 @@
 html {
   --global-app-header-height: 80px;
   --global-base-font-size: 12px;
+  --global-standard-vertical-offset: 48px;
+  --global-standard-horizontal-offset: 32px;
 
   --global-app-bg-color: var(--dark-color-1);
   --global-base-component-bg-color: var(--dark-color-2);
