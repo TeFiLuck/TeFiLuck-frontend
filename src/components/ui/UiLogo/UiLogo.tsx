@@ -1,4 +1,4 @@
-import LOGO_PICTURE from '@/assets/images/logo-picture.png';
+import { ReactComponent as LogoPicture } from '@/assets/images/logo/logo-svg.svg';
 import { BaseSize } from '@/typings/app';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ export interface UiLogoProps {
 export const UiLogo: FC<UiLogoProps> = ({ size = 'medium' }) => {
   return (
     <LogoStyled size={size}>
-      <img className="logo-picture" src={LOGO_PICTURE} alt="" />
+      <LogoPicture className="logo-picture" />
       <div className="name">
         <div className="name-part-1">TEFI</div>
         <div className="name-part-2">LUCK</div>
@@ -33,6 +33,7 @@ const LogoStyled = styled.div<{
 
   .logo-picture {
     height: var(--ui-logo-picture-height);
+    width: auto;
     margin-right: var(--ui-logo-picture-offset);
   }
 
