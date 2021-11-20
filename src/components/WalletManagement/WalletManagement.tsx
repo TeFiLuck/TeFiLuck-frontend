@@ -6,8 +6,15 @@ import { Button, Dropdown, Space } from 'antd';
 import { FC, useState } from 'react';
 import WalletManagementDropdown from './components/WalletManagementDropdown/WalletManagementDropdown';
 
-const WalletConnectButton: FC = () => {
+export interface WalletConnectButtonProps {
+  dropdownFixed?: boolean;
+}
+
+const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = false }) => {
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
+
+  const overlayStyle: Record<string, string> = {};
+  if (dropdownFixed) overlayStyle.position = 'fixed';
 
   const connectedWallet = useConnectedWallet();
   const buttonType = connectedWallet ? 'default' : 'primary';
@@ -18,6 +25,7 @@ const WalletConnectButton: FC = () => {
     <Dropdown
       overlay={<WalletManagementDropdown setDropdownVisibility={setDropdownVisibility} />}
       placement="bottomRight"
+      overlayStyle={overlayStyle}
       trigger={['click']}
       visible={isDropdownVisible}
       onVisibleChange={(isVisible) => setDropdownVisibility(isVisible)}

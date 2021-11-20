@@ -20,7 +20,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
         </SubMenuContainerStyled>
         <MainMenuContainerStyled>
           <MainMenu />
-          <WalletManagement />
+          <WalletManagement dropdownFixed={fixed} />
         </MainMenuContainerStyled>
       </MenusContainerStyled>
     </WrapperStyled>
