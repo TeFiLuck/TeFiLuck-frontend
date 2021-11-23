@@ -3,14 +3,15 @@ html {
   --dark-color-2: rgba(36,37,47,1);
   --dark-color-3: rgba(55,58,71,1);
   --dark-color-4: rgba(22,24,31,1);
+  --dark-color-5: rgba(20,20,25,1);
   --gray-color-1: rgba(124,125,142,1);
   --gray-color-2: rgba(146,147,166,1);
   --gray-color-3: rgba(102,102,102,1);
   --light-color-1: rgba(220,220,220,1);
   --white-color: rgba(255,255,255,1);
   --yellow-color-1: rgba(233,177,11,1);
-  --purple-color-1: rgba(192,0,255,1);
-  --purple-color-2: rgba(253,80,203,1);
+  --purple-color-1: rgba(183,77,255,1);
+  --purple-color-2: rgba(80,14,125,1);
   --green-color-1: rgba(2,191,77,1);
   --red-color-1: rgba(251,93,71,1);
 }

@@ -16,13 +16,10 @@ export interface WalletManagementDropdownProps {
   setDropdownVisibility?: (isVisible: boolean) => void;
 }
 
-const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
-  setDropdownVisibility = () => {},
-}) => {
+const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdownVisibility = () => {} }) => {
   const dispatch = useAppDispatch();
   const connectedWallet = useConnectedWallet();
-  const { availableConnectTypes, availableInstallTypes, install, connect, disconnect } =
-    useWallet();
+  const { availableConnectTypes, availableInstallTypes, install, connect, disconnect } = useWallet();
 
   enum DropdownItemsKeys {
     CONNECT_EXTENSION = 'connect_extension',
@@ -32,16 +29,12 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
     DISCONNECT_WALLET = 'disconnect_wallet',
   }
 
-  const showConnectExtension =
-    !connectedWallet && availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
-  const showInstallExtension =
-    !connectedWallet && !availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
+  const showConnectExtension = !connectedWallet && availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
+  const showInstallExtension = !connectedWallet && !availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
   const canInstallExtension = availableInstallTypes.includes(ConnectType.CHROME_EXTENSION);
 
-  const showConnectMobile =
-    !connectedWallet && availableConnectTypes.includes(ConnectType.WALLETCONNECT);
-  const showInstallMobile =
-    !connectedWallet && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
+  const showConnectMobile = !connectedWallet && availableConnectTypes.includes(ConnectType.WALLETCONNECT);
+  const showInstallMobile = !connectedWallet && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
   const canInstallMobile = availableInstallTypes.includes(ConnectType.WALLETCONNECT);
 
   const showTokensBalances = !!connectedWallet;
@@ -61,9 +54,7 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
   }
 
   const { supportedTokens, mainToken } = useTokens();
-  const dropdownVisibleTokens = supportedTokens.filter(
-    (token) => token.symbol !== mainToken.symbol,
-  );
+  const dropdownVisibleTokens = supportedTokens.filter((token) => token.symbol !== mainToken.symbol);
 
   function handleTokenPin(token: Token): void {
     dispatch(setMainTokenSymbol(token.symbol));
@@ -134,11 +125,7 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
 
       {showTokensBalances &&
         dropdownVisibleTokens.map((token) => (
-          <Menu.Item
-            key={`TOKEN_DISPLAY_${token.symbol}`}
-            disabled
-            className="token-balance-menu-item"
-          >
+          <Menu.Item key={`TOKEN_DISPLAY_${token.symbol}`} disabled className="token-balance-menu-item">
             <OptionStyled>
               <Space className="token-balance-menu-item__space">
                 <IconContainerStyled>

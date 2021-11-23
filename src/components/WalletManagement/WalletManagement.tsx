@@ -1,8 +1,9 @@
+import { UiButton } from '@/components/ui';
 import { useAddress, useTokens } from '@/hooks';
 import * as format from '@/utils/format';
 import { WalletOutlined } from '@ant-design/icons';
 import { useConnectedWallet } from '@terra-money/wallet-provider';
-import { Button, Dropdown, Space } from 'antd';
+import { Dropdown, Space } from 'antd';
 import { FC, useState } from 'react';
 import WalletManagementDropdown from './components/WalletManagementDropdown/WalletManagementDropdown';
 
@@ -30,7 +31,7 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
       visible={isDropdownVisible}
       onVisibleChange={(isVisible) => setDropdownVisibility(isVisible)}
     >
-      <Button type={buttonType} shape="round">
+      <UiButton type={buttonType} shape="round">
         {connectedWallet ? (
           <Space>
             <Space size={4} className="text-color-white">
@@ -45,7 +46,7 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
         ) : (
           'Connect Wallet'
         )}
-      </Button>
+      </UiButton>
     </Dropdown>
   );
 };

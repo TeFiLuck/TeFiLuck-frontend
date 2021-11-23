@@ -12,6 +12,8 @@ html {
   --global-primary-color: var(--purple-color-1);
   --global-alternative-color: var(--purple-color-2);
   --global-danger-color: var(--red-color-1);
+  --global-success-color: var(--green-color-1);
+  --global-warning-color: var(--yellow-color-1);
   --global-text-color: var(--gray-color-2);
 }
 
@@ -26,6 +28,12 @@ section.desktop h1 {
 
 section.mobile h1 {
   color: #000000;
+}
+
+/* Ant dropdown re-style */
+.ant-dropdown-arrow {
+  border-top-color: var(--dark-color-5) !important;
+  border-left-color: var(--dark-color-5) !important;
 }
 
 /* Utility color classes*/
@@ -68,6 +76,47 @@ section.mobile h1 {
 }
 
 /* General utility classes */
+.full-width {
+  width: 100%;
+}
+
 .nowrap {
   white-space: nowrap;
+}
+
+.noselect {
+  user-select: none;
+}
+
+/* Typography utility classes */
+h1, h2, h3, h4, h5, h6 {
+  margin: 0 !important;
+  padding: 0;
+  font-size: 100%;
+  color: var(--white-color);
+}
+
+.heading-1, .heading-2, .heading-3, .heading-4 {
+  text-transform: uppercase;
+  line-height: 1;
+}
+
+.heading-1 {
+  font-size: 40px;
+  font-weight: 800;
+}
+
+.heading-2 {
+  font-size: 32px;
+  font-weight: 800;
+}
+
+.heading-3 {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.heading-4 {
+  font-size: 16px;
+  font-weight: 700;
 }

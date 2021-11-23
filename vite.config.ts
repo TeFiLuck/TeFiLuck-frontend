@@ -29,7 +29,7 @@ export default defineConfig(({ mode }) => ({
         'apple-touch-icon.png',
       ],
       manifest: {
-        theme_color: '#C000FF',
+        theme_color: '#B74DFF',
         icons: [
           {
             src: '/android-chrome-192x192.png',
@@ -55,11 +55,16 @@ export default defineConfig(({ mode }) => ({
       less: {
         javascriptEnabled: true,
         modifyVars: {
-          'primary-color': 'rgba(192,0,255,1)',
+          'primary-color': 'rgba(183,77,255,1)',
           'text-color': 'rgba(146,147,166,1)',
           'error-color': 'rgba(251,93,71,1)',
+          'input-bg': 'rgba(20,20,25,1)',
+          'input-addon-bg': 'rgba(20,20,25,1)',
+          'input-border-color': 'rgba(55,58,71,1)',
+          'border-radius-base': '4px',
           'font-family': 'Inter, sans-serif',
           'font-size-base': '12px',
+          'btn-font-size-lg': '12px',
           'btn-font-weight': 700,
         },
       },
