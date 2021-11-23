@@ -15,10 +15,7 @@ const MainMenu: FC = () => {
         Roulette
       </UiLink>
       <UiLink to="/dex" uppercase disabled>
-        DEX
-      </UiLink>
-      <UiLink to="/store" uppercase disabled>
-        Store
+        Roll the dice
       </UiLink>
     </Space>
   );
