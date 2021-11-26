@@ -21,7 +21,7 @@ export interface UiTokensSelectProps {
   placeholder?: string;
   minWidth?: CSS.Property.MinWidth;
   width?: CSS.Property.Width;
-  onSelectedTokenSymbolChange?: (symbol: TokenSymbol | null | TokenSymbol[]) => void;
+  onChange?: (symbol: TokenSymbol | null | TokenSymbol[]) => void;
 }
 
 export const UiTokensSelect: FC<UiTokensSelectProps> = ({
@@ -35,7 +35,7 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
   placeholder = 'Select',
   minWidth = '120px',
   width = 'auto',
-  onSelectedTokenSymbolChange = () => {},
+  onChange = () => {},
 }) => {
   /* Selected token symbol(-s) handling */
   const [selectedSymbols, setSelectedSymbols] = useState<TokenSymbol[]>(getSelectedSymbolsBySelectedProp());
@@ -50,12 +50,12 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
   useEffect(() => {
     if (multiple) {
       if (!isEqual(selected, selectedSymbols)) {
-        onSelectedTokenSymbolChange(selectedSymbols);
+        onChange(selectedSymbols);
       }
     } else {
       const selectedTokenSymbol = selectedSymbols[0] || null;
       if (selected !== selectedTokenSymbol) {
-        onSelectedTokenSymbolChange(selectedTokenSymbol);
+        onChange(selectedTokenSymbol);
       }
     }
   }, [selectedSymbols]);
@@ -92,7 +92,7 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
   if (fixed) overlayStyle.position = 'fixed';
 
   return (
-    <DropdownStyled
+    <Dropdown
       overlay={
         <UiTokensDropdownBody
           tokens={tokens}
@@ -100,7 +100,7 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
           multiple={multiple}
           allowEmpty={allowEmpty}
           setDropdownVisibility={setDropdownVisibility}
-          onSelectedTokenSymbolChange={handleTokenSymbolChange}
+          onChange={handleTokenSymbolChange}
         />
       }
       placement="bottomCenter"
@@ -139,17 +139,9 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
           <CaretDownOutlined className="caret-icon" />
         </div>
       </ContentStyled>
-    </DropdownStyled>
+    </Dropdown>
   );
 };
-
-const DropdownStyled = styled(Dropdown)`
-  & .ant-dropdown-arrow {
-    border-color: red !important;
-    background: red !important;
-    background: red;
-  }
-`;
 
 const ContentStyled = styled(BoxStyled)<{
   active: boolean;
@@ -163,7 +155,6 @@ const ContentStyled = styled(BoxStyled)<{
   user-select: none;
   color: var(--white-color);
   transition: 0.2s all;
-  min-width: 120px;
   outline: none;
 
   ${({ minWidth, width }) => `

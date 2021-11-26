@@ -1,6 +1,6 @@
 import { UiLink, UiLogo } from '@/components/ui';
 import WalletManagement from '@/components/WalletManagement/WalletManagement';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
+import { useConnectedWallet } from '@/hooks';
 import { Space } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import MainMenu from './components/MainMenu/MainMenu';
 import SubMenu from './components/SubMenu/SubMenu';
 
 const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
-  const connectedWallet = useConnectedWallet();
+  const { isWalletConnected } = useConnectedWallet();
 
   return (
     <WrapperStyled fixed={fixed}>
@@ -27,7 +27,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
           <MainMenu />
           <Space>
             <WalletManagement dropdownFixed={fixed} />
-            {connectedWallet && <RefreshWalletButton />}
+            {isWalletConnected && <RefreshWalletButton />}
           </Space>
         </MainMenuContainerStyled>
       </MenusContainerStyled>

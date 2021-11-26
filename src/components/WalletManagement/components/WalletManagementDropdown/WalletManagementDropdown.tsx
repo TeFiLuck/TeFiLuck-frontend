@@ -1,13 +1,13 @@
 import { ReactComponent as TerraStationExtensionIcon } from '@/assets/images/terra-station-extension.svg';
 import { ReactComponent as TerraStationMobileIcon } from '@/assets/images/terra-station-mobile.svg';
 import { UiLink } from '@/components/ui';
-import { useTokens } from '@/hooks';
+import { useConnectedWallet, useTokens } from '@/hooks';
 import { useAppDispatch } from '@/state';
 import { setMainTokenSymbol } from '@/state/finance-management';
 import { Token } from '@/typings/finance-management';
 import * as format from '@/utils/format';
 import { ImportOutlined, PushpinFilled } from '@ant-design/icons';
-import { ConnectType, useConnectedWallet, useWallet } from '@terra-money/wallet-provider';
+import { ConnectType, useWallet } from '@terra-money/wallet-provider';
 import { Menu, Space } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -18,7 +18,7 @@ export interface WalletManagementDropdownProps {
 
 const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdownVisibility = () => {} }) => {
   const dispatch = useAppDispatch();
-  const connectedWallet = useConnectedWallet();
+  const { isWalletConnected } = useConnectedWallet();
   const { availableConnectTypes, availableInstallTypes, install, connect, disconnect } = useWallet();
 
   enum DropdownItemsKeys {
@@ -29,16 +29,16 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdo
     DISCONNECT_WALLET = 'disconnect_wallet',
   }
 
-  const showConnectExtension = !connectedWallet && availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
-  const showInstallExtension = !connectedWallet && !availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
+  const showConnectExtension = !isWalletConnected && availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
+  const showInstallExtension = !isWalletConnected && !availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
   const canInstallExtension = availableInstallTypes.includes(ConnectType.CHROME_EXTENSION);
 
-  const showConnectMobile = !connectedWallet && availableConnectTypes.includes(ConnectType.WALLETCONNECT);
-  const showInstallMobile = !connectedWallet && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
+  const showConnectMobile = !isWalletConnected && availableConnectTypes.includes(ConnectType.WALLETCONNECT);
+  const showInstallMobile = !isWalletConnected && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
   const canInstallMobile = availableInstallTypes.includes(ConnectType.WALLETCONNECT);
 
-  const showTokensBalances = !!connectedWallet;
-  const showDisconnect = !!connectedWallet;
+  const showTokensBalances = isWalletConnected;
+  const showDisconnect = isWalletConnected;
 
   function handleDropdownItemClick({ key }: any): void {
     const clickHandlersMap: { [key in DropdownItemsKeys]?: () => void } = {
@@ -133,7 +133,7 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdo
                 </IconContainerStyled>
                 <div className="flex flex-align-center flex-justify-between">
                   <div>
-                    {format.round(token.balance, 3)}&nbsp;
+                    {format.cutDecimals(token.balance, 3)}&nbsp;
                     {token.symbol}
                   </div>
                   <div>

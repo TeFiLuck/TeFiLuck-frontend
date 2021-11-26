@@ -1,0 +1,10 @@
+.coinflip-additional-filters-settings-dropdown-submenu .ant-menu-item {
+  margin-bottom: 0px !important;
+  margin-top: 0px !important;
+  user-select: none;
+}
+
+
+.coinflip-additional-filters-settings-dropdown-submenu .ant-menu-sub {
+  min-width: auto !important;
+}

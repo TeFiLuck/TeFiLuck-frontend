@@ -1,8 +1,7 @@
 import { UiButton } from '@/components/ui';
-import { useAddress, useTokens } from '@/hooks';
+import { useAddress, useConnectedWallet, useTokens } from '@/hooks';
 import * as format from '@/utils/format';
 import { WalletOutlined } from '@ant-design/icons';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { Dropdown, Space } from 'antd';
 import { FC, useState } from 'react';
 import WalletManagementDropdown from './components/WalletManagementDropdown/WalletManagementDropdown';
@@ -17,8 +16,8 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
   const overlayStyle: Record<string, string> = {};
   if (dropdownFixed) overlayStyle.position = 'fixed';
 
-  const connectedWallet = useConnectedWallet();
-  const buttonType = connectedWallet ? 'default' : 'primary';
+  const { isWalletConnected } = useConnectedWallet();
+  const buttonType = isWalletConnected ? 'default' : 'primary';
   const address = useAddress();
   const { mainToken } = useTokens();
 
@@ -32,7 +31,7 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
       onVisibleChange={(isVisible) => setDropdownVisibility(isVisible)}
     >
       <UiButton type={buttonType} shape="round">
-        {connectedWallet ? (
+        {isWalletConnected ? (
           <Space>
             <Space size={4} className="text-color-white">
               <WalletOutlined />
@@ -40,7 +39,7 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
             </Space>
             <span className="text-color-primary">|</span>
             <span className="text-color-primary">
-              {format.round(mainToken.balance, 3)} {mainToken.symbol}
+              {format.cutDecimals(mainToken.balance, 3)} {mainToken.symbol}
             </span>
           </Space>
         ) : (

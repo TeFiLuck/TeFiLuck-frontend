@@ -1,9 +1,9 @@
 import { LCDClient } from '@terra-money/terra.js';
-import { useConnectedWallet } from '@terra-money/wallet-provider';
 import { useMemo } from 'react';
+import { useConnectedWallet } from './useConnectedWallet';
 
 export function useLCDClient(): LCDClient | null {
-  const connectedWallet = useConnectedWallet();
+  const { connectedWallet } = useConnectedWallet();
 
   const client = useMemo(() => {
     if (!connectedWallet) {

@@ -11,7 +11,7 @@ export interface UiTokensDropdownBodyProps {
   multiple?: boolean;
   allowEmpty?: boolean;
   setDropdownVisibility?: (isVisible: boolean) => void;
-  onSelectedTokenSymbolChange?: (symbols: TokenSymbol[]) => void;
+  onChange?: (symbols: TokenSymbol[]) => void;
 }
 
 export const UiTokensDropdownBody: FC<UiTokensDropdownBodyProps> = ({
@@ -20,7 +20,7 @@ export const UiTokensDropdownBody: FC<UiTokensDropdownBodyProps> = ({
   multiple = false,
   allowEmpty = true,
   setDropdownVisibility = () => {},
-  onSelectedTokenSymbolChange = () => {},
+  onChange = () => {},
 }) => {
   const [selectedSymbols, setSelectedSymbols] = useState([...selected]);
 
@@ -35,7 +35,7 @@ export const UiTokensDropdownBody: FC<UiTokensDropdownBodyProps> = ({
 
   useEffect(() => {
     if (!isEqual(selected, selectedSymbols)) {
-      onSelectedTokenSymbolChange(selectedSymbols);
+      onChange(selectedSymbols);
     }
   }, [selectedSymbols]);
 

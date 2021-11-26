@@ -35,55 +35,45 @@ const CreateGame: FC = () => {
   }
 
   return (
-    <WrapperStyled>
-      <Space>
-        <CoinSideChoice side={chosenSide} onSideChange={(side) => setChosenSide(side)} />
+    <Space>
+      <CoinSideChoice side={chosenSide} onSideChange={(side) => setChosenSide(side)} />
 
-        <UiTokensSelect
-          tokens={supportedTokens}
-          selected={selectedTokenSymbol}
-          onSelectedTokenSymbolChange={handleTokenSymbolChange}
-        />
+      <UiTokensSelect tokens={supportedTokens} selected={selectedTokenSymbol} onChange={handleTokenSymbolChange} />
 
-        <UiTokenAmountInput
-          value={betSize}
+      <UiTokenAmountInput
+        value={betSize}
+        token={selectedToken}
+        min={selectedToken.balance >= minBetSize ? minBetSize : selectedToken.balance}
+        style={{ width: '300px' }}
+        onChange={(tokenAmount) => setBetSize(tokenAmount)}
+      />
+
+      <GamesAmountSelectContainerStyled>
+        <GamesAmountSelect
+          value={amountGames}
           token={selectedToken}
-          min={minBetSize}
-          style={{ width: '300px' }}
-          onChange={(tokenAmount) => setBetSize(tokenAmount)}
+          betSize={betSizeNumber}
+          onChange={(amount) => setAmountGames(amount)}
         />
+      </GamesAmountSelectContainerStyled>
 
-        <GamesAmountSelectContainerStyled>
-          <GamesAmountSelect
-            value={amountGames}
-            token={selectedToken}
-            betSize={betSizeNumber}
-            onChange={(amount) => setAmountGames(amount)}
-          />
-        </GamesAmountSelectContainerStyled>
-
-        <Tooltip title={errorMessage} color={APP_DANGER_COLOR}>
-          <div>
-            <UiButton
-              size="large"
-              type="primary"
-              theme="alternative"
-              disabled={!!errorMessage}
-              style={{ width: '140px', pointerEvents: errorMessage ? 'none' : 'auto' }}
-            >
-              {amountGames > 1 ? `Create ${amountGames} games` : 'Create game'}
-            </UiButton>
-          </div>
-        </Tooltip>
-      </Space>
-    </WrapperStyled>
+      <Tooltip title={errorMessage} color={APP_DANGER_COLOR}>
+        <div>
+          <UiButton
+            size="large"
+            type="primary"
+            theme="alternative"
+            shape="round"
+            disabled={!!errorMessage}
+            style={{ width: '140px', pointerEvents: errorMessage ? 'none' : 'auto' }}
+          >
+            {amountGames > 1 ? `Create ${amountGames} games` : 'Create game'}
+          </UiButton>
+        </div>
+      </Tooltip>
+    </Space>
   );
 };
-
-const WrapperStyled = styled.div`
-  display: flex;
-  align-items: center;
-`;
 
 const GamesAmountSelectContainerStyled = styled.div`
   width: 70px;
