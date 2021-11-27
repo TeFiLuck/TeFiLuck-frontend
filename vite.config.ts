@@ -56,6 +56,7 @@ export default defineConfig(({ mode }) => ({
         javascriptEnabled: true,
         modifyVars: {
           'primary-color': 'rgba(183,77,255,1)',
+          'info-color': 'rgba(0,153,255,1)',
           'text-color': 'rgba(146,147,166,1)',
           'error-color': 'rgba(251,93,71,1)',
           'input-bg': 'rgba(20,20,25,1)',

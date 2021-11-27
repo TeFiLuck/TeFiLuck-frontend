@@ -14,6 +14,7 @@ html {
   --global-danger-color: var(--red-color-1);
   --global-success-color: var(--green-color-1);
   --global-warning-color: var(--yellow-color-1);
+  --global-info-color: var(--blue-color-1);
   --global-text-color: var(--gray-color-2);
 }
 
@@ -51,6 +52,18 @@ section.mobile h1 {
 
 .text-color-danger {
   color: var(--global-danger-color);
+}
+
+.text-color-warning {
+  color: var(--global-warning-color);
+}
+
+.text-color-success {
+  color: var(--global-success-color);
+}
+
+.text-color-info {
+  color: var(--global-info-color);
 }
 
 /* Flex utility classes */

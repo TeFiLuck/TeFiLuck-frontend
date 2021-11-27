@@ -45,6 +45,7 @@ const WrapperStyled = styled.header<{
   background: var(--global-base-component-bg-color);
   display: grid;
   grid-template-columns: 280px 1fr;
+  z-index: 1000;
 
   ${({ fixed }) =>
     fixed

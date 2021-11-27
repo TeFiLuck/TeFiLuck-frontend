@@ -25,3 +25,4 @@ export const WALLET_CONNECT_CHAIN_IDS = <const>{
 };
 
 export const TERRA_DECIMALS = 6;
+export const TERRA_BLOCK_GENERATION_TIME_SEC = 6;

@@ -19,6 +19,7 @@ export interface UiLinkProps {
   active?: boolean;
   disabled?: boolean;
   uppercase?: boolean;
+  underlined?: boolean;
   fontSize?: CSS.Property.FontSize;
   fontWeight?: CSS.Property.FontWeight;
   onClick?: () => void;
@@ -33,6 +34,7 @@ export const UiLink: FC<UiLinkProps> = ({
   active = false,
   disabled = false,
   uppercase = false,
+  underlined = false,
   fontSize = '100%',
   fontWeight = '700',
   onClick = () => {},
@@ -76,6 +78,7 @@ export const UiLink: FC<UiLinkProps> = ({
       className={`${active && 'active'}`}
       disabled={disabled}
       uppercase={uppercase ? 1 : 0}
+      underlined={underlined ? 1 : 0}
       fontSize={fontSize}
       fontWeight={fontWeight}
       onClick={handleClick}
@@ -90,6 +93,7 @@ const UiLinkWrapperStyled = styled(NavLink)<{
   theme: Theme;
   disabled: boolean;
   uppercase: 0 | 1;
+  underlined: 0 | 1;
   fontSize: CSS.Property.FontSize;
   fontWeight: CSS.Property.FontWeight;
 }>`
@@ -97,11 +101,12 @@ const UiLinkWrapperStyled = styled(NavLink)<{
   --ui-link-hover-color: var(--global-primary-color);
   --ui-link-disabled-color: var(--gray-color-3);
 
-  ${({ fontSize, fontWeight, uppercase }) => `
+  ${({ fontSize, fontWeight, uppercase, underlined }) => `
     font-weight: ${fontWeight};
     font-size: ${fontSize};
 
     ${(uppercase && 'text-transform: uppercase;') || ''} 
+    ${(underlined && 'text-decoration: underline !important;') || ''} 
   `}
 
   color: var(--ui-link-color);

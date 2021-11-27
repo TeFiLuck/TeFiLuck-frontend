@@ -7,6 +7,7 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   setBetsSizesRanges,
   setDisplayGamesTokensSymbols,
+  setIsCreateGameModalOpened,
   setIsOnlyMyGamesDisplayed,
   setPaginationSize,
   setSortingMethod,
@@ -18,6 +19,7 @@ export interface CoinflipState {
   betsSizesRanges: BetSizesRange<number>[];
   sortingMethod: GamesSortingMethod;
   paginationSize: number;
+  isCreateGameModalOpened: boolean;
 }
 
 export const initialState: CoinflipState = {
@@ -26,6 +28,7 @@ export const initialState: CoinflipState = {
   betsSizesRanges: [createFreshBetSizesRangeBySymbol(DEFAULT_MAIN_TOKEN_SYMBOL)],
   sortingMethod: DEFAULT_GAMES_SORTING_METHOD,
   paginationSize: DEFAULT_GAMES_PAGINATION_SIZE,
+  isCreateGameModalOpened: false,
 };
 
 export default createReducer(initialState, (builder) =>
@@ -44,5 +47,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setPaginationSize, (state, { payload }) => {
       state.paginationSize = payload;
+    })
+    .addCase(setIsCreateGameModalOpened, (state, { payload }) => {
+      state.isCreateGameModalOpened = payload;
     }),
 );

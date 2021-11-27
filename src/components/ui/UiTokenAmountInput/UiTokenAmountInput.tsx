@@ -1,4 +1,3 @@
-import { ReactComponent as CoinsIcon } from '@/assets/images/coins.svg';
 import { Token } from '@/typings/finance-management';
 import { Space } from 'antd';
 import { FC } from 'react';
@@ -42,9 +41,9 @@ export const UiTokenAmountInput: FC<UiTokenAmountInputProps> = ({
       size="large"
       style={{ ...style }}
       prefix={
-        <InputPrefix>
-          <CoinsIcon className="icon" />
-        </InputPrefix>
+        <InputPrefixStyled>
+          <img className="icon" src={token.logo} alt="" />
+        </InputPrefixStyled>
       }
       addonAfter={
         <Space>
@@ -63,10 +62,11 @@ export const UiTokenAmountInput: FC<UiTokenAmountInputProps> = ({
   );
 };
 
-const InputPrefix = styled.div`
+const InputPrefixStyled = styled.div`
   margin-right: 6px;
   display: flex;
   align-items: center;
+  user-select: none;
 
   .icon {
     height: 20px;
