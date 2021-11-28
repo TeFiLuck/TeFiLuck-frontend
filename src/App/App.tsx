@@ -1,5 +1,5 @@
 import { useFinanceManagementStore } from '@/state/finance-management';
-import { FC } from 'react';
+import { FC, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { useAppMessagesDisplay } from './hooks';
 import { Routes } from './routes';
@@ -7,6 +7,14 @@ import { Routes } from './routes';
 const App: FC = () => {
   useFinanceManagementStore();
   useAppMessagesDisplay();
+  useEffect(() => removeAppLoader(), []);
+
+  function removeAppLoader(): void {
+    const loader = document.getElementById('js-app-loading-screen');
+    if (loader) {
+      loader.style.display = 'none';
+    }
+  }
 
   return (
     <Router>

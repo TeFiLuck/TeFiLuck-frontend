@@ -2,16 +2,214 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
 		<link rel="icon" type="image/png" href="/favicon.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<meta name="description" content="100% open-source, fair P2P gambling services for Terra blockchain ecosystem. We believe in a power of smart-contracts." />
+
 		<meta name="theme-color" content="#B74DFF" />
-		<title>TeFiLuck</title>
+    <meta name="msapplication-navbutton-color" content="#B74DFF" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="#B74DFF" />
+
+		<meta name="description" content="TeFiLuck - 100% open-source, fair P2P gambling services for Terra blockchain ecosystem. We believe in a power of smart-contracts." />
+		<title>TeFiLuck - Fair P2P gambling secured by smart-contracts</title>
+
+    <!-- Loading screen styles -->
+    <style>
+      .app-loading-screen {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+        box-sizing: border-box;
+        user-select: none;
+        background: linear-gradient(#2a1f30,  #180f1c);
+        background-size: 80%;
+        font-family: sans-serif;
+        color: #ffffff;
+        text-align: center;
+      }
+
+      .app-loading-screen__loading-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        box-sizing: border-box;
+        margin: 0 20px;
+      }
+
+      .app-loading-screen__logo {
+        display: flex;
+        align-items: center;
+        font-size: 100px;
+        justify-content: center;
+        font-weight: bold;
+        line-height: 0.8;
+      }
+
+      .app-loading-screen__logo-img {
+        width: 130px;
+        margin-right: 25px;
+      }
+
+      .app-loading-screen__logo-primary {
+        color: rgba(183,77,255,1);
+      }
+
+      .app-loading-screen__loading {
+        font-size: 54px;
+        font-weight: 500;
+        line-height: 1;
+        font-family: sans-serif;
+      }
+
+      .app-loading-screen__description-1 {
+        margin-top: 22px;
+        font-size: 16px;
+        color: rgba(183,77,255,1);
+        line-height: 1.5;
+      }
+
+      .app-loading-screen__description-2 {
+        margin-top: 16px;
+        font-size: 16px;
+        line-height: 1.5;
+      }
+
+      @media screen and (max-width: 780px) {
+        .app-loading-screen__logo {
+          font-size: 80px;
+          line-height: 0.9;
+        }
+
+        .app-loading-screen__logo-img {
+          width: 100px;
+          margin-right: 25px;
+        }
+
+        .app-loading-screen__description-1 {
+          margin-top: 20px;
+        }
+      }
+
+      @media screen and (max-width: 600px) {
+        .app-loading-screen__logo {
+          font-size: 60px;
+          line-height: 0.8;
+        }
+
+        .app-loading-screen__logo-img {
+          width: 80px;
+          margin-right: 15px;
+        }
+
+        .app-loading-screen__loading {
+          font-size: 32px;
+        }
+
+        .app-loading-screen__description-1 {
+          margin-top: 16px;
+          font-size: 14px;
+          line-height: 1.7;
+        }
+
+        .app-loading-screen__description-2 {
+          margin-top: 12px;
+          font-size: 14px;
+          line-height: 1.7;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        .app-loading-screen__logo {
+          font-size: 50px;
+        }
+
+        .app-loading-screen__logo-img {
+          width: 60px;
+          margin-right: 10px;
+        }
+
+        .app-loading-screen__loading {
+          margin-top: 6px;
+        }
+
+        .app-loading-screen__description-1 {
+          margin-top: 12px;
+          font-size: 12px;
+        }
+
+        .app-loading-screen__description-2 {
+          margin-top: 8px;
+          font-size: 12px;
+        }
+      }
+
+      @media screen and (max-width: 450px) {
+        .app-loading-screen__description-2 {
+          max-width: 300px;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .app-loading-screen__logo {
+          font-size: 40px;
+          line-height: 0.8;
+        }
+
+        .app-loading-screen__logo-img {
+          width: 48px;
+        }
+
+        .app-loading-screen__loading {
+          font-size: 24px;
+        }
+
+        .app-loading-screen__description-1 {
+          margin-top: 10px;
+        }
+
+        .app-loading-screen__description-2 {
+          max-width: 300px;
+        }
+      }
+    </style>
 	</head>
 	<body>
+    <!-- LOADING SCREEN -->
+    <div id="js-app-loading-screen" class="app-loading-screen">
+      <div class="app-loading-screen__loading-content">
+        <div class="app-loading-screen__logo">
+          <div>
+            <svg class="app-loading-screen__logo-img" viewBox="0 0 52 58" width="512" xmlns="http://www.w3.org/2000/svg"><g id="Page-1" fill="none" fill-rule="evenodd"><g id="053---Diamond-Dice"><path id="Path" d="m50.96 13.43-24.01-13.19c-.5929027-.32003788-1.3070973-.32003788-1.9 0l-24.01 13.19c-.63981595.3500747-1.0383445 1.0206756-1.04 1.75v27.64c.00010557.3589667.09682141.7112886.28 1.02.18258136.3076439.44525617.5599499.76.73l24.01 13.19c.5929027.3200379 1.3070973.3200379 1.9 0l24.01-13.19c.3147438-.1700501.5774186-.4223561.76-.73.1831786-.3087114.2798944-.6610333.28-1.02v-27.64c-.0016555-.7293244-.400184-1.3999253-1.04-1.75z" fill="#3d324c"/><path id="Path" d="m26 7-17 32-9-23.82c.0016555-.7293244.40018405-1.3999253 1.04-1.75z" fill="#894b9d"/><path id="Path" d="m26-.00001383v7.00001383l-24.96 6.43 24.01-13.19c.2914158-.15869202.6181796-.24124285.95-.24001383z" fill="#955ba5"/><path id="Path" d="m50.96 13.43-24.96-6.43v-7.00001383c.3318204-.00122902.6585842.08132181.95.24001383z" fill="#b49aca"/><path id="Path" d="m52 15.18-9 23.82-17-32 24.96 6.43c.639816.3500747 1.0383445 1.0206756 1.04 1.75z" fill="#894b9d"/><path id="Path" d="m9 39-8.72 4.84c-.18317859-.3087114-.27989443-.6610333-.28-1.02v-27.64z" fill="#5d4c72"/><path id="Path" d="m52 15.18v27.64c-.0001056.3589667-.0968214.7112886-.28 1.02l-8.72-4.84z" fill="#5d4c72"/><path id="Path" d="m43 39h-34l17-32z" fill="#955ba5"/><path id="Path" d="m43 39-17 19-17-19z" fill="#5d4c72"/><circle id="Oval" cx="6" cy="17" fill="#fff" r="1"/><circle id="Oval" cx="13" cy="16" fill="#fff" r="1"/><circle id="Oval" cx="30" cy="29" fill="#fff" r="1"/><circle id="Oval" cx="22" cy="23" fill="#fff" r="1"/><g fill="#b49aca"><circle id="Oval" cx="19" cy="43" r="1"/><circle id="Oval" cx="26" cy="43" r="1"/><circle id="Oval" cx="29" cy="47" r="1"/><circle id="Oval" cx="23" cy="47" r="1"/><circle id="Oval" cx="33" cy="43" r="1"/></g><circle id="Oval" cx="9" cy="24" fill="#fff" r="1"/><circle id="Oval" cx="46" cy="17" fill="#fff" r="1"/><circle id="Oval" cx="37" cy="15" fill="#fff" r="1"/><circle id="Oval" cx="43" cy="25" fill="#fff" r="1"/><circle id="Oval" cx="40" cy="20" fill="#fff" r="1"/></g></g></svg>
+          </div>
+          <div>
+            <span class="app-loading-screen__logo-primary">TEFI</span><span>LUCK</span>
+          </div>
+        </div>
+
+        <div class="app-loading-screen__loading">
+          ... L o a d i n g ...
+        </div>
+
+        <div class="app-loading-screen__description-1">Crypto libraries are heavy :(</div>
+
+        <div class="app-loading-screen__description-2">
+          It might take a few seconds before you are able to interact with TeFiLuck.<br />
+          Thank you for your patience!
+        </div>
+      </div>
+    </div>
+
 		<noscript>You need to enable JavaScript to run this app.</noscript>
+    
 		<div id="root"></div>
+
 		<script type="module" src="/src/index.tsx"></script>
 	</body>
 </html>
