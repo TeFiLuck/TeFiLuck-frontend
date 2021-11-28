@@ -1,3 +1,4 @@
+import CurrentBlockDisplay from '@/components/CurrentBlockDisplay/CurrentBlockDisplay';
 import { UiLink, UiLogo } from '@/components/ui';
 import WalletManagement from '@/components/WalletManagement/WalletManagement';
 import { useConnectedWallet } from '@/hooks';
@@ -22,6 +23,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
       <MenusContainerStyled>
         <SubMenuContainerStyled>
           <SubMenu />
+          <CurrentBlockDisplay />
         </SubMenuContainerStyled>
         <MainMenuContainerStyled>
           <MainMenu />
@@ -72,6 +74,7 @@ const SubMenuContainerStyled = styled.div`
   background: var(--dark-color-4);
   display: flex;
   align-items: center;
+  justify-content: space-between;
   box-sizing: border-box;
   padding: 0 24px;
 `;

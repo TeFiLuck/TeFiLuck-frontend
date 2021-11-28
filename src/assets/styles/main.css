@@ -24,11 +24,11 @@ body {
 
 /* Wallet connect modal */
 section.desktop h1 {
-  color: #000000;
+  color: #000000 !important;
 }
 
 section.mobile h1 {
-  color: #000000;
+  color: #000000 !important;
 }
 
 /* Ant dropdown re-style */

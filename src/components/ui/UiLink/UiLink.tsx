@@ -1,9 +1,9 @@
+import { StylingVariablesMap } from '@/typings/general';
 import * as CSS from 'csstype';
 import React, { FC } from 'react';
 import { NavLink } from 'react-router-dom';
 import styled from 'styled-components';
 
-type Theme = 'default';
 type Mode = 'router' | 'html' | 'empty';
 type LinkProps = {
   to: string;
@@ -14,7 +14,6 @@ type LinkProps = {
 export interface UiLinkProps {
   to?: string;
   mode?: Mode;
-  theme?: Theme;
   openHtmlLinkSeparately?: boolean;
   active?: boolean;
   disabled?: boolean;
@@ -22,6 +21,10 @@ export interface UiLinkProps {
   underlined?: boolean;
   fontSize?: CSS.Property.FontSize;
   fontWeight?: CSS.Property.FontWeight;
+  color?: CSS.Property.Color;
+  hoverColor?: CSS.Property.Color;
+  disabledColor?: CSS.Property.Color;
+  style?: Record<string, string>;
   onClick?: () => void;
 }
 
@@ -29,7 +32,6 @@ export const UiLink: FC<UiLinkProps> = ({
   children,
   to = '/',
   mode = 'router',
-  theme = 'default',
   openHtmlLinkSeparately = false,
   active = false,
   disabled = false,
@@ -37,6 +39,10 @@ export const UiLink: FC<UiLinkProps> = ({
   underlined = false,
   fontSize = '100%',
   fontWeight = '700',
+  color = '',
+  hoverColor = '',
+  disabledColor = '',
+  style = {},
   onClick = () => {},
 }) => {
   const wrapperElementsMap = {
@@ -52,6 +58,12 @@ export const UiLink: FC<UiLinkProps> = ({
     linkProps.href = to;
     if (openHtmlLinkSeparately) linkProps.target = '_blank';
   }
+
+  const styleVariables: StylingVariablesMap = {
+    '--ui-link-color': color || 'var(--gray-color-2)',
+    '--ui-link-hover-color': hoverColor || 'var(--global-primary-color)',
+    '--ui-link-disabled-color': disabledColor || 'var(--gray-color-3)',
+  };
 
   function handleClick(e: any): void {
     if (disabled) {
@@ -72,7 +84,6 @@ export const UiLink: FC<UiLinkProps> = ({
   return (
     <UiLinkWrapperStyled
       as={wrapperElementsMap[mode]}
-      theme={theme}
       {...linkProps}
       tabIndex={disabled ? -1 : 0}
       className={`${active && 'active'}`}
@@ -81,6 +92,7 @@ export const UiLink: FC<UiLinkProps> = ({
       underlined={underlined ? 1 : 0}
       fontSize={fontSize}
       fontWeight={fontWeight}
+      style={{ ...styleVariables, ...style }}
       onClick={handleClick}
       onKeyPress={handleKeyPress}
     >
@@ -90,17 +102,12 @@ export const UiLink: FC<UiLinkProps> = ({
 };
 
 const UiLinkWrapperStyled = styled(NavLink)<{
-  theme: Theme;
   disabled: boolean;
   uppercase: 0 | 1;
   underlined: 0 | 1;
   fontSize: CSS.Property.FontSize;
   fontWeight: CSS.Property.FontWeight;
 }>`
-  --ui-link-color: var(--gray-color-2);
-  --ui-link-hover-color: var(--global-primary-color);
-  --ui-link-disabled-color: var(--gray-color-3);
-
   ${({ fontSize, fontWeight, uppercase, underlined }) => `
     font-weight: ${fontWeight};
     font-size: ${fontSize};

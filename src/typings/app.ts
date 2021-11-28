@@ -1,4 +1,17 @@
 export type BaseSize = 'small' | 'medium' | 'large';
+export type TooltipPlacement =
+  | 'top'
+  | 'left'
+  | 'right'
+  | 'bottom'
+  | 'topLeft'
+  | 'topRight'
+  | 'bottomLeft'
+  | 'bottomRight'
+  | 'leftTop'
+  | 'leftBottom'
+  | 'rightTop'
+  | 'rightBottom';
 
 export enum AppMessageType {
   Success = 'success',
