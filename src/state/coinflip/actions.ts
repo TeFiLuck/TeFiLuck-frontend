@@ -10,3 +10,4 @@ export const setSortingMethod = createAction<GamesSortingMethod>('coinflip/setSo
 export const setPaginationSize = createAction<number>('coinflip/setPaginationSize');
 export const setIsCreateGameModalOpened = createAction<boolean>('coinflip/setIsCreateGameModalOpened');
 export const setResolveTimeLimitRange = createAction<[number, number]>('coinflip/setResolveTimeLimitRange');
+export const setIsGameFlowAlertVisible = createAction<boolean>('coinflip/setIsGameFlowAlertVisible');

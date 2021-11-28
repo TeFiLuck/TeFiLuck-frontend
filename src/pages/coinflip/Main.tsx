@@ -1,4 +1,5 @@
 import CreateGameModal from '@/components/coinflip/CreateGameModal/CreateGameModal';
+import GameFlowAlert from '@/components/coinflip/GameFlowAlert/GameFlowAlert';
 import GamesFilters from '@/components/coinflip/GamesFilters/GamesFilters';
 import { UiButton } from '@/components/ui';
 import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
@@ -14,7 +15,7 @@ const Page: FC = () => {
   const [createGameModalKey, setCreateGameModalKey] = useState(uuidv4());
 
   return (
-    <BaseLayout>
+    <BaseLayout topBanner={<GameFlowAlert style={{ padding: '8px var(--global-standard-horizontal-offset)' }} />}>
       <ContentStyled>
         <GameCreationSectionStyled>
           <div>
@@ -64,7 +65,7 @@ const GameCreationSectionStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 64px;
+  margin-bottom: 48px;
 `;
 
 const GamesFiltersSectionStyled = styled.div`

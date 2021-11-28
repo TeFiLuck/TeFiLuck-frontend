@@ -1,14 +1,20 @@
 import AppHeader from '@/components/AppHeader/AppHeader';
-import { FC } from 'react';
+import { FC, ReactNode } from 'react';
 import styled from 'styled-components';
 
-const BaseLayout: FC = ({ children }) => {
+export interface BaseLayoutProps {
+  topBanner?: ReactNode;
+}
+
+const BaseLayout: FC<BaseLayoutProps> = ({ children, topBanner }) => {
   return (
     <WrapperStyled>
       <AppHeader fixed />
-
       <ContentStyled>
-        <MainStyled>{children}</MainStyled>
+        <div>
+          {topBanner || ''}
+          <MainStyled>{children}</MainStyled>
+        </div>
         <footer>Footer</footer>
       </ContentStyled>
     </WrapperStyled>

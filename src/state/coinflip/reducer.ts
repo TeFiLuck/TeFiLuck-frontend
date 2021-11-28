@@ -14,6 +14,7 @@ import {
   setBetsSizesRanges,
   setDisplayGamesTokensSymbols,
   setIsCreateGameModalOpened,
+  setIsGameFlowAlertVisible,
   setIsOnlyMyGamesDisplayed,
   setPaginationSize,
   setResolveTimeLimitRange,
@@ -28,6 +29,7 @@ export interface CoinflipState {
   paginationSize: number;
   resolveTimeLimitRange: [number, number];
   isCreateGameModalOpened: boolean;
+  isGameFlowAlertVisible: boolean;
 }
 
 export const initialState: CoinflipState = {
@@ -38,6 +40,7 @@ export const initialState: CoinflipState = {
   paginationSize: DEFAULT_GAMES_PAGINATION_SIZE,
   resolveTimeLimitRange: [MIN_BLOCKS_BEFORE_LIQUIDABLE, MAX_BLOCKS_BEFORE_LIQUIDABLE],
   isCreateGameModalOpened: false,
+  isGameFlowAlertVisible: true,
 };
 
 export default createReducer(initialState, (builder) =>
@@ -62,5 +65,8 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsCreateGameModalOpened, (state, { payload }) => {
       state.isCreateGameModalOpened = payload;
+    })
+    .addCase(setIsGameFlowAlertVisible, (state, { payload }) => {
+      state.isGameFlowAlertVisible = payload;
     }),
 );
