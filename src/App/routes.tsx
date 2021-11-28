@@ -1,6 +1,6 @@
 import CoinflipPage from '@/pages/coinflip/Main';
 import { FC } from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Redirect, Route, Switch, useRouteMatch } from 'react-router-dom';
 
 const CoinflipRoutes: FC = () => {
   const match = useRouteMatch();
@@ -20,6 +20,9 @@ const DevRoutes: FC = () => {
       <Route path="/" exact>
         <CoinflipRoutes />
       </Route>
+      <Route path="*">
+        <Redirect to="/" />
+      </Route>
     </Switch>
   );
 };
@@ -29,6 +32,9 @@ const ProdRoutes: FC = () => {
     <Switch>
       <Route path="/" exact>
         <CoinflipRoutes />
+      </Route>
+      <Route path="*">
+        <Redirect to="/" />
       </Route>
     </Switch>
   );
