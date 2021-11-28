@@ -10,6 +10,7 @@ export interface UiBlocksTimeInputProps {
   value: number;
   minBlocks?: number;
   maxBlocks?: number;
+  disabled?: boolean;
   onChange: (blocksAmount: number) => void;
 }
 
@@ -17,6 +18,7 @@ export const UiBlocksTimeInput: FC<UiBlocksTimeInputProps> = ({
   value,
   minBlocks = 100,
   maxBlocks = 1000000,
+  disabled = false,
   onChange,
 }) => {
   const [hoursValue, setHoursValue] = useState(getHoursFromTerraBlocksAmount(value).toString());
@@ -45,6 +47,7 @@ export const UiBlocksTimeInput: FC<UiBlocksTimeInputProps> = ({
         max={round(getHoursFromTerraBlocksAmount(maxBlocks), 1)}
         style={{ width: '200px' }}
         onChange={setHoursValue}
+        disabled={disabled}
         prefix={
           <InputPrefixStyled>
             <FieldTimeOutlined className="icon" />

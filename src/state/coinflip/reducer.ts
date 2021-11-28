@@ -1,4 +1,10 @@
-import { DEFAULT_GAMES_PAGINATION_SIZE, DEFAULT_GAMES_SORTING_METHOD, GamesSortingMethod } from '@/constants/coinflip';
+import {
+  DEFAULT_GAMES_PAGINATION_SIZE,
+  DEFAULT_GAMES_SORTING_METHOD,
+  GamesSortingMethod,
+  MAX_BLOCKS_BEFORE_LIQUIDABLE,
+  MIN_BLOCKS_BEFORE_LIQUIDABLE,
+} from '@/constants/coinflip';
 import { DEFAULT_MAIN_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
 import { BetSizesRange } from '@/typings/coinflip';
@@ -10,6 +16,7 @@ import {
   setIsCreateGameModalOpened,
   setIsOnlyMyGamesDisplayed,
   setPaginationSize,
+  setResolveTimeLimitRange,
   setSortingMethod,
 } from './actions';
 
@@ -19,6 +26,7 @@ export interface CoinflipState {
   betsSizesRanges: BetSizesRange<number>[];
   sortingMethod: GamesSortingMethod;
   paginationSize: number;
+  resolveTimeLimitRange: [number, number];
   isCreateGameModalOpened: boolean;
 }
 
@@ -28,6 +36,7 @@ export const initialState: CoinflipState = {
   betsSizesRanges: [createFreshBetSizesRangeBySymbol(DEFAULT_MAIN_TOKEN_SYMBOL)],
   sortingMethod: DEFAULT_GAMES_SORTING_METHOD,
   paginationSize: DEFAULT_GAMES_PAGINATION_SIZE,
+  resolveTimeLimitRange: [MIN_BLOCKS_BEFORE_LIQUIDABLE, MAX_BLOCKS_BEFORE_LIQUIDABLE],
   isCreateGameModalOpened: false,
 };
 
@@ -47,6 +56,9 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setPaginationSize, (state, { payload }) => {
       state.paginationSize = payload;
+    })
+    .addCase(setResolveTimeLimitRange, (state, { payload }) => {
+      state.resolveTimeLimitRange = payload;
     })
     .addCase(setIsCreateGameModalOpened, (state, { payload }) => {
       state.isCreateGameModalOpened = payload;

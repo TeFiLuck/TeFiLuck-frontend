@@ -9,3 +9,4 @@ export const setBetsSizesRanges = createAction<BetSizesRange<number>[]>('coinfli
 export const setSortingMethod = createAction<GamesSortingMethod>('coinflip/setSortingMethod');
 export const setPaginationSize = createAction<number>('coinflip/setPaginationSize');
 export const setIsCreateGameModalOpened = createAction<boolean>('coinflip/setIsCreateGameModalOpened');
+export const setResolveTimeLimitRange = createAction<[number, number]>('coinflip/setResolveTimeLimitRange');

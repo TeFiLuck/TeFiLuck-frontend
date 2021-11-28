@@ -37,9 +37,10 @@ const AdditionalFiltersSettings: FC<AdditionalFiltersSettingsProps> = ({
 
   return (
     <Dropdown
-      overlay={<AdditionalFiltersSettingsDropdownBody />}
+      overlay={<AdditionalFiltersSettingsDropdownBody setDropdownVisibility={setDropdownVisibility} />}
       placement="bottomRight"
       overlayStyle={overlayStyle}
+      destroyPopupOnHide
       trigger={['click']}
       disabled={disabled}
       arrow

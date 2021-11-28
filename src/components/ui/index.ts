@@ -1,4 +1,5 @@
 export * from './UiBlocksTimeInput/UiBlocksTimeInput';
+export * from './UiBlocksTimeRange/UiBlocksTimeRange';
 export * from './UiButton/UiButton';
 export * from './UiLink/UiLink';
 export * from './UiLogo/UiLogo';
