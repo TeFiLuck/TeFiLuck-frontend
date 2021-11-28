@@ -13,6 +13,65 @@
 
 		<meta name="description" content="TeFiLuck - 100% open-source, fair P2P gambling services for Terra blockchain ecosystem. We believe in a power of smart-contracts." />
 		<title>TeFiLuck - Fair P2P gambling secured by smart-contracts</title>
+    
+    <!-- Javascript disabled styled -->
+    <style>
+      .app-javascript-disabled {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000000;
+        box-sizing: border-box;
+        user-select: none;
+        background: linear-gradient(#2a1f30,  #180f1c);
+        font-family: sans-serif;
+        color: #ffffff;
+        text-align: center;
+        font-size: 24px;
+        line-height: 1.7;
+      }
+
+      .app-javascript-disabled__content {
+        padding: 0 20px;
+      }
+
+      .app-javascript-disabled__link {
+        color: rgba(146,147,166,1);
+        transition: 0.2s all;
+        text-decoration: none;
+      }
+
+      .app-javascript-disabled__link:hover {
+        color: rgba(183,77,255,1);
+      }
+
+      .app-javascript-disabled__link:active {
+        opacity: 0.8;
+      }
+
+      @media screen and (max-width: 840px) {
+        .app-javascript-disabled__content {
+          max-width: 600px;
+        }
+      }
+
+      @media screen and (max-width: 500px) {
+        .app-javascript-disabled {
+          font-size: 18px;
+        }
+      }
+
+      @media screen and (max-width: 375px) {
+        .app-javascript-disabled {
+          font-size: 16px;
+        }
+      }
+    </style>
 
     <!-- Loading screen styles -->
     <style>
@@ -29,7 +88,6 @@
         box-sizing: border-box;
         user-select: none;
         background: linear-gradient(#2a1f30,  #180f1c);
-        background-size: 80%;
         font-family: sans-serif;
         color: #ffffff;
         text-align: center;
@@ -181,6 +239,22 @@
     </style>
 	</head>
 	<body>
+    <!-- Javascript disabled screen -->
+		<noscript>
+      <div class="app-javascript-disabled">
+        <div class="app-javascript-disabled__content">
+          <div>
+            You need to enable JavaScript in your browser to interact with TeFiLuck.
+          </div>
+          <div>
+            <a class="app-javascript-disabled__link" href="https://www.google.com/search?q=how+to+enable+javascript+in+browser&oq=how+to+enable+javascript+in+browser" target="_blank">
+              How to enable Javascript in browser?
+            </a>
+          </div>
+        </div>
+      </div>
+    </noscript>
+
     <!-- LOADING SCREEN -->
     <div id="js-app-loading-screen" class="app-loading-screen">
       <div class="app-loading-screen__loading-content">
@@ -205,8 +279,6 @@
         </div>
       </div>
     </div>
-
-		<noscript>You need to enable JavaScript to run this app.</noscript>
     
 		<div id="root"></div>
 
