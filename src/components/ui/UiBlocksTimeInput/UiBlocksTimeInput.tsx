@@ -56,7 +56,7 @@ export const UiBlocksTimeInput: FC<UiBlocksTimeInputProps> = ({
         addonAfter={<span className="noselect">hours</span>}
       />
 
-      <span className="equals-sign"> = </span>
+      <span className="equals-sign"> &#8776; </span>
 
       <Space className="nowrap noselect">
         <span className="blocks-number">{value}</span>

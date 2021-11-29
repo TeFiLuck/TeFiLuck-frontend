@@ -23,7 +23,7 @@ const ResolveTimeField: FC<ResolveTimeFieldProps> = ({ value, onChange }) => {
                 of time, we are setting the response time-limit after which game might be ended without evaluation.
                 Because its hard to measure time in smart-contracts we use blocks. On Terra:
                 <br />
-                <b>Each {TERRA_BLOCK_GENERATION_TIME_SEC} seconds ~ 1 block generated</b>
+                <b>Approximately each {TERRA_BLOCK_GENERATION_TIME_SEC} seconds ~ 1 block generated</b>
                 <br />
                 <br />
                 <i>
