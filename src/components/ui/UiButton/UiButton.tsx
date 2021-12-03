@@ -2,7 +2,15 @@ import { Button, ButtonProps } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
 
-type ButtonTheme = 'inherit' | 'success' | 'danger' | 'warning' | 'dark-3' | 'alternative';
+type ButtonTheme =
+  | 'inherit'
+  | 'success'
+  | 'danger'
+  | 'warning'
+  | 'dark-3'
+  | 'alternative'
+  | 'coin-heads'
+  | 'coin-tails';
 
 export interface UiButtonProps extends ButtonProps {
   type?: ButtonProps['type'];
@@ -127,6 +135,22 @@ const ButtonStyled = styled(Button)<{
 }
 
     ${
+  theme === 'coin-heads'
+    ? `
+      --ui-button-bg-color: var(--global-coin-heads-color);
+    `
+    : ''
+}
+
+    ${
+  theme === 'coin-tails'
+    ? `
+      --ui-button-bg-color: var(--global-coin-tails-color);
+    `
+    : ''
+}
+
+    ${
   theme === 'dark-3'
     ? `
       --ui-button-bg-color: var(--dark-color-3);
@@ -198,6 +222,24 @@ const ButtonStyled = styled(Button)<{
     `
     : ''
 }
+
+    ${
+  theme === 'coin-heads'
+    ? `
+      --ui-button-border-color: var(--global-coin-heads-color);
+    `
+    : ''
+}
+
+
+    ${
+  theme === 'coin-tails'
+    ? `
+      --ui-button-border-color: var(--global-coin-tails-color);
+    `
+    : ''
+}
+
 
     ${
   theme === 'alternative'

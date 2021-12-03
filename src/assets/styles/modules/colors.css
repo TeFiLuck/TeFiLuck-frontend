@@ -1,9 +1,12 @@
 html {
+  --dark-color-6-rgb-string: 43,44,55;
+
   --dark-color-1: rgba(26,28,36,1);
   --dark-color-2: rgba(36,37,47,1);
   --dark-color-3: rgba(55,58,71,1);
   --dark-color-4: rgba(22,24,31,1);
   --dark-color-5: rgba(20,20,25,1);
+  --dark-color-6: rgba(var(--dark-color-6-rgb-string), 1);
   --gray-color-1: rgba(124,125,142,1);
   --gray-color-2: rgba(146,147,166,1);
   --gray-color-3: rgba(102,102,102,1);

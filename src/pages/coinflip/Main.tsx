@@ -1,5 +1,6 @@
 import CreateGameModal from '@/components/coinflip/CreateGameModal/CreateGameModal';
 import GameFlowAlert from '@/components/coinflip/GameFlowAlert/GameFlowAlert';
+import GamesDisplay from '@/components/coinflip/GamesDisplay/GamesDisplay';
 import GamesFilters from '@/components/coinflip/GamesFilters/GamesFilters';
 import { UiButton } from '@/components/ui';
 import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
@@ -45,6 +46,8 @@ const Page: FC = () => {
             <GamesFilters />
           </div>
         </GamesFiltersSectionStyled>
+
+        <GamesDisplay />
       </ContentStyled>
 
       <CreateGameModal
@@ -72,6 +75,7 @@ const GamesFiltersSectionStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+  margin-bottom: 24px;
 `;
 
 export default Page;

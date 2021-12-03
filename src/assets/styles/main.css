@@ -16,6 +16,8 @@ html {
   --global-warning-color: var(--yellow-color-1);
   --global-info-color: var(--blue-color-1);
   --global-text-color: var(--gray-color-2);
+  --global-coin-heads-color: rgba(0, 148, 255, 1);
+  --global-coin-tails-color: rgba(234, 66, 66, 1);
 }
 
 body {
@@ -66,6 +68,10 @@ section.mobile h1 {
   color: var(--global-info-color);
 }
 
+.text-color-gray-2 {
+  color: var(--gray-color-2);
+}
+
 /* Flex utility classes */
 .flex {
   display: flex;
@@ -99,6 +105,10 @@ section.mobile h1 {
 
 .noselect {
   user-select: none;
+}
+
+.cursor-help {
+  cursor: help;
 }
 
 /* Typography utility classes */
