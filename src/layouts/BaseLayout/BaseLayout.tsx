@@ -1,3 +1,4 @@
+import AppFooter from '@/components/AppFooter/AppFooter';
 import AppHeader from '@/components/AppHeader/AppHeader';
 import { FC, ReactNode } from 'react';
 import styled from 'styled-components';
@@ -15,7 +16,7 @@ const BaseLayout: FC<BaseLayoutProps> = ({ children, topBanner }) => {
           {topBanner || ''}
           <MainStyled>{children}</MainStyled>
         </div>
-        <footer>Footer</footer>
+        <AppFooter />
       </ContentStyled>
     </WrapperStyled>
   );
