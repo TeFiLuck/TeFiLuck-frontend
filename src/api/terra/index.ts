@@ -1,1 +1,1 @@
-export * from './requests';
+export * as TerraAPI from './requests';

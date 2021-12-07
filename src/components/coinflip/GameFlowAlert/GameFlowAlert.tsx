@@ -1,5 +1,5 @@
 import { UiLink } from '@/components/ui';
-import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/general';
+import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { setIsGameFlowAlertVisible } from '@/state/coinflip';
 import { Alert } from 'antd';

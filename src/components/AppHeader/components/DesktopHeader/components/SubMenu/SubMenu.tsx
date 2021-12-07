@@ -1,5 +1,5 @@
 import { UiLink } from '@/components/ui';
-import { COMPANY_EMAIL, COMPANY_GITHUB_LINK, COMPANY_MEDIUM_LINK, COMPANY_TWITTER_LINK } from '@/constants/general';
+import { COMPANY_EMAIL, COMPANY_GITHUB_LINK, COMPANY_MEDIUM_LINK, COMPANY_TWITTER_LINK } from '@/constants/company';
 import { GithubOutlined, MailOutlined, MediumOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { FC } from 'react';

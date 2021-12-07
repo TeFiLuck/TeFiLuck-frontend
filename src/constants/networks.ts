@@ -18,7 +18,7 @@ export const Networks: Record<NetworkKey, Network> = <const>{
   },
 };
 
-export const DEFAULT_NETWORK = Networks[NetworkKey.MAINNET];
+export const DEFAULT_NETWORK_KEY = import.meta.env.DEV ? NetworkKey.TESTNET : NetworkKey.MAINNET;
 export const WALLET_CONNECT_CHAIN_IDS = <const>{
   0: Networks[NetworkKey.TESTNET],
   1: Networks[NetworkKey.MAINNET],

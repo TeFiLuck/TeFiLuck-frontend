@@ -5,5 +5,6 @@ export * from './UiLink/UiLink';
 export * from './UiLogo/UiLogo';
 export * from './UiModal/UiModal';
 export * from './UiNumberInput/UiNumberInput';
+export * from './UiSkeleton/UiSkeleton';
 export * from './UiTokenAmountInput/UiTokenAmountInput';
 export * from './UiTokensSelect/UiTokensSelect';

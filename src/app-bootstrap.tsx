@@ -5,6 +5,7 @@ import { persistor, store } from '@/state/store';
 import 'antd/dist/antd.dark.less';
 import { StrictMode } from 'react';
 import ReactDOM from 'react-dom';
+import 'react-loading-skeleton/dist/skeleton.css';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react';
 import 'simplebar/src/simplebar.css';

@@ -1,4 +1,4 @@
-import { fetchNativeTokensBalancesFromAddress } from '@/api/terra';
+import { TerraAPI } from '@/api/terra';
 import { AppState } from '@/state';
 import { printError } from '@/state/app';
 import { createAsyncThunk } from '@reduxjs/toolkit';
@@ -15,7 +15,7 @@ export const loadBalances = createAsyncThunk(
     try {
       dispatch(setBalancesLoading(true));
 
-      const nativeBalances = await fetchNativeTokensBalancesFromAddress(client, address);
+      const nativeBalances = await TerraAPI.fetchNativeTokensBalancesFromAddress(client, address);
       const { financeManagement } = getState() as AppState;
 
       dispatch(
@@ -25,11 +25,12 @@ export const loadBalances = createAsyncThunk(
         }),
       );
     } catch (e: any) {
-      printError({
-        title: 'Failed to fetch balances',
-        description:
-          'There might be some network issue, try reload the browser and check your Internet connection.',
-      });
+      dispatch(
+        printError({
+          title: 'Failed to fetch balances',
+          description: 'There might be some network issue, try reload the browser and check your Internet connection.',
+        }),
+      );
     } finally {
       dispatch(setBalancesLoading(false));
     }

@@ -26,3 +26,13 @@ export type AppMessage = {
   description: string;
   placement: 'topLeft' | 'topRight' | 'bottomLeft' | 'bottomRight';
 };
+
+export enum BlockchainUpdatesSocketMessageType {
+  BLOCK_MESSAGE = 'block_message',
+}
+
+export type BlockchainUpdatesSocketPayloadTypes = {
+  [BlockchainUpdatesSocketMessageType.BLOCK_MESSAGE]: {
+    height: string;
+  };
+};

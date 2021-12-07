@@ -1,4 +1,4 @@
-import CurrentBlockDisplay from '@/components/CurrentBlockDisplay/CurrentBlockDisplay';
+import CurrentBlockNumberDisplay from '@/components/CurrentBlockNumberDisplay/CurrentBlockNumberDisplay';
 import { UiLink, UiLogo } from '@/components/ui';
 import WalletManagement from '@/components/WalletManagement/WalletManagement';
 import { useConnectedWallet } from '@/hooks';
@@ -23,7 +23,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
       <MenusContainerStyled>
         <SubMenuContainerStyled>
           <SubMenu />
-          <CurrentBlockDisplay />
+          <CurrentBlockNumberDisplay />
         </SubMenuContainerStyled>
         <MainMenuContainerStyled>
           <MainMenu />
