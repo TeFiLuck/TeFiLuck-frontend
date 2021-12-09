@@ -1,6 +1,7 @@
 import ChoiceEncryptionPasswordField, {
   ChoiceEncryptionPasswordFieldProps,
 } from '@/components/coinflip/ChoiceEncryptionPasswordField/ChoiceEncryptionPasswordField';
+import { UiCopy } from '@/components/ui';
 import { ENCRYPTION_PASSWORD_SEPARATOR } from '@/constants/coinflip';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Space, Tooltip } from 'antd';
@@ -29,6 +30,7 @@ const PasswordField: FC<PasswordFieldProps> = ({ ...restProps }) => {
                 </b>
               </span>
             }
+            className="cursor-help"
             placement="topRight"
           >
             Choice encryption password&nbsp;
@@ -36,6 +38,8 @@ const PasswordField: FC<PasswordFieldProps> = ({ ...restProps }) => {
               <QuestionCircleFilled />
             </span>
           </Tooltip>
+
+          <UiCopy target={`${restProps.selectedSide}${ENCRYPTION_PASSWORD_SEPARATOR}${restProps.value}`} />
         </LabelStyled>
       </div>
 
@@ -45,8 +49,10 @@ const PasswordField: FC<PasswordFieldProps> = ({ ...restProps }) => {
 };
 
 const LabelStyled = styled.span`
-  cursor: help;
   user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 `;
 
 export default PasswordField;
