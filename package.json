@@ -21,6 +21,7 @@
 	},
 	"dependencies": {
 		"@ant-design/icons": "^4.7.0",
+		"@aws-crypto/sha256-browser": "^2.0.0",
 		"@reduxjs/toolkit": "^1.6.2",
 		"@terra-money/terra.js": "^3.0.0",
 		"@terra-money/wallet-provider": "^2.5.3",
