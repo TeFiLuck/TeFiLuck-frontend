@@ -134,7 +134,7 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdo
                 <div className="flex flex-align-center flex-justify-between">
                   <div>
                     {format.cutDecimals(token.balance, 3)}&nbsp;
-                    {token.symbol}
+                    {token.ticker}
                   </div>
                   <div>
                     <UiLink mode="empty" onClick={() => handleTokenPin(token)}>

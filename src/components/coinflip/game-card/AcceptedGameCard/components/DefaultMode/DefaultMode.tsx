@@ -46,7 +46,7 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
       centerContent={
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical">
-            <AmountDisplay amount={100} symbol="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay amount={100} ticker="LUNA" logo={<LunaLogo />} />
 
             <UiButton uppercase type="primary" size="small" shape="round" disabled={!canLiquidate}>
               Liquidate

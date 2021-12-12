@@ -55,7 +55,7 @@ export function useCardShared({ opponentLiquidated, performedLiquidation }: Vict
     </span>
   );
 
-  const amountDisplay = <AmountDisplay amount="+10000" symbol="LUNA" logo={<LunaLogo />} color={APP_SUCCESS_COLOR} />;
+  const amountDisplay = <AmountDisplay amount="+10000" ticker="LUNA" logo={<LunaLogo />} color={APP_SUCCESS_COLOR} />;
 
   const transactionLink = '/';
 

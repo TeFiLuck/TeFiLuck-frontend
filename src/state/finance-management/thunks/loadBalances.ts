@@ -1,21 +1,21 @@
 import { TerraAPI } from '@/api/terra';
+import { NetworkKey } from '@/constants/networks';
 import { AppState } from '@/state';
 import { printError } from '@/state/app';
 import { createAsyncThunk } from '@reduxjs/toolkit';
-import { LCDClient } from '@terra-money/terra.js';
 import { setBalances, setBalancesLoading } from '../actions';
 
 type LoadBalancesPayload = {
-  client: LCDClient;
+  networkKey: NetworkKey;
   address: string;
 };
 export const loadBalances = createAsyncThunk(
   'financeManagement/loadBalances',
-  async ({ client, address }: LoadBalancesPayload, { dispatch, getState }) => {
+  async ({ networkKey, address }: LoadBalancesPayload, { dispatch, getState }) => {
     try {
       dispatch(setBalancesLoading(true));
 
-      const nativeBalances = await TerraAPI.fetchNativeTokensBalancesFromAddress(client, address);
+      const nativeBalances = await TerraAPI.core.fetchNativeTokensBalancesFromAddress(networkKey, address);
       const { financeManagement } = getState() as AppState;
 
       dispatch(

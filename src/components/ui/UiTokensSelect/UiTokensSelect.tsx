@@ -128,7 +128,7 @@ export const UiTokensSelect: FC<UiTokensSelectProps> = ({
               {selectedTokens.map((token) => (
                 <Fragment key={`token_${token.symbol}`}>
                   <img src={token.logo} alt="" className="token-logo" />
-                  {!multiple && <div>{token.symbol}</div>}
+                  {!multiple && <div>{token.ticker}</div>}
                 </Fragment>
               ))}
             </Space>

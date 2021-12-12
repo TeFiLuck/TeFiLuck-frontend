@@ -1,17 +1,15 @@
 import { AppMessage, AppMessageType } from '@/typings/app';
 import { createReducer } from '@reduxjs/toolkit';
-import { addMessage, popMessagesStack, setCurrentBlockNumber, setIsBlockchainUpdatesSocketConnected } from './actions';
+import { addMessage, popMessagesStack, setIsBlockchainUpdatesSocketConnected } from './actions';
 
 export interface AppState {
   messages: AppMessage[];
   isBlockchainUpdatesSocketConnected: boolean;
-  currentBlockNumber: number;
 }
 
 export const initialState: AppState = {
   messages: [],
   isBlockchainUpdatesSocketConnected: false,
-  currentBlockNumber: 0,
 };
 
 export default createReducer(initialState, (builder) =>
@@ -32,8 +30,5 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsBlockchainUpdatesSocketConnected, (state, { payload }) => {
       state.isBlockchainUpdatesSocketConnected = payload;
-    })
-    .addCase(setCurrentBlockNumber, (state, { payload }) => {
-      state.currentBlockNumber = payload;
     }),
 );

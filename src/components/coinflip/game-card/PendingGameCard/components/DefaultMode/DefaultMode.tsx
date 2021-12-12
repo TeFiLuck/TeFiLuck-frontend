@@ -50,7 +50,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
             )
           }
         >
-          <AmountDisplay amount={777} symbol="LUNA" logo={<LunaLogo />} />
+          <AmountDisplay amount={777} ticker="LUNA" logo={<LunaLogo />} />
         </CentralContent>
       }
       rightContent={

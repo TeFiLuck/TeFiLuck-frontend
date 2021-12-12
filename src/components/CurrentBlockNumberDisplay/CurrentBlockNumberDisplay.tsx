@@ -1,11 +1,11 @@
 import { APP_LIGHT_COLOR_1 } from '@/assets/styles/design';
 import { UiLink, UiSkeleton } from '@/components/ui';
 import { useNetwork } from '@/hooks';
-import { useAppSelector } from '@/state';
+import { AppEventBus, AppEvents, AppEventsMap } from '@/logic/events';
 import { TooltipPlacement } from '@/typings/app';
 import { getTerraBlockNumberLink } from '@/utils/networks';
 import { Tooltip } from 'antd';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 
 export interface CurrentBlockNumberDisplayProps {
   tooltipPlacement?: TooltipPlacement;
@@ -16,11 +16,23 @@ const CurrentBlockNumberDisplay: FC<CurrentBlockNumberDisplayProps> = ({
   tooltipPlacement = 'bottomRight',
   loading = false,
 }) => {
-  const { currentBlockNumber } = useAppSelector((state) => state.app);
+  const [currentBlockNumber, setCurrentBlockNumber] = useState(0);
   const { networkKey } = useNetwork();
 
   const blockLink = getTerraBlockNumberLink(currentBlockNumber, networkKey);
   const isLoading = loading || !currentBlockNumber;
+
+  useEffect(() => {
+    AppEventBus.subscribe(AppEvents.CURRENT_BLOCK_NUMBER_CHANGE, handleBlockNumberChange);
+
+    return () => {
+      AppEventBus.unsubscribe(AppEvents.CURRENT_BLOCK_NUMBER_CHANGE, handleBlockNumberChange);
+    };
+  }, []);
+
+  function handleBlockNumberChange({ blockNumber }: AppEventsMap[AppEvents.CURRENT_BLOCK_NUMBER_CHANGE]): void {
+    setCurrentBlockNumber(blockNumber);
+  }
 
   return (
     <>

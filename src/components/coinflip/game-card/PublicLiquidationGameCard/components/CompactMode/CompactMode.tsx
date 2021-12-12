@@ -22,7 +22,7 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
       centerContent={
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical">
-            <AmountDisplay amount={0.0007} symbol="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay amount={0.0007} ticker="LUNA" logo={<LunaLogo />} />
 
             <UiButton uppercase type="primary" size="small" shape="round">
               Liquidate

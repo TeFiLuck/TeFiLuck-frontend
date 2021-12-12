@@ -1,15 +1,18 @@
+import { TerraAPI } from '@/api/terra';
 import { UiButton, UiModal, UiTokenAmountInput, UiTokensSelect } from '@/components/ui';
 import {
   CoinSide,
   DEFAULT_AMOUNT_BLOCKS_BEFORE_LIQUIDABLE,
   DEFAULT_SELECTED_SIDE,
   ENCRYPTION_PASSWORD_MIN_LENGTH,
+  ENCRYPTION_PASSWORD_SEPARATOR,
   MIN_BLOCKS_BEFORE_LIQUIDABLE,
 } from '@/constants/coinflip';
 import { TokenSymbol } from '@/constants/tokens';
 import { useConnectedWallet, useTokens } from '@/hooks';
 import { Token } from '@/typings/finance-management';
 import { getMinRequiredAmountToCreateGame } from '@/utils/coinflip';
+import { sha256 } from '@/utils/common';
 import { getHoursFromTerraBlocksAmount } from '@/utils/networks';
 import { Alert, Space } from 'antd';
 import { FC, useState } from 'react';
@@ -29,7 +32,7 @@ export interface CreateGameModalProps {
 
 const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed = () => {}, onOpened = () => {} }) => {
   const { mainToken, supportedTokens } = useTokens();
-  const { isWalletConnected } = useConnectedWallet();
+  const { isWalletConnected, connectedWallet } = useConnectedWallet();
 
   const [chosenSide, setChosenSide] = useState<CoinSide>(DEFAULT_SELECTED_SIDE);
 
@@ -52,7 +55,7 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
     const minResolveHours = getHoursFromTerraBlocksAmount(MIN_BLOCKS_BEFORE_LIQUIDABLE);
 
     if (!isWalletConnected) return 'Wallet is not connected';
-    if (betSizeNumber < minBetSize) return `Min bet size is ${minBetSize} ${selectedTokenSymbol}`;
+    if (betSizeNumber < minBetSize) return `Min bet size is ${minBetSize} ${selectedToken.ticker}`;
     if (selectedToken.balance < betSizeNumber) return 'Insufficient balance';
     if (blocksAmountTillLiquidation < MIN_BLOCKS_BEFORE_LIQUIDABLE) {
       return `Min resolve time-limit is ${minResolveHours} hours`;
@@ -65,6 +68,30 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
 
   function handleTokenSymbolChange(symbol: TokenSymbol | TokenSymbol[] | null) {
     if (typeof symbol === 'string') setSelectedTokenSymbol(symbol);
+  }
+
+  async function createGame() {
+    if (connectedWallet) {
+      try {
+        console.log('Create TX started');
+
+        const result = await TerraAPI.coinflip.createGame({
+          wallet: connectedWallet,
+          feeTokenSymbol: TokenSymbol.UST,
+          sendTokens: [[selectedTokenSymbol, betSizeNumber]],
+          payload: {
+            signature: await sha256(`${chosenSide}${ENCRYPTION_PASSWORD_SEPARATOR}${password}`),
+            resolveTimeLimit: blocksAmountTillLiquidation,
+          },
+        });
+
+        console.log(result);
+      } catch (e) {
+        console.log(e);
+      } finally {
+        console.log('Create TX ended');
+      }
+    }
   }
 
   return (
@@ -93,6 +120,7 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
             shape="round"
             disabled={!!errorMessage}
             style={{ width: '140px', pointerEvents: errorMessage ? 'none' : 'auto' }}
+            onClick={createGame}
           >
             Create game
           </UiButton>

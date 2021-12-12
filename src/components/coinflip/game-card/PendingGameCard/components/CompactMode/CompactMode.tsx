@@ -25,7 +25,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
       centerContent={
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical" align="center">
-            <AmountDisplay amount={777} symbol="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay amount={777} ticker="LUNA" logo={<LunaLogo />} />
 
             {isCurrentUserCreatorOfGame && (
               <UiButton uppercase type="primary" size="small" shape="round">

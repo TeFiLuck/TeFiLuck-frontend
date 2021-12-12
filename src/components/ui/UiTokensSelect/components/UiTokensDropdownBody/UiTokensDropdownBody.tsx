@@ -83,7 +83,7 @@ export const UiTokensDropdownBody: FC<UiTokensDropdownBodyProps> = ({
                 <IconContainerStyled>
                   <img src={token.logo} alt="" className="icon" />
                 </IconContainerStyled>
-                <div>{token.symbol}</div>
+                <div>{token.ticker}</div>
               </Space>
             </OptionStyled>
           </Menu.Item>

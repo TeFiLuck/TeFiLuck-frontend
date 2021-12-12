@@ -35,7 +35,7 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
             </UiButton>
           }
         >
-          <AmountDisplay amount={0.0007} symbol="LUNA" logo={<LunaLogo />} />
+          <AmountDisplay amount={0.0007} ticker="LUNA" logo={<LunaLogo />} />
         </CentralContent>
       }
       rightContent={

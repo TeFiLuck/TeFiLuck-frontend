@@ -1,4 +1,4 @@
-import { useConnectedWallet, useLCDClient } from '@/hooks';
+import { useConnectedWallet, useNetwork } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { useEffect } from 'react';
 import { resetBalances } from './actions';
@@ -7,19 +7,19 @@ import { loadBalances } from './thunks';
 export function useFinanceManagementStore(): void {
   const dispatch = useAppDispatch();
   const { balancesUpdateCounter } = useAppSelector((state) => state.financeManagement);
-  const LCDCClient = useLCDClient();
   const { connectedWallet } = useConnectedWallet();
+  const { networkKey } = useNetwork();
 
   useEffect(() => {
-    if (connectedWallet && LCDCClient) {
+    if (connectedWallet) {
       dispatch(
         loadBalances({
-          client: LCDCClient,
+          networkKey,
           address: connectedWallet.walletAddress,
         }),
       );
     } else {
       dispatch(resetBalances());
     }
-  }, [connectedWallet, LCDCClient, balancesUpdateCounter]);
+  }, [connectedWallet, balancesUpdateCounter]);
 }

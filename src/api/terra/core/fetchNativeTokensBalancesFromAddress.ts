@@ -1,23 +1,24 @@
+import { NetworkKey } from '@/constants/networks';
 import { TERRA_NATIVE_TOKENS, TokenSymbol } from '@/constants/tokens';
 import { NativeTokensBalances } from '@/typings/finance-management';
-import { getTokenSymbolByDenom } from '@/utils/tokens';
-import { LCDClient } from '@terra-money/terra.js';
-import { getTokenAmountNumber } from './utils';
+import { getAmountFromCoin, makeLCDClient } from '../utils';
 
 export async function fetchNativeTokensBalancesFromAddress(
-  client: LCDClient,
+  networkKey: NetworkKey,
   address: string,
 ): Promise<NativeTokensBalances> {
-  const [tokens] = await client.bank.balance(address);
+  const client = makeLCDClient(networkKey);
+
+  const [coins] = await client.bank.balance(address);
   const result = {} as NativeTokensBalances;
 
   TERRA_NATIVE_TOKENS.forEach((symbol) => {
     result[symbol] = 0;
   });
 
-  tokens.map((token) => {
-    const amount = getTokenAmountNumber(token);
-    const tokenSymbol = getTokenSymbolByDenom(token.denom) as TokenSymbol;
+  coins.map((coin) => {
+    const amount = getAmountFromCoin(coin);
+    const tokenSymbol = coin.denom as TokenSymbol;
 
     if (TERRA_NATIVE_TOKENS.includes(tokenSymbol)) {
       result[tokenSymbol] = amount;

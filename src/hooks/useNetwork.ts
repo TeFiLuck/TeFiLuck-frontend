@@ -1,10 +1,14 @@
-import { DEFAULT_NETWORK_KEY, NetworkKey } from '@/constants/networks';
+import { Network } from '@/typings/finance-management';
+import { getKeyByNetwork, getNetworkByKey } from '@/utils/networks';
 import { useWallet } from '@terra-money/wallet-provider';
 
 export function useNetwork() {
   const { network } = useWallet();
 
-  const networkKey = (network.name || DEFAULT_NETWORK_KEY) as NetworkKey;
+  const networkKey = getKeyByNetwork(network as Network);
 
-  return { networkKey };
+  return {
+    network: getNetworkByKey(networkKey),
+    networkKey,
+  };
 }

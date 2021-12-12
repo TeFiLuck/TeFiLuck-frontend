@@ -39,7 +39,7 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
             </Space>
             <span className="text-color-primary">|</span>
             <span className="text-color-primary">
-              {format.cutDecimals(mainToken.balance, 3)} {mainToken.symbol}
+              {format.cutDecimals(mainToken.balance, 3)} {mainToken.ticker}
             </span>
           </Space>
         ) : (

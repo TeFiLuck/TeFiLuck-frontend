@@ -5,13 +5,13 @@ import styled from 'styled-components';
 
 export interface AmountDisplayProps {
   amount: string | number;
-  symbol: string;
+  ticker: string;
   logo: ReactNode;
   color?: CSS.Property.Color;
 }
 
-export const AmountDisplay: FC<AmountDisplayProps> = ({ amount, symbol, logo, color = '#ffffff' }) => {
-  const shouldShowSymbol = String(amount).length <= 3;
+export const AmountDisplay: FC<AmountDisplayProps> = ({ amount, ticker, logo, color = '#ffffff' }) => {
+  const shouldShowTicker = String(amount).length <= 3;
 
   const fontSize = String(amount).length <= 8 ? '14px' : '12px';
 
@@ -20,7 +20,7 @@ export const AmountDisplay: FC<AmountDisplayProps> = ({ amount, symbol, logo, co
       <Space>
         <span>
           {amount}
-          {shouldShowSymbol && <span>&nbsp;{symbol}</span>}
+          {shouldShowTicker && <span>&nbsp;{ticker}</span>}
         </span>
         <div className="token-logo flex flex-align-center">{logo}</div>
       </Space>

@@ -58,7 +58,7 @@ export function useCardShared({ liquidated }: LossGameCardProps) {
     return myChoiceColor;
   }
 
-  const amountDisplay = <AmountDisplay amount="-10000" symbol="LUNA" logo={<LunaLogo />} color={APP_DANGER_COLOR} />;
+  const amountDisplay = <AmountDisplay amount="-10000" ticker="LUNA" logo={<LunaLogo />} color={APP_DANGER_COLOR} />;
 
   const transactionLink = '/';
 
