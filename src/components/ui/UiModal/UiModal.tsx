@@ -11,6 +11,7 @@ export interface UiModalProps {
   visible: boolean;
   centered?: boolean;
   loading?: boolean;
+  closable?: boolean;
   loadingText?: string;
   mask?: boolean;
   destroyOnClose?: boolean;
@@ -41,6 +42,7 @@ export const UiModal: FC<UiModalProps> = ({
   visible,
   centered = true,
   loading = false,
+  closable = true,
   loadingText = 'Loading...',
   mask = true,
   destroyOnClose = false,
@@ -103,6 +105,8 @@ export const UiModal: FC<UiModalProps> = ({
       visible={isVisible}
       centered={centered}
       mask={mask}
+      closable={closable}
+      maskClosable={closable}
       destroyOnClose={destroyOnClose}
       bodyStyle={{
         padding: `${verticalOffset} 0`,
@@ -116,9 +120,11 @@ export const UiModal: FC<UiModalProps> = ({
     >
       <WrapperStyled>
         <Spin spinning={loading} size="large" tip={loadingText}>
-          <SimpleBarReact style={{ maxHeight: '100%' }}>
-            {topBanner && topBanner(scopedSlotsPayload)}
-            <ContentStyled horizontalOffset={horizontalOffset}>{children}</ContentStyled>
+          <SimpleBarReact style={{ maxHeight: '100%', height: '100%' }}>
+            <ScrollContentStyled>
+              {topBanner && topBanner(scopedSlotsPayload)}
+              <ContentStyled horizontalOffset={horizontalOffset}>{children}</ContentStyled>
+            </ScrollContentStyled>
           </SimpleBarReact>
         </Spin>
       </WrapperStyled>
@@ -162,7 +168,8 @@ const ModalStyled = styled(Modal)`
     top: 4px;
   }
 
-  & .ant-spin-nested-loading {
+  & .ant-spin-nested-loading,
+  & .simplebar-content {
     height: 100%;
   }
 
@@ -176,12 +183,16 @@ const WrapperStyled = styled.div`
   height: 100%;
 `;
 
+const ScrollContentStyled = styled.div`
+  height: 100%;
+  display: grid;
+  grid-template-rows: auto 1fr;
+`;
+
 const ContentStyled = styled.div<{
   horizontalOffset: CSS.Property.Margin;
 }>`
   ${({ horizontalOffset }) => `
     margin: 0 ${horizontalOffset};
   `}
-
-  height: 100%;
 `;

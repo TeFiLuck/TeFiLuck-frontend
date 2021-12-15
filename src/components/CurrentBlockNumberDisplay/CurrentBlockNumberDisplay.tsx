@@ -30,6 +30,8 @@ const CurrentBlockNumberDisplay: FC<CurrentBlockNumberDisplayProps> = ({
     };
   }, []);
 
+  useEffect(() => setCurrentBlockNumber(0), [networkKey]);
+
   function handleBlockNumberChange({ blockNumber }: AppEventsMap[AppEvents.CURRENT_BLOCK_NUMBER_CHANGE]): void {
     setCurrentBlockNumber(blockNumber);
   }

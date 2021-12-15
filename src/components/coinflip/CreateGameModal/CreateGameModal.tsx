@@ -1,27 +1,10 @@
-import { TerraAPI } from '@/api/terra';
-import { UiButton, UiModal, UiTokenAmountInput, UiTokensSelect } from '@/components/ui';
-import {
-  CoinSide,
-  DEFAULT_AMOUNT_BLOCKS_BEFORE_LIQUIDABLE,
-  DEFAULT_SELECTED_SIDE,
-  ENCRYPTION_PASSWORD_MIN_LENGTH,
-  ENCRYPTION_PASSWORD_SEPARATOR,
-  MIN_BLOCKS_BEFORE_LIQUIDABLE,
-} from '@/constants/coinflip';
-import { TokenSymbol } from '@/constants/tokens';
-import { useConnectedWallet, useTokens } from '@/hooks';
-import { Token } from '@/typings/finance-management';
-import { getMinRequiredAmountToCreateGame } from '@/utils/coinflip';
-import { sha256 } from '@/utils/common';
-import { getHoursFromTerraBlocksAmount } from '@/utils/networks';
-import { Alert, Space } from 'antd';
+import { UiModal } from '@/components/ui';
+import { PortalLocation } from '@/constants/portals';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
-import CoinSideChoice from '../CoinSideChoice/CoinSideChoice';
-import GameFlowAlert from './components/GameFlowAlert/GameFlowAlert';
-import PasswordField from './components/PasswordField/PasswordField';
-import ResolveTimeField from './components/ResolveTimeField/ResolveTimeField';
-import SavePasswordCheckbox from './components/SavePasswordCheckbox/SavePasswordCheckbox';
+import { INITIAL_MODAL_VIEW, ModalView } from './common';
+import CreateGame from './views/CreateGame/CreateGame';
+import TransactionFailed from './views/TransactionFailed/TransactionFailed';
 
 export interface CreateGameModalProps {
   visible: boolean;
@@ -31,72 +14,26 @@ export interface CreateGameModalProps {
 }
 
 const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed = () => {}, onOpened = () => {} }) => {
-  const { mainToken, supportedTokens } = useTokens();
-  const { isWalletConnected, connectedWallet } = useConnectedWallet();
+  const [activeModalViewKey, setActiveModalViewKey] = useState<ModalView>(INITIAL_MODAL_VIEW);
+  const [viewData, setViewData] = useState({});
+  const [isModalClosable, setIsModalClosable] = useState(true);
 
-  const [chosenSide, setChosenSide] = useState<CoinSide>(DEFAULT_SELECTED_SIDE);
+  const modalViewsMap: Record<ModalView, any> = {
+    [ModalView.CreateGame]: CreateGame,
+    [ModalView.TransactionFailed]: TransactionFailed,
+  };
 
-  const [selectedTokenSymbol, setSelectedTokenSymbol] = useState<TokenSymbol>(mainToken.symbol);
-  const selectedToken = supportedTokens.find((token) => token.symbol === selectedTokenSymbol) as Token;
+  const ActiveModalView = modalViewsMap[activeModalViewKey];
 
-  const minBetSize = getMinRequiredAmountToCreateGame(selectedTokenSymbol);
-  const [betSize, setBetSize] = useState(String(minBetSize));
-  const betSizeNumber = Number(betSize);
-
-  const [blocksAmountTillLiquidation, setBlocksAmountTillLiquidation] = useState(
-    DEFAULT_AMOUNT_BLOCKS_BEFORE_LIQUIDABLE,
-  );
-  const [password, setPassword] = useState('');
-  const [shouldSavePassword, setShouldSavePassword] = useState(true);
-
-  const errorMessage = validate();
-
-  function validate(): string {
-    const minResolveHours = getHoursFromTerraBlocksAmount(MIN_BLOCKS_BEFORE_LIQUIDABLE);
-
-    if (!isWalletConnected) return 'Wallet is not connected';
-    if (betSizeNumber < minBetSize) return `Min bet size is ${minBetSize} ${selectedToken.ticker}`;
-    if (selectedToken.balance < betSizeNumber) return 'Insufficient balance';
-    if (blocksAmountTillLiquidation < MIN_BLOCKS_BEFORE_LIQUIDABLE) {
-      return `Min resolve time-limit is ${minResolveHours} hours`;
-    }
-    if (password.length < ENCRYPTION_PASSWORD_MIN_LENGTH) {
-      return `Min password length is ${ENCRYPTION_PASSWORD_MIN_LENGTH} symbols`;
-    }
-    return '';
-  }
-
-  function handleTokenSymbolChange(symbol: TokenSymbol | TokenSymbol[] | null) {
-    if (typeof symbol === 'string') setSelectedTokenSymbol(symbol);
-  }
-
-  async function createGame() {
-    if (connectedWallet) {
-      try {
-        console.log('Create TX started');
-
-        const result = await TerraAPI.coinflip.createGame({
-          wallet: connectedWallet,
-          feeTokenSymbol: TokenSymbol.UST,
-          sendTokens: [[selectedTokenSymbol, betSizeNumber]],
-          payload: {
-            signature: await sha256(`${chosenSide}${ENCRYPTION_PASSWORD_SEPARATOR}${password}`),
-            resolveTimeLimit: blocksAmountTillLiquidation,
-          },
-        });
-
-        console.log(result);
-      } catch (e) {
-        console.log(e);
-      } finally {
-        console.log('Create TX ended');
-      }
-    }
+  function changeView(view: ModalView, data?: Record<string, any>): void {
+    if (data) setViewData(data);
+    setActiveModalViewKey(view);
   }
 
   return (
     <UiModal
       visible={visible}
+      closable={isModalClosable}
       hideDividerHeader
       hideDividerFooter
       width="400px"
@@ -106,54 +43,18 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
       onChange={onChange}
       onClosed={onClosed}
       onOpened={onOpened}
-      header={() => <span>Create game</span>}
-      topBanner={() => <GameFlowAlert style={{ marginBottom: '16px' }} />}
+      header={() => <div data-portal-id={PortalLocation.CreateGameModalHeader}></div>}
+      topBanner={() => <div data-portal-id={PortalLocation.CreateGameModalTopBanner}></div>}
       footer={() => (
         <ModalFooterStyled>
-          <ErrorContainerStyled>
-            {errorMessage && <Alert message={`${errorMessage}`} type="error" banner />}
-          </ErrorContainerStyled>
-
-          <UiButton
-            type="primary"
-            theme="alternative"
-            shape="round"
-            disabled={!!errorMessage}
-            style={{ width: '140px', pointerEvents: errorMessage ? 'none' : 'auto' }}
-            onClick={createGame}
-          >
-            Create game
-          </UiButton>
+          <div data-portal-id={PortalLocation.CreateGameModalFooter}></div>
         </ModalFooterStyled>
       )}
     >
       <ModalContentStyled>
-        <Space direction="vertical" size={18}>
-          <Space direction="vertical">
-            <Space>
-              <CoinSideChoice side={chosenSide} onSideChange={(side) => setChosenSide(side)} />
+        <ActiveModalView data={viewData} changeView={changeView} setIsModalClosable={setIsModalClosable} />
 
-              <UiTokensSelect
-                tokens={supportedTokens}
-                selected={selectedTokenSymbol}
-                onChange={handleTokenSymbolChange}
-              />
-            </Space>
-
-            <UiTokenAmountInput
-              value={betSize}
-              token={selectedToken}
-              min={selectedToken.balance >= minBetSize ? minBetSize : selectedToken.balance}
-              onChange={(tokenAmount) => setBetSize(tokenAmount)}
-            />
-          </Space>
-
-          <ResolveTimeField value={blocksAmountTillLiquidation} onChange={setBlocksAmountTillLiquidation} />
-
-          <PasswordField value={password} selectedSide={chosenSide} onChange={setPassword} />
-
-          <SavePasswordCheckbox value={shouldSavePassword} onChange={setShouldSavePassword} />
-        </Space>
+        <div data-portal-id={PortalLocation.CreateGameModalContent} style={{ height: '100%' }}></div>
       </ModalContentStyled>
     </UiModal>
   );
@@ -161,19 +62,12 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
 
 const ModalContentStyled = styled.div`
   display: flex;
-  justify-content: center;
   flex-direction: column;
+  height: 100%;
 `;
 
 const ModalFooterStyled = styled.div`
   text-align: center;
-`;
-
-const ErrorContainerStyled = styled.div`
-  height: 35px;
-  margin-bottom: 12px;
-  text-align: left;
-  user-select: none;
 `;
 
 export default CreateGameModal;

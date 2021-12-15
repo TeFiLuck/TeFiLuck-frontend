@@ -17,6 +17,7 @@ export interface UiButtonProps extends ButtonProps {
   theme?: ButtonTheme;
   ghost?: boolean;
   disabled?: boolean;
+  loading?: boolean;
   className?: string;
   uppercase?: boolean;
 }
@@ -27,11 +28,12 @@ export const UiButton: FC<UiButtonProps> = ({
   theme = 'inherit',
   ghost = false,
   disabled = false,
+  loading = false,
   className = '',
   uppercase = false,
   ...restProps
 }) => {
-  const customClassName = `${disabled ? 'btn-disabled' : ''}`;
+  const customClassName = `${disabled || loading ? 'btn-disabled' : ''}`;
 
   return (
     <ButtonStyled
@@ -39,6 +41,7 @@ export const UiButton: FC<UiButtonProps> = ({
       type={type}
       ghost={ghost}
       disabled={disabled}
+      loading={loading}
       className={customClassName}
       uppercase={uppercase ? 1 : 0}
       {...restProps}

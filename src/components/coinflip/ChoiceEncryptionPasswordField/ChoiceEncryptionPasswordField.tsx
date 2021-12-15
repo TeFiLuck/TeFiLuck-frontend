@@ -52,7 +52,9 @@ const ChoiceEncryptionPasswordField: FC<ChoiceEncryptionPasswordFieldProps> = ({
               )}
               Generated password is crypto-random string of <b>{GENERATED_ENCRYPTION_PASSWORD_LENGTH} symbols</b>.
               <br />
-              <i>You dont need to remember it - we will auto-download you .txt file.</i>
+              <i>
+                We will auto-download you .txt file, <b>but we suggest to save it at some place as well.</b>
+              </i>
             </span>
           }
           placement="topRight"
