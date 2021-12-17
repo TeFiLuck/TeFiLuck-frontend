@@ -1,7 +1,7 @@
 import CurrentBlockNumberDisplay from '@/components/CurrentBlockNumberDisplay/CurrentBlockNumberDisplay';
 import { UiLink, UiLogo } from '@/components/ui';
 import WalletManagement from '@/components/WalletManagement/WalletManagement';
-import { useConnectedWallet } from '@/hooks';
+import { useConnectedWallet, useMediaQueries } from '@/hooks';
 import { Space } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -11,7 +11,10 @@ import MainMenu from './components/MainMenu/MainMenu';
 import SubMenu from './components/SubMenu/SubMenu';
 
 const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
+  const { is1200PxOrLess } = useMediaQueries();
   const { isWalletConnected } = useConnectedWallet();
+
+  const walletManagementSize = is1200PxOrLess ? 'small' : 'medium';
 
   return (
     <WrapperStyled fixed={fixed}>
@@ -28,7 +31,7 @@ const DesktopHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
         <MainMenuContainerStyled>
           <MainMenu />
           <Space>
-            <WalletManagement dropdownFixed={fixed} />
+            <WalletManagement dropdownFixed={fixed} size={walletManagementSize} />
             {isWalletConnected && <RefreshWalletButton />}
           </Space>
         </MainMenuContainerStyled>

@@ -4,13 +4,17 @@ import * as format from '@/utils/format';
 import { WalletOutlined } from '@ant-design/icons';
 import { Dropdown, Space } from 'antd';
 import { FC, useState } from 'react';
+import styled from 'styled-components';
 import WalletManagementDropdown from './components/WalletManagementDropdown/WalletManagementDropdown';
+
+type Size = 'medium' | 'small';
 
 export interface WalletConnectButtonProps {
   dropdownFixed?: boolean;
+  size?: Size;
 }
 
-const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = false }) => {
+const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = false, size = 'medium' }) => {
   const [isDropdownVisible, setDropdownVisibility] = useState(false);
 
   const overlayStyle: Record<string, string> = {};
@@ -20,6 +24,8 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
   const buttonType = isWalletConnected ? 'default' : 'primary';
   const address = useAddress();
   const { mainToken } = useTokens();
+
+  const isWalletAddressVisible = size !== 'small';
 
   return (
     <Dropdown
@@ -35,12 +41,14 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
           <Space>
             <Space size={4} className="text-color-white">
               <WalletOutlined />
-              {format.shortenStr(address, 6, 6)}
+              {isWalletAddressVisible && format.shortenStr(address, 6, 6)}
             </Space>
-            <span className="text-color-primary">|</span>
-            <span className="text-color-primary">
+
+            {isWalletAddressVisible && <span className="text-color-primary">|</span>}
+
+            <BalanceDisplayStyled size={size}>
               {format.cutDecimals(mainToken.balance, 3)} {mainToken.ticker}
-            </span>
+            </BalanceDisplayStyled>
           </Space>
         ) : (
           'Connect Wallet'
@@ -49,5 +57,22 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
     </Dropdown>
   );
 };
+
+const BalanceDisplayStyled = styled.div<{
+  size: Size;
+}>`
+  color: var(--global-primary-color);
+
+  ${({ size }) => `
+    ${
+  size === 'small'
+    ? `
+      font-size: 10px;
+      line-height: 10px;
+    `
+    : ''
+}
+  `}
+`;
 
 export default WalletConnectButton;

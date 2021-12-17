@@ -5,22 +5,26 @@ import styled from 'styled-components';
 
 export interface UiLogoProps {
   size?: BaseSize;
+  imageOnly?: boolean;
 }
 
-export const UiLogo: FC<UiLogoProps> = ({ size = 'medium' }) => {
+export const UiLogo: FC<UiLogoProps> = ({ size = 'medium', imageOnly = false }) => {
   return (
-    <LogoStyled size={size}>
+    <LogoStyled size={size} imageOnly={imageOnly}>
       <LogoPicture className="logo-picture" />
-      <div className="name">
-        <div className="name-part-1">TEFI</div>
-        <div className="name-part-2">LUCK</div>
-      </div>
+      {!imageOnly && (
+        <div className="name">
+          <div className="name-part-1">TEFI</div>
+          <div className="name-part-2">LUCK</div>
+        </div>
+      )}
     </LogoStyled>
   );
 };
 
 const LogoStyled = styled.div<{
   size: BaseSize;
+  imageOnly: boolean;
 }>`
   --ui-logo-font-size: 30px;
   --ui-logo-picture-height: 42px;
@@ -34,7 +38,13 @@ const LogoStyled = styled.div<{
   .logo-picture {
     height: var(--ui-logo-picture-height);
     width: auto;
-    margin-right: var(--ui-logo-picture-offset);
+
+    ${({ imageOnly }) =>
+    !imageOnly
+      ? `
+      margin-right: var(--ui-logo-picture-offset);
+    `
+      : ''}
   }
 
   .name {
