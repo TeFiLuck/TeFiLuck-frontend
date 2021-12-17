@@ -30,6 +30,12 @@
     
     <!-- Javascript disabled styled -->
     <style>
+      @keyframes spin { 
+        100% { 
+          transform:rotate(360deg); 
+        } 
+      }
+
       .app-javascript-disabled {
         position: fixed;
         top: 0;
@@ -127,6 +133,7 @@
       .app-loading-screen__logo-img {
         width: 130px;
         margin-right: 25px;
+        animation: spin 4s linear infinite;
       }
 
       .app-loading-screen__logo-primary {
