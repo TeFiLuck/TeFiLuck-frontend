@@ -66,8 +66,8 @@ const LogoStyled = styled.div<{
     ${
   size === 'small'
     ? `
-      --ui-logo-font-size: 24px;
-      --ui-logo-picture-height: 32px;
+      --ui-logo-font-size: 22px;
+      --ui-logo-picture-height: 30px;
       --ui-logo-picture-offset: 8px;
     `
     : ''
