@@ -12,6 +12,7 @@ export interface UiModalProps {
   centered?: boolean;
   loading?: boolean;
   closable?: boolean;
+  fullScreen?: boolean;
   loadingText?: string;
   mask?: boolean;
   destroyOnClose?: boolean;
@@ -43,6 +44,7 @@ export const UiModal: FC<UiModalProps> = ({
   centered = true,
   loading = false,
   closable = true,
+  fullScreen = false,
   loadingText = 'Loading...',
   mask = true,
   destroyOnClose = false,
@@ -91,7 +93,7 @@ export const UiModal: FC<UiModalProps> = ({
 
   /* Styling */
   const styleVariables: StylingVariablesMap = {
-    '--ui-modal-border-radius': borderRadius,
+    '--ui-modal-border-radius': fullScreen ? '0px' : borderRadius,
     '--ui-modal-width': width,
     '--ui-modal-header-padding': headerPadding,
     '--ui-modal-footer-padding': footerPadding,
@@ -107,10 +109,13 @@ export const UiModal: FC<UiModalProps> = ({
       mask={mask}
       closable={closable}
       maskClosable={closable}
+      fullScreen={fullScreen}
       destroyOnClose={destroyOnClose}
       bodyStyle={{
         padding: `${verticalOffset} 0`,
-        height: bodyHeight,
+        height: fullScreen ? 'auto' : bodyHeight,
+        minHeight: fullScreen ? bodyHeight : 'auto',
+        maxHeight: '100%',
       }}
       style={styleVariables}
       closeIcon={<CloseOutlined style={{ fontSize: '18px' }} onClick={onCloseIconClick} />}
@@ -132,9 +137,26 @@ export const UiModal: FC<UiModalProps> = ({
   );
 };
 
-const ModalStyled = styled(Modal)`
+const ModalStyled = styled(Modal)<{
+  fullScreen: boolean;
+}>`
   &.ant-modal {
     width: var(--ui-modal-width) !important;
+
+    ${({ fullScreen }) =>
+    fullScreen
+      ? `
+      max-width: 100vw;
+      width: 100vw !important;
+      height: 100vh;
+      max-height: 100vh;
+      padding: 0;
+      margin: 0;
+      position: fixed;
+      top: 0;
+      left: 0;
+    `
+      : ''}
   }
 
   & .ant-modal-content {
@@ -142,6 +164,13 @@ const ModalStyled = styled(Modal)`
     display: grid;
     grid-template-rows: minmax(54px, auto) 1fr auto;
     box-shadow: 0px 4px 8px rgba(80, 14, 125, 0.06), 0px 8px 24px rgba(80, 14, 125, 0.06);
+
+    ${({ fullScreen }) =>
+    fullScreen
+      ? `
+      height: 100%;
+    `
+      : ''}
   }
 
   & .ant-modal-header {
