@@ -1,15 +1,18 @@
 import { UiLink, UiLogo } from '@/components/ui';
 import { COMPANY_EMAIL, COMPANY_GITHUB_LINK, COMPANY_MEDIUM_LINK, COMPANY_TWITTER_LINK } from '@/constants/company';
+import { useMediaQueries } from '@/hooks';
 import { GithubOutlined, MailFilled, MediumOutlined, TwitterOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
 
 const AppFooter: FC = () => {
+  const { is440PxOrLess } = useMediaQueries();
+
   return (
     <WrapperStyled>
       <Space direction="vertical" align="center" size={12}>
-        <UiLogo />
+        <UiLogo size={is440PxOrLess ? 'small' : 'medium'} />
 
         <SloganStyled>
           By LUNAtics for LUNAtics&nbsp;
@@ -44,12 +47,21 @@ const WrapperStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
+
+  @media screen and (max-width: 440px) {
+    padding: 18px var(--global-standard-horizontal-offset);
+  }
 `;
 
 const SloganStyled = styled.div`
   font-size: 14px;
+  text-align: center;
   font-weight: 600;
   color: var(--light-color-1);
+
+  @media screen and (max-width: 440px) {
+    font-size: 12px;
+  }
 `;
 
 export default AppFooter;

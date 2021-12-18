@@ -14,6 +14,13 @@ export const MIN_REQUIRED_AMOUNT_TO_CREATE_GAME_PER_TOKEN = <const>{
 
 export const MAX_BET_SIZE = 1000000;
 
+export enum GamesDisplayMode {
+  Open = 'open_games',
+  My = 'my_games',
+  PublicLiquidation = 'public_liquidation',
+  RecentHistory = 'recent_history',
+}
+
 export enum GamesSortingMethod {
   HighestFirst = 'highest_first',
   LowestFirst = 'lowest_first',

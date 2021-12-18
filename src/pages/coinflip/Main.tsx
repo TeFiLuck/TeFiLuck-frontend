@@ -1,19 +1,28 @@
 import CreateGameModal from '@/components/coinflip/CreateGameModal/CreateGameModal';
 import GameFlowAlert from '@/components/coinflip/GameFlowAlert/GameFlowAlert';
 import GamesDisplay from '@/components/coinflip/GamesDisplay/GamesDisplay';
+import GamesDisplayModeSelect from '@/components/coinflip/GamesDisplayModeSelect/GamesDisplayModeSelect';
 import GamesFilters from '@/components/coinflip/GamesFilters/GamesFilters';
 import { UiButton } from '@/components/ui';
+import { useMediaQueries } from '@/hooks';
 import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { setIsCreateGameModalOpened } from '@/state/coinflip';
+import { FilterFilled } from '@ant-design/icons';
+import { Space } from 'antd';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
 const Page: FC = () => {
   const dispatch = useAppDispatch();
+  const { is800PxOrLess, is600PxOrLess, is440PxOrLess } = useMediaQueries();
   const { isCreateGameModalOpened } = useAppSelector((state) => state.coinflip);
   const [createGameModalKey, setCreateGameModalKey] = useState(uuidv4());
+
+  const isMobileFiltersVisible = is800PxOrLess;
+  const filtersSize = isMobileFiltersVisible ? 'small' : 'medium';
+  const gamesDisplayHeadingClass = is440PxOrLess ? 'heading-4' : 'heading-3';
 
   return (
     <BaseLayout topBanner={<GameFlowAlert style={{ padding: '8px var(--global-standard-horizontal-offset)' }} />}>
@@ -24,7 +33,7 @@ const Page: FC = () => {
           </div>
           <div>
             <UiButton
-              size="large"
+              size={is600PxOrLess ? 'middle' : 'large'}
               type="primary"
               theme="alternative"
               shape="round"
@@ -37,15 +46,33 @@ const Page: FC = () => {
 
         <GamesFiltersSectionStyled>
           <div>
-            <span className="heading-3 text-color-white noselect">
-              Open Games&nbsp;&nbsp;
+            <span className={`${gamesDisplayHeadingClass} text-color-white noselect`}>
+              Games&nbsp;&nbsp;
               <span className="text-color-primary">777</span>
             </span>
           </div>
           <div>
-            <GamesFilters />
+            <Space>
+              <GamesDisplayModeSelect size={filtersSize} />
+
+              {!isMobileFiltersVisible && <GamesFilters size={filtersSize} />}
+            </Space>
           </div>
         </GamesFiltersSectionStyled>
+
+        {isMobileFiltersVisible && (
+          <MobileGamesFiltersSectionStyled>
+            {!is440PxOrLess && (
+              <div>
+                <span className="heading-4 noselect">
+                  Filters&nbsp;
+                  <FilterFilled />
+                </span>
+              </div>
+            )}
+            <GamesFilters size={filtersSize} />
+          </MobileGamesFiltersSectionStyled>
+        )}
 
         <GamesDisplay />
       </ContentStyled>
@@ -69,6 +96,10 @@ const GameCreationSectionStyled = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 48px;
+
+  @media screen and (max-width: 440px) {
+    margin-bottom: 36px;
+  }
 `;
 
 const GamesFiltersSectionStyled = styled.div`
@@ -76,6 +107,21 @@ const GamesFiltersSectionStyled = styled.div`
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+
+  @media screen and (max-width: 800px) {
+    margin-bottom: 16px;
+  }
+`;
+
+const MobileGamesFiltersSectionStyled = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+
+  @media screen and (max-width: 440px) {
+    justify-content: center;
+  }
 `;
 
 export default Page;

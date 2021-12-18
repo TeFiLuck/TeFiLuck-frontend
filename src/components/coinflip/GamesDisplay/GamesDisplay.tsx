@@ -10,14 +10,17 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 const GamesDisplay: FC = () => {
-  const { is1300PxOrLess, is1024PxOrLess, is775PxOrLess } = useMediaQueries();
+  const { is1300PxOrLess, is1024PxOrLess, is775PxOrLess, is515PxOrLess, is440PxOrLess } = useMediaQueries();
 
   const mode = ((): GameCardMode => {
+    if (is440PxOrLess) return 'compact';
+    if (is515PxOrLess) return 'default';
     if (is1300PxOrLess) return 'compact';
     return 'default';
   })();
 
   const cardsPerRow = (() => {
+    if (is515PxOrLess) return 1;
     if (is775PxOrLess) return 2;
     if (is1024PxOrLess) return 3;
     if (is1300PxOrLess) return 4;

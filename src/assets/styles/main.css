@@ -20,6 +20,24 @@ html {
   --global-coin-tails-color: rgba(234, 66, 66, 1);
 }
 
+@media screen and (max-width: 750px) {
+  html {
+    --global-standard-horizontal-offset: 24px;
+  }
+}
+
+@media screen and (max-width: 600px) {
+  html {
+    --global-standard-vertical-offset: 32px;
+  }
+}
+
+@media screen and (max-width: 515px) {
+  html {
+    --global-standard-horizontal-offset: 16px;
+  }
+}
+
 body {
   background: var(--global-app-bg-color) !important;
   width: 100% !important;
@@ -143,4 +161,22 @@ h1, h2, h3, h4, h5, h6 {
 .heading-4 {
   font-size: 14px;
   font-weight: 700;
+}
+
+@media screen and (max-width: 600px) {
+  .heading-1 {
+    font-size: 32px;
+  }
+
+  .heading-2 {
+    font-size: 24px;
+  }
+
+  .heading-3 {
+    font-size: 16px;
+  }
+
+  .heading-4 {
+    font-size: 14px;
+  }
 }

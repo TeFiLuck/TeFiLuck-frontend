@@ -16,16 +16,20 @@ export interface AppHeaderProps {
 }
 
 const AppHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
-  const { is1200PxOrLess, is1024PxOrLess } = useMediaQueries();
+  const { is1200PxOrLess, is1024PxOrLess, is750PxOrLess, is600PxOrLess, is440PxOrLess } = useMediaQueries();
   const { isWalletConnected } = useConnectedWallet();
   const [isSideMenuVisible, setIsSideMenuVisible] = useState(false);
 
   const walletManagementSize = (() => {
+    if (is600PxOrLess) return 'xsmall';
+    if (is750PxOrLess) return 'small';
     if (is1024PxOrLess) return 'medium';
     if (is1200PxOrLess) return 'small';
 
     return 'medium';
   })();
+
+  const subMenuSize = is750PxOrLess ? 'small' : 'medium';
 
   useEffect(() => {
     if (!is1024PxOrLess) {
@@ -44,13 +48,13 @@ const AppHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
       )}
       <MenusContainerStyled>
         <SubMenuContainerStyled>
-          <SubMenu />
+          <SubMenu size={subMenuSize} />
           <CurrentBlockNumberDisplay />
         </SubMenuContainerStyled>
         <MainMenuContainerStyled>
           {is1024PxOrLess ? (
             <UiLink to="/">
-              <UiLogo size="small" />
+              <UiLogo size={is440PxOrLess ? 'xsmall' : 'small'} />
             </UiLink>
           ) : (
             <MainMenu />
@@ -120,6 +124,10 @@ const SubMenuContainerStyled = styled.div`
   justify-content: space-between;
   box-sizing: border-box;
   padding: 0 24px;
+
+  @media screen and (max-width: 750px) {
+    padding: 0 var(--global-standard-horizontal-offset);
+  }
 `;
 
 const MainMenuContainerStyled = styled.div`
@@ -127,6 +135,10 @@ const MainMenuContainerStyled = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
+
+  @media screen and (max-width: 750px) {
+    padding: 0 var(--global-standard-horizontal-offset);
+  }
 `;
 
 export default AppHeader;

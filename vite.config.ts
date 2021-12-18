@@ -62,6 +62,7 @@ export default defineConfig(({ mode }) => ({
           'input-bg': 'rgba(20,20,25,1)',
           'input-addon-bg': 'rgba(20,20,25,1)',
           'input-border-color': 'rgba(55,58,71,1)',
+          'select-border-color': 'rgba(55,58,71,1)',
           'border-radius-base': '4px',
           'font-family': 'Inter, sans-serif',
           'font-size-base': '12px',

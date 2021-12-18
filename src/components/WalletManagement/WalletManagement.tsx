@@ -7,7 +7,7 @@ import { FC, useState } from 'react';
 import styled from 'styled-components';
 import WalletManagementDropdown from './components/WalletManagementDropdown/WalletManagementDropdown';
 
-type Size = 'medium' | 'small';
+type Size = 'medium' | 'small' | 'xsmall';
 
 export interface WalletConnectButtonProps {
   dropdownFixed?: boolean;
@@ -25,18 +25,26 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
   const address = useAddress();
   const { mainToken } = useTokens();
 
-  const isWalletAddressVisible = size !== 'small';
+  const buttonShape = size !== 'xsmall' || !isWalletConnected ? 'round' : 'circle';
+  const isWalletAddressVisible = size !== 'small' && size !== 'xsmall';
+  const isMainTokenBalanceVisible = size !== 'xsmall';
+  const isSeparatorVisible = isWalletAddressVisible && isMainTokenBalanceVisible;
 
   return (
     <Dropdown
-      overlay={<WalletManagementDropdown setDropdownVisibility={setDropdownVisibility} />}
+      overlay={
+        <WalletManagementDropdown
+          isMainTokenBalanceDisplayed={isMainTokenBalanceVisible}
+          setDropdownVisibility={setDropdownVisibility}
+        />
+      }
       placement="bottomRight"
       overlayStyle={overlayStyle}
       trigger={['click']}
       visible={isDropdownVisible}
       onVisibleChange={(isVisible) => setDropdownVisibility(isVisible)}
     >
-      <UiButton type={buttonType} shape="round">
+      <UiButton type={buttonType} shape={buttonShape}>
         {isWalletConnected ? (
           <Space>
             <Space size={4} className="text-color-white">
@@ -44,14 +52,19 @@ const WalletConnectButton: FC<WalletConnectButtonProps> = ({ dropdownFixed = fal
               {isWalletAddressVisible && format.shortenStr(address, 6, 6)}
             </Space>
 
-            {isWalletAddressVisible && <span className="text-color-primary">|</span>}
+            {isSeparatorVisible && <span className="text-color-primary">|</span>}
 
-            <BalanceDisplayStyled size={size}>
-              {format.cutDecimals(mainToken.balance, 3)} {mainToken.ticker}
-            </BalanceDisplayStyled>
+            {isMainTokenBalanceVisible && (
+              <BalanceDisplayStyled size={size}>
+                {format.cutDecimals(mainToken.balance, 3)} {mainToken.ticker}
+              </BalanceDisplayStyled>
+            )}
           </Space>
         ) : (
-          'Connect Wallet'
+          <span>
+            Connect&nbsp;
+            {size === 'xsmall' ? <WalletOutlined /> : 'Wallet'}
+          </span>
         )}
       </UiButton>
     </Dropdown>

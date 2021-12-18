@@ -3,8 +3,10 @@ import { BaseSize } from '@/typings/app';
 import { FC } from 'react';
 import styled from 'styled-components';
 
+type Size = BaseSize | 'xsmall';
+
 export interface UiLogoProps {
-  size?: BaseSize;
+  size?: Size;
   imageOnly?: boolean;
 }
 
@@ -23,7 +25,7 @@ export const UiLogo: FC<UiLogoProps> = ({ size = 'medium', imageOnly = false }) 
 };
 
 const LogoStyled = styled.div<{
-  size: BaseSize;
+  size: Size;
   imageOnly: boolean;
 }>`
   --ui-logo-font-size: 30px;
@@ -63,6 +65,16 @@ const LogoStyled = styled.div<{
   }
 
   ${({ size }) => `
+  ${
+  size === 'xsmall'
+    ? `
+        --ui-logo-font-size: 18px;
+        --ui-logo-picture-height: 24px;
+        --ui-logo-picture-offset: 6px;
+      `
+    : ''
+}    
+
     ${
   size === 'small'
     ? `

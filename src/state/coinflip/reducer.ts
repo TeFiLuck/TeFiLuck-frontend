@@ -1,6 +1,7 @@
 import {
   DEFAULT_GAMES_PAGINATION_SIZE,
   DEFAULT_GAMES_SORTING_METHOD,
+  GamesDisplayMode,
   GamesSortingMethod,
   MAX_BLOCKS_BEFORE_LIQUIDABLE,
   MIN_BLOCKS_BEFORE_LIQUIDABLE,
@@ -13,16 +14,16 @@ import { createReducer } from '@reduxjs/toolkit';
 import {
   setBetsSizesRanges,
   setDisplayGamesTokensSymbols,
+  setGamesDisplayMode,
   setIsCreateGameModalOpened,
   setIsGameFlowAlertVisible,
-  setIsOnlyMyGamesDisplayed,
   setPaginationSize,
   setResolveTimeLimitRange,
   setSortingMethod,
 } from './actions';
 
 export interface CoinflipState {
-  isOnlyMyGamesDisplayed: boolean;
+  gamesDisplayMode: GamesDisplayMode;
   displayGamesTokensSymbols: TokenSymbol[];
   betsSizesRanges: BetSizesRange<number>[];
   sortingMethod: GamesSortingMethod;
@@ -33,7 +34,7 @@ export interface CoinflipState {
 }
 
 export const initialState: CoinflipState = {
-  isOnlyMyGamesDisplayed: false,
+  gamesDisplayMode: GamesDisplayMode.Open,
   displayGamesTokensSymbols: [DEFAULT_MAIN_TOKEN_SYMBOL],
   betsSizesRanges: [createFreshBetSizesRangeBySymbol(DEFAULT_MAIN_TOKEN_SYMBOL)],
   sortingMethod: DEFAULT_GAMES_SORTING_METHOD,
@@ -45,8 +46,8 @@ export const initialState: CoinflipState = {
 
 export default createReducer(initialState, (builder) =>
   builder
-    .addCase(setIsOnlyMyGamesDisplayed, (state, { payload }) => {
-      state.isOnlyMyGamesDisplayed = payload;
+    .addCase(setGamesDisplayMode, (state, { payload }) => {
+      state.gamesDisplayMode = payload;
     })
     .addCase(setDisplayGamesTokensSymbols, (state, { payload }) => {
       state.displayGamesTokensSymbols = payload;

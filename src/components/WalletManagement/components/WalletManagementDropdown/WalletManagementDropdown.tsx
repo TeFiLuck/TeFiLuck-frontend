@@ -13,10 +13,14 @@ import { FC } from 'react';
 import styled from 'styled-components';
 
 export interface WalletManagementDropdownProps {
+  isMainTokenBalanceDisplayed?: boolean;
   setDropdownVisibility?: (isVisible: boolean) => void;
 }
 
-const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdownVisibility = () => {} }) => {
+const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
+  isMainTokenBalanceDisplayed = true,
+  setDropdownVisibility = () => {},
+}) => {
   const dispatch = useAppDispatch();
   const { isWalletConnected } = useConnectedWallet();
   const { availableConnectTypes, availableInstallTypes, install, connect, disconnect } = useWallet();
@@ -54,7 +58,9 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdo
   }
 
   const { supportedTokens, mainToken } = useTokens();
-  const dropdownVisibleTokens = supportedTokens.filter((token) => token.symbol !== mainToken.symbol);
+  const dropdownVisibleTokens = supportedTokens.filter((token) => {
+    return !isMainTokenBalanceDisplayed || token.symbol !== mainToken.symbol;
+  });
 
   function handleTokenPin(token: Token): void {
     dispatch(setMainTokenSymbol(token.symbol));
@@ -137,7 +143,11 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({ setDropdo
                     {token.ticker}
                   </div>
                   <div>
-                    <UiLink mode="empty" onClick={() => handleTokenPin(token)}>
+                    <UiLink
+                      mode="empty"
+                      active={token.symbol === mainToken.symbol}
+                      onClick={() => handleTokenPin(token)}
+                    >
                       <PushpinFilled style={{ fontSize: '14px' }} />
                     </UiLink>
                   </div>
