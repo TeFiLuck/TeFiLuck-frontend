@@ -4,6 +4,7 @@ export function useMediaQueries() {
   const is1300PxOrLess = useMediaQuery({ query: '(max-width: 1300px)' });
   const is1200PxOrLess = useMediaQuery({ query: '(max-width: 1200px)' });
   const is1024PxOrLess = useMediaQuery({ query: '(max-width: 1024px)' });
+  const is775PxOrLess = useMediaQuery({ query: '(max-width: 775px)' });
 
-  return { is1300PxOrLess, is1200PxOrLess, is1024PxOrLess };
+  return { is1300PxOrLess, is1200PxOrLess, is1024PxOrLess, is775PxOrLess };
 }

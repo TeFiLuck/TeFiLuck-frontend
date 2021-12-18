@@ -2,11 +2,13 @@ import CurrentBlockNumberDisplay from '@/components/CurrentBlockNumberDisplay/Cu
 import { UiLink, UiLogo } from '@/components/ui';
 import WalletManagement from '@/components/WalletManagement/WalletManagement';
 import { useConnectedWallet, useMediaQueries } from '@/hooks';
+import { MenuOutlined } from '@ant-design/icons';
 import { Space } from 'antd';
-import { FC } from 'react';
+import { FC, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import MainMenu from './components/MainMenu/MainMenu';
 import RefreshWalletButton from './components/RefreshWalletButton/RefreshWalletButton';
+import SideMenu from './components/SideMenu/SideMenu';
 import SubMenu from './components/SubMenu/SubMenu';
 
 export interface AppHeaderProps {
@@ -16,6 +18,7 @@ export interface AppHeaderProps {
 const AppHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
   const { is1200PxOrLess, is1024PxOrLess } = useMediaQueries();
   const { isWalletConnected } = useConnectedWallet();
+  const [isSideMenuVisible, setIsSideMenuVisible] = useState(false);
 
   const walletManagementSize = (() => {
     if (is1024PxOrLess) return 'medium';
@@ -23,6 +26,12 @@ const AppHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
 
     return 'medium';
   })();
+
+  useEffect(() => {
+    if (!is1024PxOrLess) {
+      setIsSideMenuVisible(false);
+    }
+  }, [is1024PxOrLess]);
 
   return (
     <WrapperStyled fixed={fixed}>
@@ -50,6 +59,16 @@ const AppHeader: FC<AppHeaderProps> = ({ fixed = false }) => {
           <Space>
             <WalletManagement dropdownFixed={fixed} size={walletManagementSize} />
             {isWalletConnected && <RefreshWalletButton />}
+
+            {is1024PxOrLess && (
+              <div>
+                <UiLink mode="empty" fontSize="24px" color="#fff" onClick={() => setIsSideMenuVisible(true)}>
+                  <MenuOutlined />
+                </UiLink>
+
+                <SideMenu visible={isSideMenuVisible} onChange={setIsSideMenuVisible} />
+              </div>
+            )}
           </Space>
         </MainMenuContainerStyled>
       </MenusContainerStyled>
