@@ -8,10 +8,16 @@ import styled from 'styled-components';
 export interface ChoiceEncryptionPasswordFieldProps {
   value: string;
   selectedSide: CoinSide;
+  switchSize?: 'default' | 'small';
   onChange: (password: string) => void;
 }
 
-const ChoiceEncryptionPasswordField: FC<ChoiceEncryptionPasswordFieldProps> = ({ value, selectedSide, onChange }) => {
+const ChoiceEncryptionPasswordField: FC<ChoiceEncryptionPasswordFieldProps> = ({
+  value,
+  selectedSide,
+  switchSize = 'default',
+  onChange,
+}) => {
   const [isGenerated, setIsGenerated] = useState(true);
 
   useEffect(() => {
@@ -68,7 +74,7 @@ const ChoiceEncryptionPasswordField: FC<ChoiceEncryptionPasswordFieldProps> = ({
             </Space>
           </SwitchLabelStyled>
         </Tooltip>
-        <Switch checked={isGenerated} onChange={setIsGenerated} />
+        <Switch checked={isGenerated} size={switchSize} onChange={setIsGenerated} />
       </Space>
     </WrapperStyled>
   );

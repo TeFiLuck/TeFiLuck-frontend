@@ -1,5 +1,6 @@
 import { UiModal } from '@/components/ui';
 import { PortalLocation } from '@/constants/portals';
+import { useMediaQueries } from '@/hooks';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { INITIAL_MODAL_VIEW, ModalView } from './common';
@@ -14,6 +15,7 @@ export interface CreateGameModalProps {
 }
 
 const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed = () => {}, onOpened = () => {} }) => {
+  const { is515PxOrLess } = useMediaQueries();
   const [activeModalViewKey, setActiveModalViewKey] = useState<ModalView>(INITIAL_MODAL_VIEW);
   const [viewData, setViewData] = useState({});
   const [isModalClosable, setIsModalClosable] = useState(true);
@@ -36,6 +38,7 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
       closable={isModalClosable}
       hideDividerHeader
       hideDividerFooter
+      fullScreen={is515PxOrLess}
       width="400px"
       bodyHeight="350px"
       verticalOffset="0"

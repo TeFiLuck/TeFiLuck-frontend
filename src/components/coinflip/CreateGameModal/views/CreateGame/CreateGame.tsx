@@ -10,7 +10,7 @@ import {
 } from '@/constants/coinflip';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
-import { useConnectedWallet, useTokens } from '@/hooks';
+import { useConnectedWallet, useMediaQueries, useTokens } from '@/hooks';
 import { Token } from '@/typings/finance-management';
 import { encryptChosenSide, getMinRequiredAmountToCreateGame } from '@/utils/coinflip';
 import { PortalLocation, teleportTo } from '@/utils/common';
@@ -27,6 +27,7 @@ import ResolveTimeField from './components/ResolveTimeField/ResolveTimeField';
 import SavePasswordCheckbox from './components/SavePasswordCheckbox/SavePasswordCheckbox';
 
 const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsModalClosable }) => {
+  const { is414PxOrLess } = useMediaQueries();
   const { mainToken, supportedTokens } = useTokens();
   const { isWalletConnected, connectedWallet } = useConnectedWallet();
   const [isTransactionAttemptStarted, setIsTransactionAttemptStarted] = useState(false);
@@ -112,32 +113,39 @@ const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsMo
       </Portal>
 
       <Portal node={teleportTo(PortalLocation.CreateGameModalContent)}>
-        <Space direction="vertical" size={18}>
-          <Space direction="vertical">
-            <Space>
-              <CoinSideChoice side={chosenSide} onSideChange={(side) => setChosenSide(side)} />
+        <WrapperStyled>
+          <Space direction="vertical" size={18}>
+            <Space direction="vertical">
+              <Space>
+                <CoinSideChoice side={chosenSide} onSideChange={(side) => setChosenSide(side)} />
 
-              <UiTokensSelect
-                tokens={supportedTokens}
-                selected={selectedTokenSymbol}
-                onChange={handleTokenSymbolChange}
+                <UiTokensSelect
+                  tokens={supportedTokens}
+                  selected={selectedTokenSymbol}
+                  onChange={handleTokenSymbolChange}
+                />
+              </Space>
+
+              <UiTokenAmountInput
+                value={betSize}
+                token={selectedToken}
+                min={selectedToken.balance >= minBetSize ? minBetSize : selectedToken.balance}
+                onChange={(tokenAmount) => setBetSize(tokenAmount)}
               />
             </Space>
 
-            <UiTokenAmountInput
-              value={betSize}
-              token={selectedToken}
-              min={selectedToken.balance >= minBetSize ? minBetSize : selectedToken.balance}
-              onChange={(tokenAmount) => setBetSize(tokenAmount)}
+            <ResolveTimeField value={blocksAmountTillLiquidation} onChange={setBlocksAmountTillLiquidation} />
+
+            <PasswordField
+              value={password}
+              selectedSide={chosenSide}
+              switchSize={is414PxOrLess ? 'small' : 'default'}
+              onChange={setPassword}
             />
+
+            <SavePasswordCheckbox value={shouldSavePassword} onChange={setShouldSavePassword} />
           </Space>
-
-          <ResolveTimeField value={blocksAmountTillLiquidation} onChange={setBlocksAmountTillLiquidation} />
-
-          <PasswordField value={password} selectedSide={chosenSide} onChange={setPassword} />
-
-          <SavePasswordCheckbox value={shouldSavePassword} onChange={setShouldSavePassword} />
-        </Space>
+        </WrapperStyled>
       </Portal>
 
       <Portal node={teleportTo(PortalLocation.CreateGameModalFooter)}>
@@ -162,6 +170,12 @@ const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsMo
     </>
   );
 };
+
+const WrapperStyled = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+`;
 
 const ErrorContainerStyled = styled.div`
   height: 35px;

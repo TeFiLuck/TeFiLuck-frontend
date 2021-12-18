@@ -1,6 +1,7 @@
 import { UiBlocksTimeInput } from '@/components/ui';
 import { MAX_BLOCKS_BEFORE_LIQUIDABLE, MIN_BLOCKS_BEFORE_LIQUIDABLE } from '@/constants/coinflip';
 import { TERRA_BLOCK_GENERATION_TIME_SEC } from '@/constants/networks';
+import { useMediaQueries } from '@/hooks';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Space, Tooltip } from 'antd';
 import { FC } from 'react';
@@ -12,6 +13,10 @@ export interface ResolveTimeFieldProps {
 }
 
 const ResolveTimeField: FC<ResolveTimeFieldProps> = ({ value, onChange }) => {
+  const { is414PxOrLess } = useMediaQueries();
+
+  const inputMinWidth = is414PxOrLess ? '135px' : '200px';
+
   return (
     <Space direction="vertical">
       <div>
@@ -44,6 +49,7 @@ const ResolveTimeField: FC<ResolveTimeFieldProps> = ({ value, onChange }) => {
 
       <UiBlocksTimeInput
         value={value}
+        style={{ maxWidth: inputMinWidth }}
         minBlocks={MIN_BLOCKS_BEFORE_LIQUIDABLE}
         maxBlocks={MAX_BLOCKS_BEFORE_LIQUIDABLE}
         onChange={onChange}
