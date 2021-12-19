@@ -35,3 +35,5 @@ export const WALLET_CONNECT_CHAIN_IDS = <const>{
 };
 
 export const TERRA_BLOCK_GENERATION_TIME_SEC = 5;
+export const TX_POLLING_INTERVAL_MS = 1000;
+export const MAX_TX_POLLING_RETRIES = 30;

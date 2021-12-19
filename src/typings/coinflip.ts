@@ -5,3 +5,9 @@ export type BetSizesRange<T extends number | string> = {
   min: T;
   max: T;
 };
+
+export type SavedPasswordRecord = {
+  gameId: string;
+  password: string;
+  address: string;
+};

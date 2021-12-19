@@ -8,10 +8,12 @@ import {
 } from '@/constants/coinflip';
 import { DEFAULT_MAIN_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
-import { BetSizesRange } from '@/typings/coinflip';
+import { BetSizesRange, SavedPasswordRecord } from '@/typings/coinflip';
 import { createFreshBetSizesRangeBySymbol } from '@/utils/coinflip';
 import { createReducer } from '@reduxjs/toolkit';
 import {
+  removePassword,
+  savePassword,
   setBetsSizesRanges,
   setDisplayGamesTokensSymbols,
   setGamesDisplayMode,
@@ -31,6 +33,7 @@ export interface CoinflipState {
   resolveTimeLimitRange: [number, number];
   isCreateGameModalOpened: boolean;
   isGameFlowAlertVisible: boolean;
+  savedPasswords: SavedPasswordRecord[];
 }
 
 export const initialState: CoinflipState = {
@@ -42,6 +45,7 @@ export const initialState: CoinflipState = {
   resolveTimeLimitRange: [MIN_BLOCKS_BEFORE_LIQUIDABLE, MAX_BLOCKS_BEFORE_LIQUIDABLE],
   isCreateGameModalOpened: false,
   isGameFlowAlertVisible: true,
+  savedPasswords: [],
 };
 
 export default createReducer(initialState, (builder) =>
@@ -69,5 +73,19 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsGameFlowAlertVisible, (state, { payload }) => {
       state.isGameFlowAlertVisible = payload;
+    })
+    .addCase(savePassword, (state, { payload }) => {
+      const existingRecordIdx = state.savedPasswords.findIndex((record) => record.gameId === payload.gameId);
+      if (existingRecordIdx >= 0) {
+        state.savedPasswords.splice(existingRecordIdx, 1, payload);
+      } else {
+        state.savedPasswords.push(payload);
+      }
+    })
+    .addCase(removePassword, (state, { payload: gameId }) => {
+      const existingRecordIdx = state.savedPasswords.findIndex((record) => record.gameId === gameId);
+      if (existingRecordIdx >= 0) {
+        state.savedPasswords.splice(existingRecordIdx, 1);
+      }
     }),
 );

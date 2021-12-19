@@ -14,7 +14,7 @@ const financeManagementPersistConfig = {
 const coinflipPersistConfig = {
   key: 'coinflip',
   storage: storage,
-  whitelist: ['isGameFlowAlertVisible'],
+  whitelist: ['isGameFlowAlertVisible', 'savedPasswords'],
 };
 
 export const store = configureStore({

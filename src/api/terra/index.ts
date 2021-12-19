@@ -7,3 +7,5 @@ export const TerraAPI = {
   core,
   utils,
 };
+
+export * from './types';

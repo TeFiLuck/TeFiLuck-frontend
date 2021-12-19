@@ -1,6 +1,8 @@
 export enum ModalView {
   CreateGame = 'create_game',
   TransactionFailed = 'transaction_failed',
+  TransactionProcessing = 'transaction_processing',
+  TransactionSuccess = 'transaction_success',
 }
 
 export const INITIAL_MODAL_VIEW = ModalView.CreateGame;

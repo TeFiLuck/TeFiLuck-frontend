@@ -6,6 +6,7 @@ import {
   DEFAULT_AMOUNT_BLOCKS_BEFORE_LIQUIDABLE,
   DEFAULT_SELECTED_SIDE,
   ENCRYPTION_PASSWORD_MIN_LENGTH,
+  ENCRYPTION_PASSWORD_SEPARATOR,
   MIN_BLOCKS_BEFORE_LIQUIDABLE,
 } from '@/constants/coinflip';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
@@ -74,7 +75,7 @@ const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsMo
         setIsModalClosable(false);
         setIsTransactionAttemptStarted(true);
 
-        const { success } = await TerraAPI.coinflip.createGame({
+        const { success, result } = await TerraAPI.coinflip.createGame({
           wallet: connectedWallet,
           feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [[selectedTokenSymbol, betSizeNumber]],
@@ -85,7 +86,11 @@ const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsMo
         });
 
         if (success) {
-          // Goto transaction processing and start polling
+          changeView(ModalView.TransactionProcessing, {
+            txHash: result.txhash,
+            password: `${chosenSide}${ENCRYPTION_PASSWORD_SEPARATOR}${password}`,
+            shouldSavePassword,
+          });
         } else {
           changeView(ModalView.TransactionFailed);
         }

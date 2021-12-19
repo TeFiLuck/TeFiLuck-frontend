@@ -1,11 +1,13 @@
 import { UiModal } from '@/components/ui';
 import { PortalLocation } from '@/constants/portals';
-import { useMediaQueries } from '@/hooks';
+import { useBalances, useMediaQueries } from '@/hooks';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { INITIAL_MODAL_VIEW, ModalView } from './common';
 import CreateGame from './views/CreateGame/CreateGame';
 import TransactionFailed from './views/TransactionFailed/TransactionFailed';
+import TransactionProcessing from './views/TransactionProcessing/TransactionProcessing';
+import TransactionSuccess from './views/TransactionSuccess/TransactionSuccess';
 
 export interface CreateGameModalProps {
   visible: boolean;
@@ -16,6 +18,7 @@ export interface CreateGameModalProps {
 
 const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed = () => {}, onOpened = () => {} }) => {
   const { is515PxOrLess } = useMediaQueries();
+  const { updateBalances } = useBalances();
   const [activeModalViewKey, setActiveModalViewKey] = useState<ModalView>(INITIAL_MODAL_VIEW);
   const [viewData, setViewData] = useState({});
   const [isModalClosable, setIsModalClosable] = useState(true);
@@ -23,6 +26,8 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
   const modalViewsMap: Record<ModalView, any> = {
     [ModalView.CreateGame]: CreateGame,
     [ModalView.TransactionFailed]: TransactionFailed,
+    [ModalView.TransactionProcessing]: TransactionProcessing,
+    [ModalView.TransactionSuccess]: TransactionSuccess,
   };
 
   const ActiveModalView = modalViewsMap[activeModalViewKey];
@@ -30,6 +35,11 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
   function changeView(view: ModalView, data?: Record<string, any>): void {
     if (data) setViewData(data);
     setActiveModalViewKey(view);
+  }
+
+  function handleModalClosed(): void {
+    updateBalances();
+    onClosed();
   }
 
   return (
@@ -44,7 +54,7 @@ const CreateGameModal: FC<CreateGameModalProps> = ({ visible, onChange, onClosed
       verticalOffset="0"
       footerPadding="8px 0 16px 0px"
       onChange={onChange}
-      onClosed={onClosed}
+      onClosed={handleModalClosed}
       onOpened={onOpened}
       header={() => <div data-portal-id={PortalLocation.CreateGameModalHeader}></div>}
       topBanner={() => <div data-portal-id={PortalLocation.CreateGameModalTopBanner}></div>}

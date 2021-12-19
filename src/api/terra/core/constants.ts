@@ -2,6 +2,7 @@ import { NetworkKey } from '@/constants/networks';
 import { GasPricesMap } from './types';
 
 export const GAS_PRICES_ENDPOINT_URN = '/v1/txs/gas_prices';
+export const TRANSACTION_ENDPOINT_URN = (txHash: string) => `/txs/${txHash}`;
 
 export const FALLBACK_GAS_PRICES_MAP: Record<NetworkKey, GasPricesMap> = {
   [NetworkKey.MAINNET]: {
