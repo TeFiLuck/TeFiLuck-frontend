@@ -1,13 +1,14 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { APP_SUCCESS_COLOR } from '@/assets/styles/design';
 import { CoinSide } from '@/constants/coinflip';
+import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
 import { QuestionOutlined } from '@ant-design/icons';
 import styled from 'styled-components';
-import { AmountDisplay } from '../../shared';
+import { AmountDisplay, FooterLink } from '../../shared';
+import { shortenAddress } from '../../utils';
 import { VictoryGameCardProps } from '../types';
 
-export function useCardShared({ opponentLiquidated, performedLiquidation }: VictoryGameCardProps) {
+export function useCardShared({ opponentLiquidated, performedLiquidation, game }: VictoryGameCardProps) {
   const mySideChoice = CoinSide.Heads;
   const MyChoiceIcon = getCoinSideIcon(mySideChoice);
   const myChoiceColor = getCoinSideColor(mySideChoice);
@@ -17,8 +18,8 @@ export function useCardShared({ opponentLiquidated, performedLiquidation }: Vict
   const opponentChoiceColor = getCoinSideColor(opponentChoice);
 
   function getCardTitle(): string {
-    if (performedLiquidation) return 'terra...mnj VS terra...dsm';
-    return 'YOU VS terra...dsm';
+    if (performedLiquidation) return `${shortenAddress('terra...mnj')} VS ${shortenAddress('terra...dsm')}`;
+    return `YOU VS ${shortenAddress('terra...dsm')}`;
   }
 
   function getCardStatus(): string {
@@ -55,9 +56,11 @@ export function useCardShared({ opponentLiquidated, performedLiquidation }: Vict
     </span>
   );
 
-  const amountDisplay = <AmountDisplay amount="+10000" ticker="LUNA" logo={<LunaLogo />} color={APP_SUCCESS_COLOR} />;
+  const amountDisplay = (
+    <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} color={APP_SUCCESS_COLOR} />
+  );
 
-  const transactionLink = '/';
+  const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
 
   return {
     MyChoiceIcon,
@@ -70,7 +73,7 @@ export function useCardShared({ opponentLiquidated, performedLiquidation }: Vict
     getOpponentChoiceBorderColor,
     signText,
     amountDisplay,
-    transactionLink,
+    footerLink,
     CardStatusStyled,
   };
 }

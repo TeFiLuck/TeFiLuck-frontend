@@ -1,22 +1,22 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { APP_SUCCESS_COLOR } from '@/assets/styles/design';
 import { UiButton } from '@/components/ui';
 import { CoinSide } from '@/constants/coinflip';
 import { getCoinSideIcon } from '@/utils/coinflip';
 import { FC } from 'react';
-import { AmountDisplay, BaseGameCard, CentralContent, FooterLink, ImageArea } from '../../../shared';
+import { AmountDisplay, BaseGameCard, CentralContent, ImageArea } from '../../../shared';
 import { useCardShared } from '../../hooks';
 import { PublicLiquidationGameCardProps } from '../../types';
 
 const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) => {
-  const { cardTitle, cardStatus, signText, tooltipContent, transactionLink } = useCardShared(props);
+  const { game } = props;
+  const { cardTitle, cardStatus, signText, tooltipContent, footerLink } = useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       decorLinesColor={APP_SUCCESS_COLOR}
       title={cardTitle}
       subtitle={cardStatus}
@@ -35,7 +35,7 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
             </UiButton>
           }
         >
-          <AmountDisplay amount={0.0007} ticker="LUNA" logo={<LunaLogo />} />
+          <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
         </CentralContent>
       }
       rightContent={
@@ -44,7 +44,7 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
         </ImageArea>
       }
       infoTooltip={tooltipContent}
-      footer={<FooterLink url={transactionLink} />}
+      footer={footerLink}
     />
   );
 };

@@ -11,3 +11,35 @@ export type SavedPasswordRecord = {
   password: string;
   address: string;
 };
+
+export type SortingConfiguration = {
+  param: 'creation' | 'price';
+  asc: boolean;
+};
+
+export type Game = {
+  id: string;
+  signature: string;
+  blocks_until_liquidation: number;
+  asset: {
+    denom: TokenSymbol;
+    amount: string;
+  };
+  owner: string;
+  created_at: number;
+};
+
+export type GamesDisplayModeConfig = {
+  label: string;
+  preload: boolean;
+  paginatable: boolean;
+  private: boolean;
+  filters: {
+    enabled: boolean;
+    currencies?: boolean;
+    betSizes?: boolean;
+    resolveTimeLimit?: boolean;
+    sorting?: boolean;
+    pagination?: boolean;
+  };
+};

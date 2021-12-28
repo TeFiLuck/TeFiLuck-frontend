@@ -1,4 +1,3 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { UiButton } from '@/components/ui';
 import { QuestionCircleFilled } from '@ant-design/icons';
 import { Space, Tooltip } from 'antd';
@@ -7,7 +6,6 @@ import {
   AmountDisplay,
   BaseGameCard,
   CentralContent,
-  FooterLink,
   ImageArea,
   InfoBoxLabelStyled,
   InfoBoxStatStyled,
@@ -18,6 +16,8 @@ import { useCardShared } from '../../hooks';
 import { AcceptedGameCardProps } from '../../types';
 
 const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
+  const { game } = props;
+
   const {
     cardTitle,
     cardStatus,
@@ -27,12 +27,12 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
     signText,
     tooltipContent,
     gameInfoContents,
-    transactionLink,
+    footerLink,
   } = useCardShared(props);
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       leftDecorLineColor={chosenSideColor}
       rightDecorLineColor="transparent"
       hideLeftContent
@@ -46,7 +46,7 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
       centerContent={
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical">
-            <AmountDisplay amount={100} ticker="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
             <UiButton uppercase type="primary" size="small" shape="round" disabled={!canLiquidate}>
               Liquidate
@@ -77,7 +77,7 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
         </InfoBoxStyled>
       }
       infoTooltip={tooltipContent}
-      footer={<FooterLink url={transactionLink} />}
+      footer={footerLink}
     />
   );
 };

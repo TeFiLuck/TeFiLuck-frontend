@@ -17,7 +17,7 @@ type SharedScopedSlotsData = {
 };
 
 export interface BaseGameCardProps {
-  gameId: string;
+  gameId?: string;
   mode?: CardMode;
   glowColor?: CSS.Property.Color;
   decorLinesColor?: CSS.Property.Color;
@@ -60,6 +60,8 @@ export const BaseGameCard: FC<BaseGameCardProps> = ({
   const isDecorLinesVisible = ['default'].includes(mode);
   const [isOverlayVisible, setIsOverlayVisible] = useState(false);
 
+  const isInfoTooltipVisible = infoTooltip || gameId;
+
   const slotsSharedData: SharedScopedSlotsData = {
     showOverlay: () => setIsOverlayVisible(true),
     hideOverlay: () => setIsOverlayVisible(false),
@@ -99,27 +101,29 @@ export const BaseGameCard: FC<BaseGameCardProps> = ({
           {!hideRightContent && <div>{displaySlot(rightContent)}</div>}
         </ContentStyled>
 
-        <InfoTooltipStyled mode={mode}>
-          <Tooltip
-            placement="left"
-            title={
-              <span>
-                <span style={{ fontSize: '10px' }}>
-                  <b>Game ID:</b> {gameId}
-                </span>
-                {infoTooltip && (
-                  <span>
-                    <br />
-                    <br />
-                    {displaySlot(infoTooltip)}
+        {isInfoTooltipVisible && (
+          <InfoTooltipStyled mode={mode}>
+            <Tooltip
+              placement="left"
+              title={
+                <span>
+                  <span style={{ fontSize: '10px' }}>
+                    <b>Game ID:</b> {gameId}
                   </span>
-                )}
-              </span>
-            }
-          >
-            <InfoCircleOutlined />
-          </Tooltip>
-        </InfoTooltipStyled>
+                  {infoTooltip && (
+                    <span>
+                      <br />
+                      <br />
+                      {displaySlot(infoTooltip)}
+                    </span>
+                  )}
+                </span>
+              }
+            >
+              <InfoCircleOutlined />
+            </Tooltip>
+          </InfoTooltipStyled>
+        )}
 
         {footer && <FooterStyled mode={mode}>{displaySlot(footer)}</FooterStyled>}
       </BodyStyled>

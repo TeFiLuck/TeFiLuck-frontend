@@ -1,5 +1,6 @@
 export * from './convertTokensToCoins';
 export * from './convertTokenToCoin';
+export * from './fromUAmount';
 export * from './getAmountFromCoin';
 export * from './getMessageFromPostTransactionError';
 export * from './getResponseFromTransaction';

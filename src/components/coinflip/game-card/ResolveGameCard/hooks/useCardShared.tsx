@@ -1,8 +1,11 @@
 import styled from 'styled-components';
+import { displayResolveTimeLimit, shortenAddress } from '../../utils';
 import { ResolveGameCardProps } from '../types';
 
 export function useCardShared(props: ResolveGameCardProps) {
-  const cardTitle = 'YOU VS terra...dsm';
+  const { game } = props;
+
+  const cardTitle = `YOU VS ${shortenAddress('terra...dsm')}`;
   const cardStatus = 'ONGOING';
 
   const canBeLiquidated = false;
@@ -10,7 +13,7 @@ export function useCardShared(props: ResolveGameCardProps) {
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; 24 Hours
+      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 

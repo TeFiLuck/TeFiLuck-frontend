@@ -3,3 +3,8 @@ export * from './encryptChosenSide';
 export * from './getCoinSideColor';
 export * from './getCoinSideIcon';
 export * from './getMinRequiredAmountToCreateGame';
+export * from './getPreloadableGamesModes';
+export * from './isGamesDisplayModeFiltersEnabled';
+export * from './isGamesDisplayModePrivate';
+export * from './isGamesModePaginatable';
+export * from './isGamesModeSpecificFilterEnabled';

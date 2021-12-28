@@ -1,4 +1,5 @@
 import { SUPPORTED_TOKENS } from '@/constants/finance-management';
+import { TokenSymbol } from '@/constants/tokens';
 import { useAppSelector } from '@/state';
 import { Token } from '@/typings/finance-management';
 import { getTokenLogoBySymbol, getTokenTickerBySymbol } from '@/utils/tokens';
@@ -22,5 +23,10 @@ export function useTokens() {
     balance: balances[mainTokenSymbol],
   };
 
-  return { supportedTokens, mainToken };
+  function findToken(symbol: TokenSymbol): Token {
+    const resultToken = supportedTokens.find((tokenItem) => tokenItem.symbol === symbol) || {};
+    return resultToken as Token;
+  }
+
+  return { supportedTokens, mainToken, findToken };
 }

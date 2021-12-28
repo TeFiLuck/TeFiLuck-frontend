@@ -1,28 +1,38 @@
+import { TerraAPI } from '@/api/terra';
+import { TokenSymbol } from '@/constants/tokens';
+import { useTokens } from '@/hooks';
+import { round } from '@/utils/format';
 import { Space } from 'antd';
 import * as CSS from 'csstype';
-import { FC, ReactNode } from 'react';
+import { FC } from 'react';
 import styled from 'styled-components';
 
 export interface AmountDisplayProps {
-  amount: string | number;
-  ticker: string;
-  logo: ReactNode;
+  uAmount: string;
+  tokenSymbol: TokenSymbol;
   color?: CSS.Property.Color;
 }
 
-export const AmountDisplay: FC<AmountDisplayProps> = ({ amount, ticker, logo, color = '#ffffff' }) => {
-  const shouldShowTicker = String(amount).length <= 3;
+export const AmountDisplay: FC<AmountDisplayProps> = ({ uAmount, tokenSymbol, color = '#ffffff' }) => {
+  const { findToken } = useTokens();
 
-  const fontSize = String(amount).length <= 8 ? '14px' : '12px';
+  const token = findToken(tokenSymbol);
+  const tokenAmount = round(TerraAPI.utils.fromUAmount(uAmount, tokenSymbol), 3);
+
+  const shouldShowTicker = String(tokenAmount).length <= 3;
+
+  const fontSize = String(tokenAmount).length <= 8 ? '14px' : '12px';
 
   return (
     <WrapperStyled fontSize={fontSize} color={color}>
       <Space>
         <span>
-          {amount}
-          {shouldShowTicker && <span>&nbsp;{ticker}</span>}
+          {tokenAmount}
+          {shouldShowTicker && <span>&nbsp;{token.ticker}</span>}
         </span>
-        <div className="token-logo flex flex-align-center">{logo}</div>
+        <div className="token-logo flex flex-align-center">
+          <img src={token.logo} alt={token.ticker} />
+        </div>
       </Space>
     </WrapperStyled>
   );
@@ -48,7 +58,7 @@ const WrapperStyled = styled.div<{
     color: ${color};
   `}
 
-  .token-logo svg, .token-logo svg {
+  .token-logo img, .token-logo svg {
     width: 16px;
     height: auto;
   }

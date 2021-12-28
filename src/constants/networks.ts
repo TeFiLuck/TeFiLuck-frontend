@@ -28,6 +28,8 @@ export const Networks: Record<NetworkKey, Network> = <const>{
   },
 };
 
+export const INITIAL_WALLET_LOADING_DELAY_MS = 3000;
+
 export const DEFAULT_NETWORK_KEY = import.meta.env.DEV ? NetworkKey.TESTNET : NetworkKey.MAINNET;
 export const WALLET_CONNECT_CHAIN_IDS = <const>{
   0: Networks[NetworkKey.TESTNET],

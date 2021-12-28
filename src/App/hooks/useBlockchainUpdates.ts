@@ -19,7 +19,7 @@ export function useBlockchainUpdates() {
   }, [networkKey]);
 
   function initNewSocketConnection(): void {
-    const newSocket = AppAPI.connectToBlockchainUpdatesWS(networkKey);
+    const newSocket = AppAPI.core.connectToBlockchainUpdatesWS(networkKey);
 
     newSocket.onopen = function handleSocketOpen() {
       dispatch(setIsBlockchainUpdatesSocketConnected(true));

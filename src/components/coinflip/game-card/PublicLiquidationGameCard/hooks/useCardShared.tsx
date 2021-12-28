@@ -1,7 +1,10 @@
+import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
+import { FooterLink } from '../../shared';
+import { shortenAddress } from '../../utils';
 import { PublicLiquidationGameCardProps } from '../types';
 
 export function useCardShared(props: PublicLiquidationGameCardProps) {
-  const cardTitle = 'terra...mnj VS terra...dsm';
+  const cardTitle = `${shortenAddress('terra...mnj')} VS ${shortenAddress('terra...dsm')}`;
 
   const cardStatus = 'ONGOING';
 
@@ -15,13 +18,13 @@ export function useCardShared(props: PublicLiquidationGameCardProps) {
   const tooltipContent =
     'You have a chance to perform liquidation! Just click liquidate and earn 7% from bet size. Such things happen when neither game creator resolved the game or participant liquidated his opponent.';
 
-  const transactionLink = '/';
+  const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
 
   return {
     cardTitle,
     cardStatus,
     signText,
     tooltipContent,
-    transactionLink,
+    footerLink,
   };
 }

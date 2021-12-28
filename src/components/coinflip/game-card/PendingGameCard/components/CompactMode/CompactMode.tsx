@@ -1,31 +1,31 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { UiButton } from '@/components/ui';
 import { CoinSide } from '@/constants/coinflip';
 import { getCoinSideIcon } from '@/utils/coinflip';
 import { Space } from 'antd';
 import { FC } from 'react';
-import { AmountDisplay, BaseGameCard, CentralContent, FooterLink } from '../../../shared';
+import { AmountDisplay, BaseGameCard, CentralContent } from '../../../shared';
 import { useCardShared } from '../../hooks';
 import { PendingGameCardProps } from '../../types';
 
 const PendingGameCard: FC<PendingGameCardProps> = (props) => {
-  const { isCurrentUserCreatorOfGame } = props;
+  const { game } = props;
 
-  const { getCardTitle, cardStatus, getTooltipContent, signText, transactionLink } = useCardShared(props);
+  const { isCurrentUserCreatorOfGame, getCardTitle, cardStatus, getTooltipContent, signText, footerLink } =
+    useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       mode="compact"
       title={getCardTitle()}
       subtitle={cardStatus}
       centerContent={
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical" align="center">
-            <AmountDisplay amount={777} ticker="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
             {isCurrentUserCreatorOfGame && (
               <UiButton uppercase type="primary" size="small" shape="round">
@@ -72,7 +72,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
         </CentralContent>
       }
       infoTooltip={getTooltipContent()}
-      footer={<FooterLink url={transactionLink} />}
+      footer={footerLink}
     />
   );
 };

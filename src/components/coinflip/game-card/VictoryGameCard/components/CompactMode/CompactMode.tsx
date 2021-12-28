@@ -1,10 +1,12 @@
 import { Space } from 'antd';
 import { FC } from 'react';
-import { BaseGameCard, CentralContent, FooterLink, ImageArea } from '../../../shared';
+import { BaseGameCard, CentralContent, ImageArea } from '../../../shared';
 import { useCardShared } from '../../hooks';
 import { VictoryGameCardProps } from '../../types';
 
 const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
+  const { game } = props;
+
   const {
     MyChoiceIcon,
     myChoiceColor,
@@ -15,13 +17,13 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
     getOpponentChoiceIcon,
     amountDisplay,
     signText,
-    transactionLink,
+    footerLink,
     CardStatusStyled,
   } = useCardShared(props);
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       mode="compact"
       title={getCardTitle()}
       subtitle={<CardStatusStyled>{getCardStatus()}</CardStatusStyled>}
@@ -48,7 +50,7 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
           </Space>
         </CentralContent>
       }
-      footer={<FooterLink url={transactionLink} />}
+      footer={footerLink}
     />
   );
 };

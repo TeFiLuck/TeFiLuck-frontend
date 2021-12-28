@@ -1,13 +1,14 @@
 import { UiBlocksTimeRange, UiButton } from '@/components/ui';
 import {
   GamesSortingMethod,
-  GAMES_PAGINATION_SIZES,
+  GAMES_PAGINATION_LIMITS,
   GAMES_SORTING_METHODS,
   MAX_BLOCKS_BEFORE_LIQUIDABLE,
   MIN_BLOCKS_BEFORE_LIQUIDABLE,
 } from '@/constants/coinflip';
+import { useGames } from '@/hooks/coinflip';
 import { useAppDispatch, useAppSelector } from '@/state';
-import { setPaginationSize, setResolveTimeLimitRange, setSortingMethod } from '@/state/coinflip';
+import { setPaginationLimit, setResolveTimeLimitRange, setSortingMethod } from '@/state/coinflip';
 import { Menu } from 'antd';
 import isEqual from 'lodash/isEqual';
 import { FC, useState } from 'react';
@@ -22,10 +23,11 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
   setDropdownVisibility = () => {},
 }) => {
   const dispatch = useAppDispatch();
-  const { sortingMethod, paginationSize, resolveTimeLimitRange } = useAppSelector((state) => state.coinflip);
+  const { sortingMethod, paginationLimit, resolveTimeLimitRange } = useAppSelector((state) => state.coinflip);
+  const { isPaginationFilterEnabled, isSortingFilterEnabled, isResolveTimeLimitFilterEnabled } = useGames();
 
   const [internalSortingMethod, setInternalSortingMethod] = useState(sortingMethod);
-  const [internalPaginationSize, setInternalPaginationSize] = useState(paginationSize);
+  const [internalPaginationLimit, setInternalPaginationLimit] = useState(paginationLimit);
   const [internalResolveTimeLimitRange, setInternalResolveTimeLimitRange] = useState<[number, number]>([
     ...resolveTimeLimitRange,
   ]);
@@ -36,14 +38,14 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
     return key === internalSortingMethod;
   }
 
-  function isPaginationSizeActive(size: number): boolean {
-    return size === internalPaginationSize;
+  function isPaginationLimitActive(size: number): boolean {
+    return size === internalPaginationLimit;
   }
 
   function canApplyChanges(): boolean {
     return !(
       sortingMethod === internalSortingMethod &&
-      paginationSize === internalPaginationSize &&
+      paginationLimit === internalPaginationLimit &&
       isEqual(resolveTimeLimitRange, internalResolveTimeLimitRange)
     );
   }
@@ -55,16 +57,16 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
       }
     }
 
-    if (GAMES_PAGINATION_SIZES.includes(Number(key))) {
-      if (!isPaginationSizeActive(Number(key))) {
-        setInternalPaginationSize(Number(key));
+    if (GAMES_PAGINATION_LIMITS.includes(Number(key))) {
+      if (!isPaginationLimitActive(Number(key))) {
+        setInternalPaginationLimit(Number(key));
       }
     }
   }
 
   function applyChanges(): void {
     dispatch(setSortingMethod(internalSortingMethod));
-    dispatch(setPaginationSize(internalPaginationSize));
+    dispatch(setPaginationLimit(internalPaginationLimit));
     dispatch(setResolveTimeLimitRange(internalResolveTimeLimitRange));
     setDropdownVisibility(false);
   }
@@ -80,6 +82,7 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
               min={MIN_BLOCKS_BEFORE_LIQUIDABLE}
               max={MAX_BLOCKS_BEFORE_LIQUIDABLE}
               step={MIN_BLOCKS_BEFORE_LIQUIDABLE}
+              disabled={!isResolveTimeLimitFilterEnabled}
               onChange={setInternalResolveTimeLimitRange}
             />
           </div>
@@ -90,6 +93,7 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
         title={`Sort (${currentSortingMethod.label})`}
         key="sort"
         popupClassName="coinflip-additional-filters-settings-dropdown-submenu"
+        disabled={!isSortingFilterEnabled}
       >
         {Object.entries(GAMES_SORTING_METHODS).map(([key, method]) => (
           <Menu.Item key={key}>
@@ -99,13 +103,14 @@ const AdditionalFiltersSettingsDropdownBody: FC<AdditionalFiltersSettingsDropdow
       </Menu.SubMenu>
 
       <Menu.SubMenu
-        title={`Show amount (${internalPaginationSize})`}
+        title={`Show amount (${internalPaginationLimit})`}
         key="pagination"
         popupClassName="coinflip-additional-filters-settings-dropdown-submenu"
+        disabled={!isPaginationFilterEnabled}
       >
-        {GAMES_PAGINATION_SIZES.map((size) => (
+        {GAMES_PAGINATION_LIMITS.map((size) => (
           <Menu.Item key={size}>
-            <span className={isPaginationSizeActive(size) ? 'text-color-primary' : ''}>{size}</span>
+            <span className={isPaginationLimitActive(size) ? 'text-color-primary' : ''}>{size}</span>
           </Menu.Item>
         ))}
       </Menu.SubMenu>

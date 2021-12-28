@@ -1,4 +1,3 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { APP_DANGER_COLOR, APP_DANGER_COLOR_RGB_STRING, APP_LIGHT_COLOR_1 } from '@/assets/styles/design';
 import { UiButton } from '@/components/ui';
 import { EyeOutlined, QuestionCircleFilled, WarningFilled } from '@ant-design/icons';
@@ -19,6 +18,8 @@ import { useCardShared } from '../../hooks';
 import { ResolveGameCardProps } from '../../types';
 
 const ResolveGameCard: FC<ResolveGameCardProps> = (props) => {
+  const { game } = props;
+
   const {
     cardTitle,
     cardStatus,
@@ -31,7 +32,7 @@ const ResolveGameCard: FC<ResolveGameCardProps> = (props) => {
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       mode="compact"
       glowColor={`rgba(${APP_DANGER_COLOR_RGB_STRING}, 0.22)`}
       hideLeftContent
@@ -46,7 +47,7 @@ const ResolveGameCard: FC<ResolveGameCardProps> = (props) => {
       centerContent={({ showOverlay }) => (
         <CentralContent signTextUppercase signText={signText}>
           <Space direction="vertical" align="center">
-            <AmountDisplay amount={100} ticker="LUNA" logo={<LunaLogo />} />
+            <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
             <UiButton uppercase type="primary" size="small" shape="round">
               Resolve game

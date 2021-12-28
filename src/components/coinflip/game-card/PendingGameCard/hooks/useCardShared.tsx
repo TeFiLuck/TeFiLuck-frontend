@@ -1,8 +1,16 @@
+import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
+import { useAddress } from '@/hooks';
+import { FooterLink } from '../../shared';
+import { displayResolveTimeLimit, shortenAddress } from '../../utils';
 import { PendingGameCardProps } from '../types';
 
-export function useCardShared({ isCurrentUserCreatorOfGame }: PendingGameCardProps) {
+export function useCardShared({ game }: PendingGameCardProps) {
+  const userAddress = useAddress();
+
+  const isCurrentUserCreatorOfGame = game.owner === userAddress;
+
   function getCardTitle(): string {
-    return isCurrentUserCreatorOfGame ? 'YOUR GAME' : 'YOU VS terra...dsm';
+    return isCurrentUserCreatorOfGame ? 'YOUR GAME' : `YOU VS ${shortenAddress(game.owner)}`;
   }
 
   const cardStatus = 'PENDING';
@@ -17,17 +25,18 @@ export function useCardShared({ isCurrentUserCreatorOfGame }: PendingGameCardPro
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; 24 Hours
+      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 
-  const transactionLink = '/';
+  const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
 
   return {
+    isCurrentUserCreatorOfGame,
     getCardTitle,
     cardStatus,
     getTooltipContent,
     signText,
-    transactionLink,
+    footerLink,
   };
 }

@@ -1,9 +1,14 @@
 import { CoinSide } from '@/constants/coinflip';
+import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
+import { FooterLink } from '../../shared';
+import { displayResolveTimeLimit, shortenAddress } from '../../utils';
 import { AcceptedGameCardProps } from '../types';
 
 export function useCardShared(props: AcceptedGameCardProps) {
-  const cardTitle = 'YOU VS terra...dsm';
+  const { game } = props;
+
+  const cardTitle = `YOU VS ${shortenAddress(game.owner)}`;
   const cardStatus = 'ONGOING';
 
   const canLiquidate = false;
@@ -15,7 +20,7 @@ export function useCardShared(props: AcceptedGameCardProps) {
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; 24 Hours
+      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 
@@ -57,7 +62,7 @@ export function useCardShared(props: AcceptedGameCardProps) {
     },
   ];
 
-  const transactionLink = '/';
+  const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
 
   return {
     cardTitle,
@@ -68,6 +73,6 @@ export function useCardShared(props: AcceptedGameCardProps) {
     signText,
     tooltipContent,
     gameInfoContents,
-    transactionLink,
+    footerLink,
   };
 }

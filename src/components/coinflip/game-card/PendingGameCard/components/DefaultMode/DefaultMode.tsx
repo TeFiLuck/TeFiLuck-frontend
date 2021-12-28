@@ -1,24 +1,24 @@
-import { ReactComponent as LunaLogo } from '@/assets/images/tokens/LUNA.svg';
 import { UiButton } from '@/components/ui';
 import { CoinSide } from '@/constants/coinflip';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
 import { FC } from 'react';
 import styled from 'styled-components';
-import { AmountDisplay, BaseGameCard, CentralContent, FooterLink, ImageArea } from '../../../shared';
+import { AmountDisplay, BaseGameCard, CentralContent, ImageArea } from '../../../shared';
 import { useCardShared } from '../../hooks';
 import { PendingGameCardProps } from '../../types';
 
 const PendingGameCard: FC<PendingGameCardProps> = (props) => {
-  const { isCurrentUserCreatorOfGame } = props;
+  const { game } = props;
 
-  const { getCardTitle, cardStatus, getTooltipContent, signText, transactionLink } = useCardShared(props);
+  const { isCurrentUserCreatorOfGame, getCardTitle, cardStatus, getTooltipContent, signText, footerLink } =
+    useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
 
   return (
     <BaseGameCard
-      gameId={'535fa30d7e25dd8a49f1536779734ec8286108d115da5045d77f3b4185d8f790'}
+      gameId={game.id}
       leftDecorLineColor={isCurrentUserCreatorOfGame ? 'transparent' : getCoinSideColor(CoinSide.Heads)}
       rightDecorLineColor={isCurrentUserCreatorOfGame ? 'transparent' : getCoinSideColor(CoinSide.Tails)}
       title={getCardTitle()}
@@ -50,7 +50,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
             )
           }
         >
-          <AmountDisplay amount={777} ticker="LUNA" logo={<LunaLogo />} />
+          <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
         </CentralContent>
       }
       rightContent={
@@ -69,7 +69,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
         </SideStyled>
       }
       infoTooltip={getTooltipContent()}
-      footer={<FooterLink url={transactionLink} />}
+      footer={footerLink}
     />
   );
 };

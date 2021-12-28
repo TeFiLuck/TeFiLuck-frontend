@@ -1,3 +1,4 @@
+import { GamesDisplayModeConfig, SortingConfiguration } from '@/typings/coinflip';
 import { TokenSymbol } from './tokens';
 
 export enum CoinSide {
@@ -15,17 +16,81 @@ export const MIN_REQUIRED_AMOUNT_TO_CREATE_GAME_PER_TOKEN = <const>{
 export const MAX_BET_SIZE = 1000000;
 
 export enum GamesDisplayMode {
-  Open = 'open_games',
-  My = 'my_games',
-  PublicLiquidation = 'public_liquidation',
-  RecentHistory = 'recent_history',
+  Open = 'openGames',
+  My = 'myGames',
+  PublicLiquidation = 'publicLiquidationGames',
+  RecentHistory = 'recentHistoryGames',
 }
+
+export const GAMES_DISPLAY_MODES_CONFIGURATIONS: Record<GamesDisplayMode, GamesDisplayModeConfig> = <const>{
+  [GamesDisplayMode.Open]: {
+    label: 'Pending games',
+    private: false,
+    preload: false,
+    paginatable: true,
+    filters: {
+      enabled: true,
+    },
+  },
+  [GamesDisplayMode.My]: {
+    label: 'My games',
+    private: true,
+    preload: true,
+    paginatable: false,
+    filters: {
+      enabled: false,
+    },
+  },
+  [GamesDisplayMode.PublicLiquidation]: {
+    label: 'Public liquidation',
+    private: false,
+    preload: true,
+    paginatable: true,
+    filters: {
+      enabled: true,
+      currencies: false,
+      betSizes: false,
+      resolveTimeLimit: false,
+      sorting: false,
+      pagination: true,
+    },
+  },
+  [GamesDisplayMode.RecentHistory]: {
+    label: 'Recent history',
+    private: true,
+    preload: true,
+    paginatable: true,
+    filters: {
+      enabled: true,
+      currencies: false,
+      betSizes: false,
+      resolveTimeLimit: false,
+      sorting: false,
+      pagination: true,
+    },
+  },
+};
 
 export enum GamesSortingMethod {
   HighestFirst = 'highest_first',
   LowestFirst = 'lowest_first',
   NewestFirst = 'newest_first',
 }
+
+export const SORTING_CONFIGURATIONS: Record<GamesSortingMethod, SortingConfiguration> = <const>{
+  [GamesSortingMethod.HighestFirst]: {
+    param: 'price',
+    asc: false,
+  },
+  [GamesSortingMethod.LowestFirst]: {
+    param: 'price',
+    asc: true,
+  },
+  [GamesSortingMethod.NewestFirst]: {
+    param: 'creation',
+    asc: false,
+  },
+};
 
 export const GAMES_SORTING_METHODS: Record<GamesSortingMethod, { label: string }> = <const>{
   [GamesSortingMethod.LowestFirst]: {
@@ -41,8 +106,9 @@ export const GAMES_SORTING_METHODS: Record<GamesSortingMethod, { label: string }
 
 export const DEFAULT_GAMES_SORTING_METHOD = GamesSortingMethod.LowestFirst;
 
-export const GAMES_PAGINATION_SIZES = [10, 20, 30, 50, 100];
-export const DEFAULT_GAMES_PAGINATION_SIZE = 10;
+export const GAMES_PAGINATION_LIMITS = [10, 20, 30, 50, 100];
+export const DEFAULT_GAMES_PAGINATION_LIMIT = 10;
+export const MIN_GAMES_GHOSTS_DISPLAY = 10;
 
 export const DEFAULT_AMOUNT_BLOCKS_BEFORE_LIQUIDABLE = 1440; // 2 hours
 export const MIN_BLOCKS_BEFORE_LIQUIDABLE = 360; // 30 minutes

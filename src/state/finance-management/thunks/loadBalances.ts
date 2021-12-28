@@ -28,7 +28,7 @@ export const loadBalances = createAsyncThunk(
       dispatch(
         printError({
           title: 'Failed to fetch balances',
-          description: 'There might be some network issue, try reload the browser and check your Internet connection.',
+          description: 'There might be some network issue, try reload the page and check your Internet connection.',
         }),
       );
     } finally {

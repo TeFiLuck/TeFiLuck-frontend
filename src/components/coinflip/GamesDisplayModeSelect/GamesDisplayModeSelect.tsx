@@ -1,8 +1,9 @@
-import { GamesDisplayMode } from '@/constants/coinflip';
+import { GamesDisplayMode, GAMES_DISPLAY_MODES_CONFIGURATIONS } from '@/constants/coinflip';
 import { useConnectedWallet } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { setGamesDisplayMode } from '@/state/coinflip';
 import { BaseSize } from '@/typings/app';
+import { isGamesDisplayModePrivate } from '@/utils/coinflip';
 import { Select } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -17,6 +18,13 @@ const GamesDisplayModeSelect: FC<GamesDisplayModeSelectProps> = ({ disabled = fa
   const { isWalletConnected } = useConnectedWallet();
   const { gamesDisplayMode } = useAppSelector((state) => state.coinflip);
 
+  const displayableModes = (() => {
+    const modes = Object.values(GamesDisplayMode) as GamesDisplayMode[];
+    return modes.filter((mode) => {
+      return isGamesDisplayModePrivate(mode) ? isWalletConnected : true;
+    });
+  })();
+
   const selectSize = size === 'small' ? 'middle' : 'large';
 
   return (
@@ -26,10 +34,11 @@ const GamesDisplayModeSelect: FC<GamesDisplayModeSelectProps> = ({ disabled = fa
       size={selectSize}
       onChange={(mode) => dispatch(setGamesDisplayMode(mode as GamesDisplayMode))}
     >
-      <Select.Option value={GamesDisplayMode.Open}>Pending games</Select.Option>
-      {isWalletConnected && <Select.Option value={GamesDisplayMode.My}>My games</Select.Option>}
-      <Select.Option value={GamesDisplayMode.PublicLiquidation}>Public liquidation</Select.Option>
-      {isWalletConnected && <Select.Option value={GamesDisplayMode.RecentHistory}>Recent history</Select.Option>}
+      {displayableModes.map((mode, index) => (
+        <Select.Option key={`display-mode__${index}`} value={mode}>
+          {GAMES_DISPLAY_MODES_CONFIGURATIONS[mode].label}
+        </Select.Option>
+      ))}
     </SelectStyled>
   );
 };
