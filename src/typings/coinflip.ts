@@ -19,7 +19,6 @@ export type SortingConfiguration = {
 
 export type Game = {
   id: string;
-  signature: string;
   blocks_until_liquidation: number;
   asset: {
     denom: TokenSymbol;

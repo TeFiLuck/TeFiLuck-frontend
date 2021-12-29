@@ -4,12 +4,11 @@ import { ContractCallExecutionParams, evaluateContractCall } from '../../core';
 import { convertTokensToCoins } from '../../utils';
 import { ActionType, MAIN_CONTRACT_ADDRESS } from '../constants';
 
-export type CreateGameParams = ContractCallExecutionParams<{
-  signature: string;
-  resolveTimeLimit: number;
+export type CancelGameParams = ContractCallExecutionParams<{
+  gameId: string;
 }>;
 
-export async function createGame(params: CreateGameParams): Promise<TxResult> {
+export async function cancelGame(params: CancelGameParams): Promise<TxResult> {
   const { wallet, payload, sendTokens } = params;
 
   const transactionEvaluation = await evaluateContractCall(params);
@@ -18,9 +17,8 @@ export async function createGame(params: CreateGameParams): Promise<TxResult> {
     wallet.terraAddress,
     MAIN_CONTRACT_ADDRESS[transactionEvaluation.networkKey],
     {
-      [ActionType.PLACE_BET]: {
-        signature: payload.signature,
-        blocks_until_liquidation: payload.resolveTimeLimit,
+      [ActionType.CANCEL_BET]: {
+        bet_id: payload.gameId,
       },
     },
     convertTokensToCoins(sendTokens),

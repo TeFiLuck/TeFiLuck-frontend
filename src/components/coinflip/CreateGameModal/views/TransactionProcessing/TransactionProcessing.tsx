@@ -1,5 +1,5 @@
 import { TerraAPI } from '@/api/terra';
-import { MAX_TX_POLLING_RETRIES, TX_POLLING_INTERVAL_MS } from '@/constants/networks';
+import { UiTxHashDisplay } from '@/components/ui';
 import { useNetwork } from '@/hooks';
 import { PortalLocation, teleportTo } from '@/utils/common';
 import { Space, Spin } from 'antd';
@@ -7,7 +7,6 @@ import { FC, useEffect } from 'react';
 import { Portal } from 'react-portal';
 import styled from 'styled-components';
 import { ModalView, ModalViewsProps } from '../../common';
-import TxHashDisplay from '../../components/TxHashDisplay/TxHashDisplay';
 
 type ProcessingTransactionData = {
   txHash: string;
@@ -32,38 +31,30 @@ const TransactionProcessing: FC<ModalViewsProps<ProcessingTransactionData>> = ({
     };
   }, []);
 
-  function trackTransactionResult() {
-    let retries = 0;
+  function trackTransactionResult(): void {
+    TerraAPI.core.trackTransaction({
+      networkKey,
+      txHash,
+      onSuccess: ({ transaction }) => {
+        changeView(ModalView.TransactionSuccess, {
+          transaction,
+          password,
+          shouldSavePassword,
+        });
+      },
+      onError: (response) => {
+        const failedPayload: Record<string, any> = {
+          reason: response.reason,
+        };
 
-    const loadTransaction = async () => {
-      try {
-        const transaction = await TerraAPI.core.fetchTransaction({ txHash, networkKey });
-
-        if (transaction.code) {
-          changeView(ModalView.TransactionFailed, { reason: transaction.raw_log });
-        } else {
-          changeView(ModalView.TransactionSuccess, {
-            transaction,
-            password,
-            shouldSavePassword,
-          });
+        if (!response.isExecuted) {
+          failedPayload.txHash = response.txHash;
+          failedPayload.password = password;
         }
-      } catch (err) {
-        if (retries < MAX_TX_POLLING_RETRIES) {
-          setTimeout(loadTransaction, TX_POLLING_INTERVAL_MS);
-          retries += 1;
-        } else {
-          changeView(ModalView.TransactionFailed, {
-            reason:
-              'The execution of this transaction is taking a little longer than usual. It has been successfully broadcasted, but have not been executed yet.',
-            txHash,
-            password,
-          });
-        }
-      }
-    };
 
-    loadTransaction();
+        changeView(ModalView.TransactionFailed, failedPayload);
+      },
+    });
   }
 
   return (
@@ -74,7 +65,7 @@ const TransactionProcessing: FC<ModalViewsProps<ProcessingTransactionData>> = ({
             <LoadingStyled />
             <Space direction="vertical" size={12} style={{ marginBottom: '32px' }}>
               <div className="heading-4 text-color-white">Processing transaction</div>
-              <TxHashDisplay txHash={txHash} />
+              <UiTxHashDisplay txHash={txHash} />
             </Space>
           </Space>
         </ContentStyled>

@@ -14,7 +14,7 @@ export const Networks: Record<NetworkKey, Network> = <const>{
     id: 'columbus-5',
     mantle: 'https://fcd.terra.dev/',
     stats: 'https://fcd.terra.dev/',
-    fee: { maxGas: '2000000' },
+    fee: { maxGas: '2000000', intermediateGas: '1000000', lowGas: '666666' },
   },
   [NetworkKey.TESTNET]: {
     name: 'testnet',
@@ -24,7 +24,7 @@ export const Networks: Record<NetworkKey, Network> = <const>{
     id: 'bombay-12',
     mantle: 'https://bombay-mantle.terra.dev/',
     stats: 'https://bombay-fcd.terra.dev/',
-    fee: { maxGas: '2000000' },
+    fee: { maxGas: '2000000', intermediateGas: '1000000', lowGas: '666666' },
   },
 };
 
@@ -37,5 +37,3 @@ export const WALLET_CONNECT_CHAIN_IDS = <const>{
 };
 
 export const TERRA_BLOCK_GENERATION_TIME_SEC = 5;
-export const TX_POLLING_INTERVAL_MS = 1000;
-export const MAX_TX_POLLING_RETRIES = 30;

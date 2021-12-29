@@ -1,11 +1,16 @@
+import { TerraAPI } from '@/api/terra';
+import { CoinSide } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
-import { useAddress } from '@/hooks';
+import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
+import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
 import { FooterLink } from '../../shared';
 import { displayResolveTimeLimit, shortenAddress } from '../../utils';
 import { PendingGameCardProps } from '../types';
 
 export function useCardShared({ game }: PendingGameCardProps) {
   const userAddress = useAddress();
+  const { network } = useNetwork();
+  const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
 
   const isCurrentUserCreatorOfGame = game.owner === userAddress;
 
@@ -31,6 +36,41 @@ export function useCardShared({ game }: PendingGameCardProps) {
 
   const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
 
+  function acceptGame(side: CoinSide): void {
+    if (connectedWallet) {
+      requestTransactionDispatch({
+        title: 'Accept game',
+        executionAction: TerraAPI.coinflip.acceptGame({
+          wallet: connectedWallet,
+          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
+          sendTokens: [[game.asset.denom, TerraAPI.utils.fromUAmount(game.asset.amount)]],
+          payload: {
+            gameId: game.id,
+            gameOwnerAddress: game.owner,
+            side,
+          },
+        }),
+      });
+    }
+  }
+
+  function cancelGame(): void {
+    if (connectedWallet) {
+      requestTransactionDispatch({
+        title: 'Cancel game',
+        executionAction: TerraAPI.coinflip.cancelGame({
+          wallet: connectedWallet,
+          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
+          sendTokens: [],
+          maxGas: network.fee.intermediateGas,
+          payload: {
+            gameId: game.id,
+          },
+        }),
+      });
+    }
+  }
+
   return {
     isCurrentUserCreatorOfGame,
     getCardTitle,
@@ -38,5 +78,7 @@ export function useCardShared({ game }: PendingGameCardProps) {
     getTooltipContent,
     signText,
     footerLink,
+    acceptGame,
+    cancelGame,
   };
 }

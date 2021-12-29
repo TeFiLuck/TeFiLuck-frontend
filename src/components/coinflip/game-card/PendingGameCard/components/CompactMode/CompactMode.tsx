@@ -10,8 +10,16 @@ import { PendingGameCardProps } from '../../types';
 const PendingGameCard: FC<PendingGameCardProps> = (props) => {
   const { game } = props;
 
-  const { isCurrentUserCreatorOfGame, getCardTitle, cardStatus, getTooltipContent, signText, footerLink } =
-    useCardShared(props);
+  const {
+    isCurrentUserCreatorOfGame,
+    getCardTitle,
+    cardStatus,
+    getTooltipContent,
+    signText,
+    footerLink,
+    acceptGame,
+    cancelGame,
+  } = useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
@@ -28,7 +36,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
             <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
             {isCurrentUserCreatorOfGame && (
-              <UiButton uppercase type="primary" size="small" shape="round">
+              <UiButton uppercase type="primary" size="small" shape="round" onClick={cancelGame}>
                 Cancel game
               </UiButton>
             )}
@@ -42,6 +50,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
                   size="small"
                   shape="round"
                   style={{ width: '100%' }}
+                  onClick={() => acceptGame(CoinSide.Heads)}
                 >
                   <Space size={6}>
                     Play bulls
@@ -58,6 +67,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
                   size="small"
                   shape="round"
                   style={{ width: '100%' }}
+                  onClick={() => acceptGame(CoinSide.Tails)}
                 >
                   <Space size={6}>
                     Play bears

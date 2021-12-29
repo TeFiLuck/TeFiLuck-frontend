@@ -38,7 +38,7 @@ const GamesDisplay: FC = () => {
   return (
     <div>
       <GamesGridStyled cardsPerRow={cardsPerRow}>
-        {!isFreshGamesLoading && (
+        {!isFreshGamesLoading && !isGamesEmpty && (
           <>
             {gamesWithBlanks.map((game, index) => (
               <GameCardGhostStyled key={`ghost-game__${index}`}>

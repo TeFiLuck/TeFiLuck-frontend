@@ -10,8 +10,16 @@ import { PendingGameCardProps } from '../../types';
 const PendingGameCard: FC<PendingGameCardProps> = (props) => {
   const { game } = props;
 
-  const { isCurrentUserCreatorOfGame, getCardTitle, cardStatus, getTooltipContent, signText, footerLink } =
-    useCardShared(props);
+  const {
+    isCurrentUserCreatorOfGame,
+    getCardTitle,
+    cardStatus,
+    getTooltipContent,
+    signText,
+    footerLink,
+    acceptGame,
+    cancelGame,
+  } = useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
@@ -31,7 +39,14 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
 
           {!isCurrentUserCreatorOfGame && (
             <div className="play-button">
-              <UiButton uppercase shape="round" type="primary" size="small" style={{ width: '90px', fontSize: '10px' }}>
+              <UiButton
+                uppercase
+                shape="round"
+                type="primary"
+                size="small"
+                style={{ width: '90px', fontSize: '10px' }}
+                onClick={() => acceptGame(CoinSide.Heads)}
+              >
                 Play bulls
               </UiButton>
             </div>
@@ -44,7 +59,7 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
           signText={signText}
           actionContent={
             isCurrentUserCreatorOfGame && (
-              <UiButton uppercase type="primary" size="small" shape="round">
+              <UiButton uppercase type="primary" size="small" shape="round" onClick={cancelGame}>
                 Cancel game
               </UiButton>
             )
@@ -61,7 +76,14 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
 
           {!isCurrentUserCreatorOfGame && (
             <div className="play-button">
-              <UiButton uppercase shape="round" type="primary" size="small" style={{ width: '90px', fontSize: '10px' }}>
+              <UiButton
+                uppercase
+                shape="round"
+                type="primary"
+                size="small"
+                style={{ width: '90px', fontSize: '10px' }}
+                onClick={() => acceptGame(CoinSide.Tails)}
+              >
                 Play bears
               </UiButton>
             </div>

@@ -2,7 +2,7 @@ import { TerraAPI, Transaction } from '@/api/terra';
 import { CreateGameResponse } from '@/api/terra/coinflip';
 import { ReactComponent as SuccessImage } from '@/assets/images/success.svg';
 import { APP_SUCCESS_COLOR } from '@/assets/styles/design';
-import { UiCopy } from '@/components/ui';
+import { UiCopy, UiTxHashDisplay } from '@/components/ui';
 import { useAppDispatch } from '@/state';
 import { savePassword } from '@/state/coinflip';
 import { downloadFile, PortalLocation, teleportTo } from '@/utils/common';
@@ -11,7 +11,6 @@ import { FC, useEffect } from 'react';
 import { Portal } from 'react-portal';
 import styled from 'styled-components';
 import { ModalViewsProps } from '../../common';
-import TxHashDisplay from '../../components/TxHashDisplay/TxHashDisplay';
 
 type SuccessTransactionData = {
   transaction: Transaction;
@@ -61,7 +60,7 @@ const TransactionSuccess: FC<ModalViewsProps<SuccessTransactionData>> = ({ data 
               </Space>
             </Space>
 
-            <TxHashDisplay txHash={transaction.txhash} />
+            <UiTxHashDisplay txHash={transaction.txhash} />
           </Space>
         </ContentStyled>
       </Portal>

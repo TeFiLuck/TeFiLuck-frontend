@@ -127,7 +127,7 @@ export const UiModal: FC<UiModalProps> = ({
         <Spin spinning={loading} size="large" tip={loadingText}>
           <SimpleBarReact style={{ maxHeight: '100%', height: '100%' }}>
             <ScrollContentStyled>
-              {topBanner && topBanner(scopedSlotsPayload)}
+              <div>{topBanner && topBanner(scopedSlotsPayload)}</div>
               <ContentStyled horizontalOffset={horizontalOffset}>{children}</ContentStyled>
             </ScrollContentStyled>
           </SimpleBarReact>

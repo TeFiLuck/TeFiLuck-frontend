@@ -3,4 +3,5 @@ export enum PortalLocation {
   CreateGameModalTopBanner = 'create-game-modal-top-banner',
   CreateGameModalContent = 'create-game-modal-content',
   CreateGameModalFooter = 'create-game-modal-footer',
+  TransactionModalContent = 'transaction-modal-content',
 }

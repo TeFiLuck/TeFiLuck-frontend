@@ -1,6 +1,9 @@
 import { NetworkKey } from '@/constants/networks';
 import { GasPricesMap } from './types';
 
+export const TX_POLLING_INTERVAL_MS = 1000;
+export const MAX_TX_POLLING_RETRIES = 30;
+
 export const GAS_PRICES_ENDPOINT_URN = '/v1/txs/gas_prices';
 export const TRANSACTION_ENDPOINT_URN = (txHash: string) => `/txs/${txHash}`;
 

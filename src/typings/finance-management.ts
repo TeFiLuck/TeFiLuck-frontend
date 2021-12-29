@@ -8,6 +8,8 @@ export type Network = NetworkInfo & {
   stats: string;
   fee: {
     maxGas: string;
+    intermediateGas: string;
+    lowGas: string;
   };
 };
 
@@ -22,4 +24,18 @@ export type Token = {
   ticker: string;
   logo: string;
   balance: number;
+};
+
+export interface TxResult {
+  result: {
+    height: number;
+    raw_log: string;
+    txhash: string;
+  };
+  success: boolean;
+}
+
+export type TransactionConfig = {
+  title: string;
+  executionAction: Promise<TxResult>;
 };

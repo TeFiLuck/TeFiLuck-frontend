@@ -9,3 +9,4 @@ export * from './UiNumberInput/UiNumberInput';
 export * from './UiSkeleton/UiSkeleton';
 export * from './UiTokenAmountInput/UiTokenAmountInput';
 export * from './UiTokensSelect/UiTokensSelect';
+export * from './UiTxHashDisplay/UiTxHashDisplay';

@@ -2,8 +2,8 @@ import { GamesDisplayModeConfig, SortingConfiguration } from '@/typings/coinflip
 import { TokenSymbol } from './tokens';
 
 export enum CoinSide {
-  Heads,
-  Tails,
+  Heads = 0,
+  Tails = 1,
 }
 
 export const DEFAULT_SELECTED_SIDE = CoinSide.Heads;

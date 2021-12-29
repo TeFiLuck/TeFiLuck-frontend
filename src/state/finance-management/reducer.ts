@@ -1,12 +1,14 @@
 import { DEFAULT_MAIN_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
-import { TokensBalances } from '@/typings/finance-management';
+import { TokensBalances, TransactionConfig, TxResult } from '@/typings/finance-management';
 import { createReducer } from '@reduxjs/toolkit';
 import {
   resetBalances,
   setBalances,
   setBalancesLoading,
+  setIsTransactionModalOpened,
   setMainTokenSymbol,
+  setTransactionConfig,
   updateBalances,
 } from './actions';
 import { generateInitialBalancesState } from './utils';
@@ -16,6 +18,8 @@ export interface FinanceManagementState {
   isBalancesLoading: boolean;
   balancesUpdateCounter: number;
   mainTokenSymbol: TokenSymbol;
+  isTransactionModalOpened: boolean;
+  transactionConfig: TransactionConfig;
 }
 
 export const initialState: FinanceManagementState = {
@@ -23,6 +27,11 @@ export const initialState: FinanceManagementState = {
   isBalancesLoading: false,
   balancesUpdateCounter: 0,
   mainTokenSymbol: DEFAULT_MAIN_TOKEN_SYMBOL,
+  isTransactionModalOpened: false,
+  transactionConfig: {
+    title: '',
+    executionAction: new Promise(() => {}) as Promise<TxResult>,
+  },
 };
 
 export default createReducer(initialState, (builder) =>
@@ -41,5 +50,11 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setMainTokenSymbol, (state, { payload }) => {
       state.mainTokenSymbol = payload;
+    })
+    .addCase(setIsTransactionModalOpened, (state, { payload }) => {
+      state.isTransactionModalOpened = payload;
+    })
+    .addCase(setTransactionConfig, (state, { payload }) => {
+      state.transactionConfig = payload;
     }),
 );

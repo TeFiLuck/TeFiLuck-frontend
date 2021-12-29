@@ -11,15 +11,17 @@ export async function evaluateContractCall({
   feeTokenSymbol,
   sendTokens,
   maxRetries = 3,
+  maxGas,
 }: ContractCallEvaluationParams) {
   const networkKey = getKeyByNetwork(wallet.network as Network);
   const network = getNetworkByKey(networkKey);
+  const maxGasAllowed = maxGas || network.fee.maxGas;
 
   const gasPricesMap = await fetchGasPrices(networkKey, maxRetries);
   const feeTokenGasPrice = gasPricesMap[feeTokenSymbol];
 
   const totalFees = new Coins({});
-  const transactionFee = Math.ceil(Number(network.fee.maxGas) * Number(feeTokenGasPrice));
+  const transactionFee = Math.ceil(Number(maxGasAllowed) * Number(feeTokenGasPrice));
   totalFees.set(feeTokenSymbol, transactionFee);
 
   for (let i = 0; i < sendTokens.length; i++) {
@@ -46,7 +48,7 @@ export async function evaluateContractCall({
 
   return {
     gasPrices: `${feeTokenGasPrice}${feeTokenSymbol}`,
-    fee: new Fee(parseInt(network.fee.maxGas), totalFees),
+    fee: new Fee(parseInt(maxGasAllowed), totalFees),
     networkKey,
   };
 }

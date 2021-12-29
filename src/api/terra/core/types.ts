@@ -33,6 +33,7 @@ export interface ContractCallEvaluationParams {
   feeTokenSymbol: NativeTokenSymbol;
   sendTokens: Token[];
   maxRetries?: number;
+  maxGas?: string;
 }
 
 export interface ContractCallExecutionParams<T> extends ContractCallEvaluationParams {

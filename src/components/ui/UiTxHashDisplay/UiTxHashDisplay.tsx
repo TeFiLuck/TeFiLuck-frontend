@@ -4,11 +4,11 @@ import { shortenStr } from '@/utils/format';
 import { getTerraTransactionLink } from '@/utils/networks';
 import { FC } from 'react';
 
-export interface TxHashDisplayProps {
+export interface UiTxHashDisplayProps {
   txHash?: string;
 }
 
-const TxHashDisplay: FC<TxHashDisplayProps> = ({ txHash }) => {
+export const UiTxHashDisplay: FC<UiTxHashDisplayProps> = ({ txHash }) => {
   const { networkKey } = useNetwork();
   const hash = txHash || '';
   const txLink = getTerraTransactionLink(hash, networkKey);
@@ -22,5 +22,3 @@ const TxHashDisplay: FC<TxHashDisplayProps> = ({ txHash }) => {
     </div>
   );
 };
-
-export default TxHashDisplay;

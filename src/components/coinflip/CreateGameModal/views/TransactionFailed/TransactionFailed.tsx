@@ -1,13 +1,12 @@
 import { ReactComponent as FailImage } from '@/assets/images/fail.svg';
 import { APP_DANGER_COLOR } from '@/assets/styles/design';
-import { UiButton, UiCopy } from '@/components/ui';
+import { UiButton, UiCopy, UiTxHashDisplay } from '@/components/ui';
 import { PortalLocation, teleportTo } from '@/utils/common';
 import { Input, Space } from 'antd';
 import { FC } from 'react';
 import { Portal } from 'react-portal';
 import styled from 'styled-components';
 import { ModalView, ModalViewsProps } from '../../common';
-import TxHashDisplay from '../../components/TxHashDisplay/TxHashDisplay';
 
 type FailedTransactionData = {
   reason?: string;
@@ -63,7 +62,7 @@ const TransactionFailed: FC<ModalViewsProps<FailedTransactionData>> = ({ changeV
               </SavePasswordContainerStyled>
             )}
 
-            {isTxNotExecutedYet && <TxHashDisplay txHash={data?.txHash} />}
+            {isTxNotExecutedYet && <UiTxHashDisplay txHash={data?.txHash} />}
 
             {isTxExecuted && (
               <div>
