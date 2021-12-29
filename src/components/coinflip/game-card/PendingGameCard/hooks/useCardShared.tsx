@@ -4,7 +4,7 @@ import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
 import { FooterLink } from '../../shared';
-import { displayResolveTimeLimit, shortenAddress } from '../../utils';
+import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
 import { PendingGameCardProps } from '../types';
 
 export function useCardShared({ game }: PendingGameCardProps) {
@@ -30,7 +30,7 @@ export function useCardShared({ game }: PendingGameCardProps) {
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
+      &#8776; {displayBlocksTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 

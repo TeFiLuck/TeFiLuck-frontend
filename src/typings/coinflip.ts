@@ -1,3 +1,4 @@
+import { CoinSide } from '@/constants/coinflip';
 import { TokenSymbol } from '@/constants/tokens';
 
 export type BetSizesRange<T extends number | string> = {
@@ -26,6 +27,15 @@ export type Game = {
   };
   owner: string;
   created_at: number;
+};
+
+export type OngoingGame = Game & {
+  responder: string;
+  responder_side: CoinSide;
+  liquidation_block: number;
+  responder_liquidation_blocks_gap: number;
+  started_at_block: number;
+  signature: string;
 };
 
 export type GamesDisplayModeConfig = {

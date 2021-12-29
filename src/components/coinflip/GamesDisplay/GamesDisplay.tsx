@@ -1,5 +1,7 @@
+import { AcceptedGameCard } from '@/components/coinflip/game-card/AcceptedGameCard';
 import { LoadingGameCard } from '@/components/coinflip/game-card/LoadingGameCard';
 import { PendingGameCard } from '@/components/coinflip/game-card/PendingGameCard';
+import { ResolveGameCard } from '@/components/coinflip/game-card/ResolveGameCard';
 import { GameCardMode } from '@/components/coinflip/game-card/types';
 import { UiButton } from '@/components/ui';
 import { useMediaQueries } from '@/hooks';
@@ -13,10 +15,24 @@ import styled from 'styled-components';
 const GamesDisplay: FC = () => {
   const { is1300PxOrLess, is1024PxOrLess, is775PxOrLess, is515PxOrLess, is440PxOrLess } = useMediaQueries();
   const { paginationLimit } = useAppSelector((state) => state.coinflip);
-  const { gamesWithBlanks, loadGames, isGamesEmpty, isGamesLoading, isFreshGamesLoading, canLoadMoreGames } =
-    useGames();
+  const {
+    gamesWithBlanks,
+    loadGames,
+    isGamesEmpty,
+    isGamesLoading,
+    isFreshGamesLoading,
+    canLoadMoreGames,
+    isOngoingGame,
+    isGameCreatedByUser,
+    isGameAcceptedByUser,
+  } = useGames();
 
   function displayCard(game: Game) {
+    if (isOngoingGame(game)) {
+      if (isGameCreatedByUser(game)) return <ResolveGameCard game={game} mode={cardsDisplayMode} />;
+      if (isGameAcceptedByUser(game)) return <AcceptedGameCard game={game} mode={cardsDisplayMode} />;
+    }
+
     return <PendingGameCard game={game} mode={cardsDisplayMode} />;
   }
 

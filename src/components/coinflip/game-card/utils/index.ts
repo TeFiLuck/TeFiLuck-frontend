@@ -1,2 +1,2 @@
-export * from './displayResolveTimeLimit';
+export * from './displayBlocksTimeLimit';
 export * from './shortenAddress';

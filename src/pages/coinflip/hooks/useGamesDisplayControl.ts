@@ -41,13 +41,7 @@ export function useGamesDisplayControl() {
     if (isGamesInitiallyFetched && !isGamesLoading) {
       loadGames({ fresh: true });
     }
-  }, [betsSizesRanges, resolveTimeLimitRange, sortingMethod, paginationLimit]);
-
-  useEffect(() => {
-    if (isGamesInitiallyFetched && !isGamesLoading && !hasUnresolvedGames) {
-      loadGames({ fresh: true });
-    }
-  }, [gamesDisplayMode]);
+  }, [betsSizesRanges, resolveTimeLimitRange, sortingMethod, paginationLimit, gamesDisplayMode]);
 
   useEffect(() => {
     if (isGamesInitiallyFetched && hasUnresolvedGames) {

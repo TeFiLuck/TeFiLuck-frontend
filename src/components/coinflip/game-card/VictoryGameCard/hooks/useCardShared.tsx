@@ -30,7 +30,7 @@ export function useCardShared({ opponentLiquidated, performedLiquidation, game }
 
   function getCardSignText(): string {
     if (opponentLiquidated) return 'Profit: 90% + 7%';
-    if (performedLiquidation) return 'Profit: 7% of bet size';
+    if (performedLiquidation) return 'Profit: 7% of pot size';
     return 'Thank you for using TeFiLuck';
   }
 

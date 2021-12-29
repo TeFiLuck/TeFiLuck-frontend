@@ -1,19 +1,24 @@
+import { UiSkeleton } from '@/components/ui';
+import { useCurrentBlockNumber } from '@/hooks';
+import { OngoingGame } from '@/typings/coinflip';
 import styled from 'styled-components';
-import { displayResolveTimeLimit, shortenAddress } from '../../utils';
+import { BlocksTimer } from '../../shared';
+import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
 import { ResolveGameCardProps } from '../types';
 
 export function useCardShared(props: ResolveGameCardProps) {
-  const { game } = props;
+  const { currentBlockNumber, isCurrentBlockNumberLoading } = useCurrentBlockNumber();
+  const game = props.game as OngoingGame;
 
-  const cardTitle = `YOU VS ${shortenAddress('terra...dsm')}`;
+  const cardTitle = `YOU VS ${shortenAddress(game.responder)}`;
   const cardStatus = 'ONGOING';
 
-  const canBeLiquidated = false;
+  const canBeLiquidated = currentBlockNumber >= game.liquidation_block;
 
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
+      &#8776; {displayBlocksTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 
@@ -23,24 +28,40 @@ export function useCardShared(props: ResolveGameCardProps) {
   const gameInfoContents = [
     {
       label: 'Started at',
-      value: '22367666',
+      value: game.started_at_block,
       tooltip: 'Block number when your opponent responded on game',
     },
     {
       label: 'Liquidatable at',
-      value: '22367666',
+      value: game.liquidation_block,
       tooltip: 'If you won\'t resolve the game, you might get liquidated starting from this Terra block number',
     },
     {
       label: 'Till liquidatable',
-      value: <span className="text-color-primary">&#8776;01:54:00</span>,
+      value: (
+        <>
+          {isCurrentBlockNumberLoading ? (
+            <UiSkeleton width="70px" height="12px" />
+          ) : (
+            <span className="text-color-primary">
+              <BlocksTimer current={currentBlockNumber} end={game.liquidation_block} />
+            </span>
+          )}
+        </>
+      ),
       tooltip: '',
     },
   ];
 
   const liquidationIndicatorContent = (
     <LiquidationStatusTextStyled liquidatable={canBeLiquidated}>
-      {canBeLiquidated ? 'Can be liquidated' : 'Can\'t be liquidated'}
+      {isCurrentBlockNumberLoading ? (
+        <UiSkeleton width="100px" height="10px" />
+      ) : canBeLiquidated ? (
+        'Can be liquidated'
+      ) : (
+        'Can\'t be liquidated'
+      )}
     </LiquidationStatusTextStyled>
   );
 

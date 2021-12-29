@@ -30,6 +30,7 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
     tooltipContent,
     gameInfoContents,
     footerLink,
+    liquidateGame,
   } = useCardShared(props);
 
   return (
@@ -50,7 +51,14 @@ const AcceptedGameCard: FC<AcceptedGameCardProps> = (props) => {
           <Space direction="vertical">
             <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
-            <UiButton uppercase type="primary" size="small" shape="round" disabled={!canLiquidate}>
+            <UiButton
+              uppercase
+              type="primary"
+              size="small"
+              shape="round"
+              disabled={!canLiquidate}
+              onClick={liquidateGame}
+            >
               Liquidate
             </UiButton>
 

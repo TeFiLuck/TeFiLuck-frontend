@@ -1,26 +1,37 @@
-import { CoinSide } from '@/constants/coinflip';
+import { TerraAPI } from '@/api/terra';
+import { UiSkeleton } from '@/components/ui';
+import {
+  GUARANTEED_LIQUIDATION_PROFIT_PERCENTAGE,
+  MAX_LIQUIDATION_PROFIT_PERCENTAGE,
+  PRIVATE_LIQUIDATION_TIME_LIMIT_BLOCKS,
+} from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
+import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
+import { useConnectedWallet, useCurrentBlockNumber, useNetwork } from '@/hooks';
+import { OngoingGame } from '@/typings/coinflip';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
-import { FooterLink } from '../../shared';
-import { displayResolveTimeLimit, shortenAddress } from '../../utils';
+import { BlocksTimer, FooterLink } from '../../shared';
+import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
 import { AcceptedGameCardProps } from '../types';
 
 export function useCardShared(props: AcceptedGameCardProps) {
-  const { game } = props;
+  const { network } = useNetwork();
+  const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
+  const { currentBlockNumber, isCurrentBlockNumberLoading } = useCurrentBlockNumber();
+  const game = props.game as OngoingGame;
 
   const cardTitle = `YOU VS ${shortenAddress(game.owner)}`;
   const cardStatus = 'ONGOING';
 
-  const canLiquidate = false;
+  const canLiquidate = currentBlockNumber >= game.liquidation_block;
 
-  const sideChoice = CoinSide.Tails;
-  const chosenSideColor = getCoinSideColor(sideChoice);
-  const ChosenSideIcon = getCoinSideIcon(sideChoice);
+  const chosenSideColor = getCoinSideColor(game.responder_side);
+  const ChosenSideIcon = getCoinSideIcon(game.responder_side);
 
   const signText = (
     <span>
       Resolve time: <br />
-      &#8776; {displayResolveTimeLimit(game.blocks_until_liquidation)}
+      &#8776; {displayBlocksTimeLimit(game.blocks_until_liquidation)}
     </span>
   );
 
@@ -29,40 +40,71 @@ export function useCardShared(props: AcceptedGameCardProps) {
       To complete game, your opponent should resolve it with his password. However if he fails to do so in resolve
       time-limit, you will be able to liquidate him and claim the profit.
       <br />
-      Be aware, that after he fails to resolve game, you will have 10 minutes to liquidate him yourself to get max
-      profit - 97% of his bet size.
+      Be aware, that after he fails to resolve game, you will have&nbsp;
+      <b>
+        {PRIVATE_LIQUIDATION_TIME_LIMIT_BLOCKS} blocks (&#8776;
+        {displayBlocksTimeLimit(PRIVATE_LIQUIDATION_TIME_LIMIT_BLOCKS)}) &nbsp;
+      </b>
+      to liquidate him yourself to get max profit: <b>{MAX_LIQUIDATION_PROFIT_PERCENTAGE}% of pot size</b>.
+      <br />
       <br />
       If you fail to liquidate him within specified time-limit, the game will be publicly liquidatable and you might end
-      up getting 90% of total profit.
+      up getting <b>{GUARANTEED_LIQUIDATION_PROFIT_PERCENTAGE}% of pot size.</b>
     </span>
   );
 
   const gameInfoContents = [
     {
       label: 'Started at',
-      value: '22367666',
+      value: game.started_at_block,
       tooltip: 'Block number when you have responded on game',
     },
     {
       label: 'Liquidatable at',
-      value: '22367666',
+      value: game.liquidation_block,
       tooltip:
         'If game is not resolved, you will be able to liquidate your opponent starting from following block number',
     },
     {
       label: 'Till liquidatable',
-      value: <span className="text-color-primary">&#8776;01:54:00</span>,
+      value: (
+        <>
+          {isCurrentBlockNumberLoading ? (
+            <UiSkeleton width="70px" height="12px" />
+          ) : (
+            <span className="text-color-primary">
+              <BlocksTimer current={currentBlockNumber} end={game.liquidation_block} />
+            </span>
+          )}
+        </>
+      ),
       tooltip: '',
     },
     {
       label: 'Publicly liquidatable',
-      value: '22367666',
-      tooltip:
-        'If game is not resolved and you will not liquidate it within available time-limit, any person will be able to liquidate the game. No worries, you will still get 90% of profit.',
+      value: game.responder_liquidation_blocks_gap,
+      tooltip: `If game is not resolved and you will not liquidate it within available time-limit, any person will be able to liquidate the game. No worries, you will still get ${GUARANTEED_LIQUIDATION_PROFIT_PERCENTAGE}% of profit.`,
     },
   ];
 
   const footerLink = <FooterLink url={GAME_FLOW_DESCRIPTION_ARTICLE_LINK} text="Game rules" />;
+
+  function liquidateGame(): void {
+    if (connectedWallet) {
+      requestTransactionDispatch({
+        title: 'Liquidate opponent',
+        executionAction: TerraAPI.coinflip.liquidateGame({
+          wallet: connectedWallet,
+          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
+          sendTokens: [],
+          maxGas: network.fee.intermediateGas,
+          payload: {
+            gameId: game.id,
+          },
+        }),
+      });
+    }
+  }
 
   return {
     cardTitle,
@@ -74,5 +116,6 @@ export function useCardShared(props: AcceptedGameCardProps) {
     tooltipContent,
     gameInfoContents,
     footerLink,
+    liquidateGame,
   };
 }

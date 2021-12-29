@@ -10,7 +10,7 @@ import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { setIsCreateGameModalOpened } from '@/state/coinflip';
 import { FilterFilled } from '@ant-design/icons';
-import { Space } from 'antd';
+import { Alert, Space } from 'antd';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
@@ -22,7 +22,7 @@ const Page: FC = () => {
   const dispatch = useAppDispatch();
   const { is800PxOrLess, is600PxOrLess, is440PxOrLess } = useMediaQueries();
   const { isCreateGameModalOpened } = useAppSelector((state) => state.coinflip);
-  const { isGamesFiltersEnabled, isGamesDisplayModeSelectionEnabled } = useGames();
+  const { isGamesFiltersEnabled, isGamesDisplayModeSelectionEnabled, hasUnresolvedGames } = useGames();
 
   const [createGameModalKey, setCreateGameModalKey] = useState(uuidv4());
 
@@ -80,6 +80,20 @@ const Page: FC = () => {
             )}
             {GamesFiltersDisplay}
           </MobileGamesFiltersSectionStyled>
+        )}
+
+        {hasUnresolvedGames && (
+          <Alert
+            message={
+              <span>
+                ATTENTION! You have unresolved games, please resolve them as soon as possible to avoid liquidation and
+                reduce waiting period for your opponent.
+              </span>
+            }
+            banner
+            style={{ marginBottom: '16px' }}
+            type="error"
+          />
         )}
 
         <GamesDisplay />

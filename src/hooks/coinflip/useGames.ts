@@ -2,7 +2,7 @@ import { GamesDisplayMode } from '@/constants/coinflip';
 import { useAddress, useNetwork } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { loadGames as loadGamesAction, LoadGamesPayload } from '@/state/coinflip';
-import { Game } from '@/typings/coinflip';
+import { Game, OngoingGame } from '@/typings/coinflip';
 import { Partial } from '@/typings/general';
 import {
   isGamesDisplayModeFiltersEnabled,
@@ -25,16 +25,29 @@ export function useGames() {
   const games = gamesWithBlanks.filter((game) => !!game) as Game[];
 
   const myGames = allGames[GamesDisplayMode.My].filter((game) => !!game) as Game[];
-  const unresolvedGames = myGames.filter((game) => false);
+  const ongoingGames = myGames.filter((game) => 'responder' in game) as OngoingGame[];
+  const unresolvedGames = ongoingGames.filter((game) => game.owner === userWalletAddress);
   const hasUnresolvedGames = !!unresolvedGames.length;
+
+  function isOngoingGame(game: Game): game is OngoingGame {
+    return ongoingGames.findIndex((item) => item.id === game.id) > -1;
+  }
+
+  function isGameCreatedByUser(game: Game) {
+    return game.owner === userWalletAddress;
+  }
+
+  function isGameAcceptedByUser(game: Game) {
+    if (!('responder' in game)) return false;
+    return (game as Game & { responder: string }).responder === userWalletAddress;
+  }
 
   const isGamesEmpty = !games.length;
   const isFreshGamesLoading = isGamesLoading && isGamesEmpty;
   const isMoreGamesLoading = isGamesLoading && !isGamesEmpty;
 
-  const isGamesFiltersEnabled =
-    !isGamesLoading && !hasUnresolvedGames && isGamesDisplayModeFiltersEnabled(gamesDisplayMode);
-  const isGamesDisplayModeSelectionEnabled = !isGamesLoading && !hasUnresolvedGames;
+  const isGamesFiltersEnabled = !isGamesLoading && isGamesDisplayModeFiltersEnabled(gamesDisplayMode);
+  const isGamesDisplayModeSelectionEnabled = !isGamesLoading;
   const isCurrenciesFilterEnabled =
     isGamesFiltersEnabled && isGamesModeSpecificFilterEnabled(gamesDisplayMode, 'currencies');
   const isBetSizesFilterEnabled =
@@ -62,6 +75,9 @@ export function useGames() {
     myGames,
     unresolvedGames,
     hasUnresolvedGames,
+    isOngoingGame,
+    isGameCreatedByUser,
+    isGameAcceptedByUser,
     isGamesEmpty,
     isGamesLoading,
     isFreshGamesLoading,

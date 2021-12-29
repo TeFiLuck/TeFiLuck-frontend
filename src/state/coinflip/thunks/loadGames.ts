@@ -130,19 +130,23 @@ export const loadMyGames = createAsyncThunk(
       address: userWalletAddress,
     });
 
-    return [...ongoing, ...pending];
+    const creatorOngoingGames = ongoing.filter((game) => game.owner === userWalletAddress);
+    const responderOngoingGames = ongoing.filter((game) => game.owner !== userWalletAddress);
+
+    return [...creatorOngoingGames, ...responderOngoingGames, ...pending];
   },
 );
 
 export const loadPublicLiquidationGames = createAsyncThunk(
   'coinflip/loadPublicLiquidationGames',
-  async ({ networkKey }: LoadGamesPayload, { getState }): Promise<Game[]> => {
+  async ({ networkKey, userWalletAddress }: LoadGamesPayload, { getState }): Promise<Game[]> => {
     const { coinflip } = getState() as AppState;
 
     const response = await AppAPI.coinflip.fetchPublicLiquidationGames({
       networkKey,
       skip: coinflip.paginationStep * coinflip.paginationLimit,
       limit: coinflip.paginationLimit,
+      excludeAddress: userWalletAddress,
     });
 
     return response;

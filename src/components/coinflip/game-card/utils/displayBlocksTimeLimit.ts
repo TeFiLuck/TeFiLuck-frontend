@@ -1,7 +1,7 @@
 import { getHoursFromTerraBlocksAmount } from '@/utils/networks';
 
-export function displayResolveTimeLimit(resolveTimeLimit: number) {
-  const hours = getHoursFromTerraBlocksAmount(resolveTimeLimit);
+export function displayBlocksTimeLimit(blocksTimeLimit: number): string {
+  const hours = getHoursFromTerraBlocksAmount(blocksTimeLimit);
   const fullHours = Math.floor(hours);
   const minutesDouble = hours - fullHours;
   const fullMinutes = Math.floor(minutesDouble * 60);

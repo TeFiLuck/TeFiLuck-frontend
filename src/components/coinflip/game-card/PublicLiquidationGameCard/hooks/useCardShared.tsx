@@ -11,7 +11,7 @@ export function useCardShared(props: PublicLiquidationGameCardProps) {
   const signText = (
     <span>
       Profit: <br />
-      7% of bet size
+      7% of pot size
     </span>
   );
 
