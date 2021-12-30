@@ -5,6 +5,8 @@ import { loadGames as loadGamesAction, LoadGamesPayload } from '@/state/coinflip
 import { Game, OngoingGame } from '@/typings/coinflip';
 import { Partial } from '@/typings/general';
 import {
+  isGameAcceptedByAddress,
+  isGameCreatedByAddress,
   isGamesDisplayModeFiltersEnabled,
   isGamesModePaginatable,
   isGamesModeSpecificFilterEnabled,
@@ -26,20 +28,19 @@ export function useGames() {
 
   const myGames = allGames[GamesDisplayMode.My].filter((game) => !!game) as Game[];
   const ongoingGames = myGames.filter((game) => 'responder' in game) as OngoingGame[];
-  const unresolvedGames = ongoingGames.filter((game) => game.owner === userWalletAddress);
+  const unresolvedGames = ongoingGames.filter((game) => isGameCreatedByAddress(game, userWalletAddress));
   const hasUnresolvedGames = !!unresolvedGames.length;
 
   function isOngoingGame(game: Game): game is OngoingGame {
     return ongoingGames.findIndex((item) => item.id === game.id) > -1;
   }
 
-  function isGameCreatedByUser(game: Game) {
-    return game.owner === userWalletAddress;
+  function isGameCreatedByUser(game: Game): boolean {
+    return isGameCreatedByAddress(game, userWalletAddress);
   }
 
-  function isGameAcceptedByUser(game: Game) {
-    if (!('responder' in game)) return false;
-    return (game as Game & { responder: string }).responder === userWalletAddress;
+  function isGameAcceptedByUser(game: Game): boolean {
+    return isGameAcceptedByAddress(game, userWalletAddress);
   }
 
   const isGamesEmpty = !games.length;
@@ -70,6 +71,7 @@ export function useGames() {
   }
 
   return {
+    gamesDisplayMode,
     gamesWithBlanks,
     games,
     myGames,

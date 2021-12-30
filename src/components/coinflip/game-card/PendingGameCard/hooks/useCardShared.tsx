@@ -3,6 +3,7 @@ import { CoinSide } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
+import { isGameCreatedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
 import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
 import { PendingGameCardProps } from '../types';
@@ -12,7 +13,7 @@ export function useCardShared({ game }: PendingGameCardProps) {
   const { network } = useNetwork();
   const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
 
-  const isCurrentUserCreatorOfGame = game.owner === userAddress;
+  const isCurrentUserCreatorOfGame = isGameCreatedByAddress(game, userAddress);
 
   function getCardTitle(): string {
     return isCurrentUserCreatorOfGame ? 'YOUR GAME' : `YOU VS ${shortenAddress(game.owner)}`;

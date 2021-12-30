@@ -11,23 +11,31 @@ export interface AmountDisplayProps {
   uAmount: string;
   tokenSymbol: TokenSymbol;
   color?: CSS.Property.Color;
+  withLeadingPlus?: boolean;
 }
 
-export const AmountDisplay: FC<AmountDisplayProps> = ({ uAmount, tokenSymbol, color = '#ffffff' }) => {
+export const AmountDisplay: FC<AmountDisplayProps> = ({
+  uAmount,
+  tokenSymbol,
+  color = '#ffffff',
+  withLeadingPlus = false,
+}) => {
   const { findToken } = useTokens();
 
   const token = findToken(tokenSymbol);
-  const tokenAmount = round(TerraAPI.utils.fromUAmount(uAmount, tokenSymbol), 3);
+  const tokenAmount = round(TerraAPI.utils.fromUAmount(uAmount, tokenSymbol), 6);
 
-  const shouldShowTicker = String(tokenAmount).length <= 3;
+  const tokenAmountString = `${tokenAmount > 0 && withLeadingPlus ? '+' : ''}${tokenAmount}`;
 
-  const fontSize = String(tokenAmount).length <= 8 ? '14px' : '12px';
+  const shouldShowTicker = tokenAmountString.length <= 3;
+
+  const fontSize = tokenAmountString.length <= 8 ? '14px' : '12px';
 
   return (
     <WrapperStyled fontSize={fontSize} color={color}>
       <Space>
         <span>
-          {tokenAmount}
+          {tokenAmountString}
           {shouldShowTicker && <span>&nbsp;{token.ticker}</span>}
         </span>
         <div className="token-logo flex flex-align-center">

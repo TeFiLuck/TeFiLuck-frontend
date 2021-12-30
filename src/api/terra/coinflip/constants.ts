@@ -1,8 +1,8 @@
 import { NetworkKey } from '@/constants/networks';
 
 export const MAIN_CONTRACT_ADDRESS: Record<NetworkKey, string> = <const>{
-  [NetworkKey.MAINNET]: 'terra15m3xuj90ygl2a88vpjckrl7qw8q2tc64pdvfha',
-  [NetworkKey.TESTNET]: 'terra15m3xuj90ygl2a88vpjckrl7qw8q2tc64pdvfha',
+  [NetworkKey.MAINNET]: 'terra13qwejqvsna8wffj9plvv594d348dm52sut4wx3',
+  [NetworkKey.TESTNET]: 'terra13qwejqvsna8wffj9plvv594d348dm52sut4wx3',
 };
 
 export enum ActionType {

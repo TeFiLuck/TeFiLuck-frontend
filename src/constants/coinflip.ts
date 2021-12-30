@@ -15,6 +15,11 @@ export const MIN_REQUIRED_AMOUNT_TO_CREATE_GAME_PER_TOKEN = <const>{
 
 export const MAX_BET_SIZE = 1000000;
 
+export enum GameOutcome {
+  Liquidated = 'liquidated',
+  Resolved = 'resolved',
+}
+
 export enum GamesDisplayMode {
   Open = 'openGames',
   My = 'myGames',
@@ -120,6 +125,8 @@ export const GENERATED_ENCRYPTION_PASSWORD_LENGTH = 255;
 
 export const PRIVATE_LIQUIDATION_TIME_LIMIT_BLOCKS = 120; // 10 minutes
 export const PLATFORM_LIQUIDATION_FEE_PERCENT = 2;
+export const PLATFORM_GAME_FEE_PERCENT = 0;
+export const GUARANTEED_RESOLVED_GAME_PROFIT_PERCENTAGE = 100 - PLATFORM_GAME_FEE_PERCENT;
 export const LIQUIDATOR_FEE_PERCENT = 4;
 export const MAX_LIQUIDATION_PROFIT_PERCENTAGE = 100 - PLATFORM_LIQUIDATION_FEE_PERCENT;
 export const GUARANTEED_LIQUIDATION_PROFIT_PERCENTAGE = 100 - LIQUIDATOR_FEE_PERCENT - PLATFORM_LIQUIDATION_FEE_PERCENT;

@@ -1,4 +1,4 @@
-import { CoinSide } from '@/constants/coinflip';
+import { CoinSide, GameOutcome } from '@/constants/coinflip';
 import { TokenSymbol } from '@/constants/tokens';
 
 export type BetSizesRange<T extends number | string> = {
@@ -36,6 +36,23 @@ export type OngoingGame = Game & {
   responder_liquidation_blocks_gap: number;
   started_at_block: number;
   signature: string;
+};
+
+export type PubliclyLiquidatableGame = Game & {
+  responder: string;
+  responder_side: CoinSide;
+  liquidation_block: number;
+  responder_liquidation_blocks_gap: number;
+  started_at_block: number;
+  signature: string;
+};
+
+export type HistoricalGame = Game & {
+  responder: string;
+  winner: string;
+  liquidator: string | null;
+  responder_side: CoinSide;
+  outcome: GameOutcome;
 };
 
 export type GamesDisplayModeConfig = {

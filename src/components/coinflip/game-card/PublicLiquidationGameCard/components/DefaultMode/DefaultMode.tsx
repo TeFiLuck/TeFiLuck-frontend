@@ -9,7 +9,8 @@ import { PublicLiquidationGameCardProps } from '../../types';
 
 const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) => {
   const { game } = props;
-  const { cardTitle, cardStatus, signText, tooltipContent, footerLink } = useCardShared(props);
+  const { cardTitle, cardStatus, signText, tooltipContent, footerLink, gainAmount, liquidateGame } =
+    useCardShared(props);
 
   const HeadsIcon = getCoinSideIcon(CoinSide.Heads);
   const TailsIcon = getCoinSideIcon(CoinSide.Tails);
@@ -30,12 +31,12 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
           signTextUppercase
           signText={signText}
           actionContent={
-            <UiButton uppercase type="primary" size="small" shape="round">
+            <UiButton uppercase type="primary" size="small" shape="round" onClick={liquidateGame}>
               Liquidate
             </UiButton>
           }
         >
-          <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
+          <AmountDisplay tokenSymbol={game.asset.denom} uAmount={gainAmount} />
         </CentralContent>
       }
       rightContent={

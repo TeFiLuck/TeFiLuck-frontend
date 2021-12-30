@@ -1,13 +1,18 @@
 import { AcceptedGameCard } from '@/components/coinflip/game-card/AcceptedGameCard';
 import { LoadingGameCard } from '@/components/coinflip/game-card/LoadingGameCard';
+import { LossGameCard } from '@/components/coinflip/game-card/LossGameCard';
 import { PendingGameCard } from '@/components/coinflip/game-card/PendingGameCard';
+import { PublicLiquidationGameCard } from '@/components/coinflip/game-card/PublicLiquidationGameCard';
 import { ResolveGameCard } from '@/components/coinflip/game-card/ResolveGameCard';
 import { GameCardMode } from '@/components/coinflip/game-card/types';
+import { VictoryGameCard } from '@/components/coinflip/game-card/VictoryGameCard';
 import { UiButton } from '@/components/ui';
-import { useMediaQueries } from '@/hooks';
+import { GamesDisplayMode } from '@/constants/coinflip';
+import { useAddress, useMediaQueries } from '@/hooks';
 import { useGames } from '@/hooks/coinflip';
 import { useAppSelector } from '@/state';
 import { Game } from '@/typings/coinflip';
+import { isHistoricalGame, isPositiveOutcomeGame } from '@/utils/coinflip';
 import { numberToArray } from '@/utils/common';
 import { FC } from 'react';
 import styled from 'styled-components';
@@ -15,7 +20,9 @@ import styled from 'styled-components';
 const GamesDisplay: FC = () => {
   const { is1300PxOrLess, is1024PxOrLess, is775PxOrLess, is515PxOrLess, is440PxOrLess } = useMediaQueries();
   const { paginationLimit } = useAppSelector((state) => state.coinflip);
+  const userWalletAddress = useAddress();
   const {
+    gamesDisplayMode,
     gamesWithBlanks,
     loadGames,
     isGamesEmpty,
@@ -31,6 +38,17 @@ const GamesDisplay: FC = () => {
     if (isOngoingGame(game)) {
       if (isGameCreatedByUser(game)) return <ResolveGameCard game={game} mode={cardsDisplayMode} />;
       if (isGameAcceptedByUser(game)) return <AcceptedGameCard game={game} mode={cardsDisplayMode} />;
+    }
+
+    if (gamesDisplayMode === GamesDisplayMode.PublicLiquidation) {
+      return <PublicLiquidationGameCard game={game} mode={cardsDisplayMode} />;
+    }
+
+    if (isHistoricalGame(game)) {
+      if (isPositiveOutcomeGame(game, userWalletAddress)) {
+        return <VictoryGameCard game={game} mode={cardsDisplayMode} />;
+      }
+      return <LossGameCard game={game} mode={cardsDisplayMode} />;
     }
 
     return <PendingGameCard game={game} mode={cardsDisplayMode} />;

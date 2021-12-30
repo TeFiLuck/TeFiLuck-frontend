@@ -8,7 +8,8 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
   const { game } = props;
 
   const {
-    myChoiceColor,
+    myChoiceIconColor,
+    myChoiceBorderColor,
     MyChoiceIcon,
     getOpponentChoiceIconColor,
     getOpponentChoiceBorderColor,
@@ -28,7 +29,7 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
       title={getCardTitle()}
       subtitle={<CardStatusStyled>{getCardStatus()}</CardStatusStyled>}
       leftContent={
-        <ImageArea imageColor={myChoiceColor} borderColor={myChoiceColor}>
+        <ImageArea imageColor={myChoiceIconColor} borderColor={myChoiceBorderColor}>
           <MyChoiceIcon />
         </ImageArea>
       }

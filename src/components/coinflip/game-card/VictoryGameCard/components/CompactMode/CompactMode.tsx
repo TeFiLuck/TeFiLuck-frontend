@@ -9,7 +9,8 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
 
   const {
     MyChoiceIcon,
-    myChoiceColor,
+    myChoiceIconColor,
+    myChoiceBorderColor,
     getCardTitle,
     getCardStatus,
     getOpponentChoiceIconColor,
@@ -34,7 +35,12 @@ const VictoryGameCard: FC<VictoryGameCardProps> = (props) => {
           <Space direction="vertical">
             {amountDisplay}
             <Space>
-              <ImageArea areaSize="40px" imageWidth="24px" imageColor={myChoiceColor} borderColor={myChoiceColor}>
+              <ImageArea
+                areaSize="40px"
+                imageWidth="24px"
+                imageColor={myChoiceIconColor}
+                borderColor={myChoiceBorderColor}
+              >
                 <MyChoiceIcon />
               </ImageArea>
 
