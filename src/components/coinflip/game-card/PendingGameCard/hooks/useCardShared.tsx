@@ -2,7 +2,7 @@ import { TerraAPI } from '@/api/terra';
 import { CoinSide } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
+import { useAddress, useConnectedWallet, useNetwork, useTokens } from '@/hooks';
 import { isGameCreatedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
 import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
@@ -11,7 +11,17 @@ import { PendingGameCardProps } from '../types';
 export function useCardShared({ game }: PendingGameCardProps) {
   const userAddress = useAddress();
   const { network } = useNetwork();
-  const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
+  const { findToken } = useTokens();
+  const { requestTransactionDispatch, connectedWallet, isWalletConnected } = useConnectedWallet();
+
+  const isBalanceSufficientToAcceptGame =
+    findToken(game.asset.denom).balance >= TerraAPI.utils.fromUAmount(game.asset.amount);
+  const acceptGameBlockedReason = (() => {
+    if (!isWalletConnected) return 'Wallet not connected';
+    if (!isBalanceSufficientToAcceptGame) return 'Insufficient balance';
+    return '';
+  })();
+  const canAcceptGame = !acceptGameBlockedReason;
 
   const isCurrentUserCreatorOfGame = isGameCreatedByAddress(game, userAddress);
 
@@ -73,6 +83,8 @@ export function useCardShared({ game }: PendingGameCardProps) {
   }
 
   return {
+    canAcceptGame,
+    acceptGameBlockedReason,
     isCurrentUserCreatorOfGame,
     getCardTitle,
     cardStatus,

@@ -109,6 +109,7 @@ export const UiModal: FC<UiModalProps> = ({
       mask={mask}
       closable={closable}
       maskClosable={closable}
+      keyboard={closable}
       fullScreen={fullScreen}
       destroyOnClose={destroyOnClose}
       bodyStyle={{

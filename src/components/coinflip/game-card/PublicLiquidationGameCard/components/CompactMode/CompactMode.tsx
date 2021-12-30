@@ -1,6 +1,6 @@
 import { APP_SUCCESS_COLOR_RGB_STRING } from '@/assets/styles/design';
 import { UiButton } from '@/components/ui';
-import { Space } from 'antd';
+import { Space, Tooltip } from 'antd';
 import { FC } from 'react';
 import { AmountDisplay, BaseGameCard, CentralContent } from '../../../shared';
 import { useCardShared } from '../../hooks';
@@ -8,8 +8,17 @@ import { PublicLiquidationGameCardProps } from '../../types';
 
 const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) => {
   const { game } = props;
-  const { cardTitle, cardStatus, signText, tooltipContent, footerLink, gainAmount, liquidateGame } =
-    useCardShared(props);
+  const {
+    liquidationBlockedReason,
+    isLiquidationAllowed,
+    cardTitle,
+    cardStatus,
+    signText,
+    tooltipContent,
+    footerLink,
+    gainAmount,
+    liquidateGame,
+  } = useCardShared(props);
 
   return (
     <BaseGameCard
@@ -25,9 +34,20 @@ const PublicLiquidationGameCard: FC<PublicLiquidationGameCardProps> = (props) =>
           <Space direction="vertical">
             <AmountDisplay tokenSymbol={game.asset.denom} uAmount={gainAmount} />
 
-            <UiButton uppercase type="primary" size="small" shape="round" onClick={liquidateGame}>
-              Liquidate
-            </UiButton>
+            <Tooltip title={liquidationBlockedReason} placement="bottom">
+              <div>
+                <UiButton
+                  disabled={!isLiquidationAllowed}
+                  uppercase
+                  type="primary"
+                  size="small"
+                  shape="round"
+                  onClick={liquidateGame}
+                >
+                  Liquidate
+                </UiButton>
+              </div>
+            </Tooltip>
           </Space>
         </CentralContent>
       }

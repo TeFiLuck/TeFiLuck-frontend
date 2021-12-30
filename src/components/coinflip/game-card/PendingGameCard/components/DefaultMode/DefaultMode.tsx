@@ -1,6 +1,7 @@
 import { UiButton } from '@/components/ui';
 import { CoinSide } from '@/constants/coinflip';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
+import { Tooltip } from 'antd';
 import { FC } from 'react';
 import styled from 'styled-components';
 import { AmountDisplay, BaseGameCard, CentralContent, ImageArea } from '../../../shared';
@@ -11,6 +12,8 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
   const { game } = props;
 
   const {
+    canAcceptGame,
+    acceptGameBlockedReason,
     isCurrentUserCreatorOfGame,
     getCardTitle,
     cardStatus,
@@ -38,18 +41,21 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
           </ImageArea>
 
           {!isCurrentUserCreatorOfGame && (
-            <div className="play-button">
-              <UiButton
-                uppercase
-                shape="round"
-                type="primary"
-                size="small"
-                style={{ width: '90px', fontSize: '10px' }}
-                onClick={() => acceptGame(CoinSide.Heads)}
-              >
-                Play bulls
-              </UiButton>
-            </div>
+            <Tooltip title={acceptGameBlockedReason} zIndex={1}>
+              <div className="play-button">
+                <UiButton
+                  disabled={!canAcceptGame}
+                  uppercase
+                  shape="round"
+                  type="primary"
+                  size="small"
+                  style={{ width: '90px', fontSize: '10px' }}
+                  onClick={() => acceptGame(CoinSide.Heads)}
+                >
+                  Play bulls
+                </UiButton>
+              </div>
+            </Tooltip>
           )}
         </SideStyled>
       }
@@ -75,18 +81,21 @@ const PendingGameCard: FC<PendingGameCardProps> = (props) => {
           </ImageArea>
 
           {!isCurrentUserCreatorOfGame && (
-            <div className="play-button">
-              <UiButton
-                uppercase
-                shape="round"
-                type="primary"
-                size="small"
-                style={{ width: '90px', fontSize: '10px' }}
-                onClick={() => acceptGame(CoinSide.Tails)}
-              >
-                Play bears
-              </UiButton>
-            </div>
+            <Tooltip title={acceptGameBlockedReason} zIndex={1}>
+              <div className="play-button">
+                <UiButton
+                  disabled={!canAcceptGame}
+                  uppercase
+                  shape="round"
+                  type="primary"
+                  size="small"
+                  style={{ width: '90px', fontSize: '10px' }}
+                  onClick={() => acceptGame(CoinSide.Tails)}
+                >
+                  Play bears
+                </UiButton>
+              </div>
+            </Tooltip>
           )}
         </SideStyled>
       }

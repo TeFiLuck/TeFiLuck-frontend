@@ -35,9 +35,11 @@ const GamesDisplay: FC = () => {
   } = useGames();
 
   function displayCard(game: Game) {
-    if (isOngoingGame(game)) {
-      if (isGameCreatedByUser(game)) return <ResolveGameCard game={game} mode={cardsDisplayMode} />;
-      if (isGameAcceptedByUser(game)) return <AcceptedGameCard game={game} mode={cardsDisplayMode} />;
+    if (gamesDisplayMode === GamesDisplayMode.My) {
+      if (isOngoingGame(game)) {
+        if (isGameCreatedByUser(game)) return <ResolveGameCard game={game} mode={cardsDisplayMode} />;
+        if (isGameAcceptedByUser(game)) return <AcceptedGameCard game={game} mode={cardsDisplayMode} />;
+      }
     }
 
     if (gamesDisplayMode === GamesDisplayMode.PublicLiquidation) {

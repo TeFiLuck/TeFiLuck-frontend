@@ -2,7 +2,7 @@ import { TerraAPI } from '@/api/terra';
 import { LIQUIDATOR_FEE_PERCENT, MAX_LIQUIDATION_PROFIT_PERCENTAGE } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
+import { useAddress, useConnectedWallet, useNetwork, useTokens } from '@/hooks';
 import { PubliclyLiquidatableGame } from '@/typings/coinflip';
 import { isGameAcceptedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
@@ -11,9 +11,19 @@ import { PublicLiquidationGameCardProps } from '../types';
 
 export function useCardShared(props: PublicLiquidationGameCardProps) {
   const { network } = useNetwork();
-  const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
+  const { findToken } = useTokens();
+  const { requestTransactionDispatch, connectedWallet, isWalletConnected } = useConnectedWallet();
   const game = props.game as PubliclyLiquidatableGame;
   const currentUserAddress = useAddress();
+
+  const isBalanceSufficientToLiquidate =
+    findToken(game.asset.denom).balance >= TerraAPI.utils.fromUAmount(game.asset.amount);
+  const liquidationBlockedReason = (() => {
+    if (!isWalletConnected) return 'Wallet not connected';
+    if (!isBalanceSufficientToLiquidate) return 'Insufficient balance';
+    return '';
+  })();
+  const isLiquidationAllowed = !liquidationBlockedReason;
 
   const isUserParticipantOfGame = isGameAcceptedByAddress(game, currentUserAddress);
 
@@ -39,7 +49,9 @@ export function useCardShared(props: PublicLiquidationGameCardProps) {
   })();
 
   const tooltipContent = (() => {
-    if (isUserParticipantOfGame) { return `Hurry up to get max outcome: ${MAX_LIQUIDATION_PROFIT_PERCENTAGE}% of pot size!`; }
+    if (isUserParticipantOfGame) {
+      return `Hurry up to get max outcome: ${MAX_LIQUIDATION_PROFIT_PERCENTAGE}% of pot size!`;
+    }
     return `You have a chance to perform liquidation! Just click liquidate and earn ${LIQUIDATOR_FEE_PERCENT}% from bet size. Such things happen when neither game creator resolved the game or participant liquidated his opponent.`;
   })();
 
@@ -68,6 +80,8 @@ export function useCardShared(props: PublicLiquidationGameCardProps) {
   }
 
   return {
+    isLiquidationAllowed,
+    liquidationBlockedReason,
     cardTitle,
     cardStatus,
     signText,
