@@ -2,7 +2,7 @@ import { TerraAPI } from '@/api/terra';
 import { LIQUIDATOR_FEE_PERCENT, MAX_LIQUIDATION_PROFIT_PERCENTAGE } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
 import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useAddress, useConnectedWallet, useNetwork, useTokens } from '@/hooks';
+import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
 import { PubliclyLiquidatableGame } from '@/typings/coinflip';
 import { isGameAcceptedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
@@ -11,16 +11,12 @@ import { PublicLiquidationGameCardProps } from '../types';
 
 export function useCardShared(props: PublicLiquidationGameCardProps) {
   const { network } = useNetwork();
-  const { findToken } = useTokens();
   const { requestTransactionDispatch, connectedWallet, isWalletConnected } = useConnectedWallet();
   const game = props.game as PubliclyLiquidatableGame;
   const currentUserAddress = useAddress();
 
-  const isBalanceSufficientToLiquidate =
-    findToken(game.asset.denom).balance >= TerraAPI.utils.fromUAmount(game.asset.amount);
   const liquidationBlockedReason = (() => {
     if (!isWalletConnected) return 'Wallet not connected';
-    if (!isBalanceSufficientToLiquidate) return 'Insufficient balance';
     return '';
   })();
   const isLiquidationAllowed = !liquidationBlockedReason;
