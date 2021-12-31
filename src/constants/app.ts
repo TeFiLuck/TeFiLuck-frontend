@@ -9,18 +9,13 @@ export const MENU_ITEMS = <const>[
     disabled: false,
   },
   {
-    label: 'Fortune Wheel',
-    to: '/fortune-wheel',
+    label: 'More',
+    to: '/more',
     disabled: true,
   },
   {
-    label: 'Roulette',
-    to: '/roulette',
-    disabled: true,
-  },
-  {
-    label: 'Roll the dice',
-    to: '/dice',
+    label: 'Soon',
+    to: '/soon',
     disabled: true,
   },
 ];

@@ -9,7 +9,7 @@ import {
 } from '@/constants/coinflip';
 import { DEFAULT_MAIN_TOKEN_SYMBOL, SUPPORTED_TOKENS } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
-import { BetSizesRange, Game, SavedPasswordRecord } from '@/typings/coinflip';
+import { BetSizesRange, Game, OngoingGame, SavedPasswordRecord } from '@/typings/coinflip';
 import { createFreshBetSizesRangeBySymbol } from '@/utils/coinflip';
 import { createReducer } from '@reduxjs/toolkit';
 import {
@@ -26,7 +26,9 @@ import {
   setIsCreateGameModalOpened,
   setIsGameFlowAlertVisible,
   setIsGamesLoading,
+  setIsResolveGameModalOpened,
   setPaginationLimit,
+  setResolveModalGame,
   setResolveTimeLimitRange,
   setSortingMethod,
   updateGames,
@@ -41,9 +43,12 @@ export interface CoinflipState {
   paginationLimit: number;
   paginationStep: number;
   resolveTimeLimitRange: [number, number];
-  isCreateGameModalOpened: boolean;
   isGameFlowAlertVisible: boolean;
   savedPasswords: SavedPasswordRecord[];
+
+  isCreateGameModalOpened: boolean;
+  isResolveGameModalOpened: boolean;
+  resolveModalGame: OngoingGame;
 
   isGamesLoading: boolean;
   canLoadMoreGames: boolean;
@@ -58,9 +63,12 @@ export const initialState: CoinflipState = {
   paginationLimit: DEFAULT_GAMES_PAGINATION_LIMIT,
   paginationStep: 0,
   resolveTimeLimitRange: [MIN_BLOCKS_BEFORE_LIQUIDABLE, MAX_BLOCKS_BEFORE_LIQUIDABLE],
-  isCreateGameModalOpened: false,
   isGameFlowAlertVisible: true,
   savedPasswords: [],
+
+  isCreateGameModalOpened: false,
+  isResolveGameModalOpened: false,
+  resolveModalGame: {} as OngoingGame,
 
   isGamesLoading: true,
   canLoadMoreGames: false,
@@ -95,6 +103,12 @@ export default createReducer(initialState, (builder) =>
     })
     .addCase(setIsCreateGameModalOpened, (state, { payload }) => {
       state.isCreateGameModalOpened = payload;
+    })
+    .addCase(setIsResolveGameModalOpened, (state, { payload }) => {
+      state.isResolveGameModalOpened = payload;
+    })
+    .addCase(setResolveModalGame, (state, { payload }) => {
+      state.resolveModalGame = payload;
     })
     .addCase(setIsGameFlowAlertVisible, (state, { payload }) => {
       state.isGameFlowAlertVisible = payload;

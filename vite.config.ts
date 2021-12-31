@@ -3,7 +3,6 @@ import react from '@vitejs/plugin-react';
 import * as path from 'path';
 import istanbul from 'rollup-plugin-istanbul';
 import { defineConfig } from 'vite';
-import { ViteAliases } from 'vite-aliases';
 import { VitePWA } from 'vite-plugin-pwa';
 import svgr from 'vite-plugin-svgr';
 import tsconfigPaths from 'vite-tsconfig-paths';
@@ -17,7 +16,6 @@ export default defineConfig(({ mode }) => ({
   },
   plugins: [
     tsconfigPaths(),
-    ViteAliases({}),
     react(),
     svgr(),
     eslintPlugin(),
@@ -72,4 +70,4 @@ export default defineConfig(({ mode }) => ({
       },
     },
   },
-}))
+}));

@@ -1,6 +1,6 @@
 import { GamesDisplayMode, GamesSortingMethod } from '@/constants/coinflip';
 import { TokenSymbol } from '@/constants/tokens';
-import { BetSizesRange, Game, SavedPasswordRecord } from '@/typings/coinflip';
+import { BetSizesRange, Game, OngoingGame, SavedPasswordRecord } from '@/typings/coinflip';
 import { createAction } from '@reduxjs/toolkit';
 
 export const setGamesDisplayMode = createAction<GamesDisplayMode>('coinflip/setGamesDisplayMode');
@@ -11,6 +11,8 @@ export const setPaginationLimit = createAction<number>('coinflip/setPaginationLi
 export const resetPaginationStep = createAction('coinflip/resetPaginationStep');
 export const increasePaginationStep = createAction('coinflip/increasePaginationStep');
 export const setIsCreateGameModalOpened = createAction<boolean>('coinflip/setIsCreateGameModalOpened');
+export const setIsResolveGameModalOpened = createAction<boolean>('coinflip/setIsResolveGameModalOpened');
+export const setResolveModalGame = createAction<OngoingGame>('coinflip/setResolveModalGame');
 export const setResolveTimeLimitRange = createAction<[number, number]>('coinflip/setResolveTimeLimitRange');
 export const setIsGameFlowAlertVisible = createAction<boolean>('coinflip/setIsGameFlowAlertVisible');
 export const savePassword = createAction<SavedPasswordRecord>('coinflip/savePassword');

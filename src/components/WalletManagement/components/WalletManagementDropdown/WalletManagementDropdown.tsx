@@ -33,9 +33,9 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
     DISCONNECT_WALLET = 'disconnect_wallet',
   }
 
-  const showConnectExtension = !isWalletConnected && availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
-  const showInstallExtension = !isWalletConnected && !availableConnectTypes.includes(ConnectType.CHROME_EXTENSION);
-  const canInstallExtension = availableInstallTypes.includes(ConnectType.CHROME_EXTENSION);
+  const showConnectExtension = !isWalletConnected && availableConnectTypes.includes(ConnectType.EXTENSION);
+  const showInstallExtension = !isWalletConnected && !availableConnectTypes.includes(ConnectType.EXTENSION);
+  const canInstallExtension = availableInstallTypes.includes(ConnectType.EXTENSION);
 
   const showConnectMobile = !isWalletConnected && availableConnectTypes.includes(ConnectType.WALLETCONNECT);
   const showInstallMobile = !isWalletConnected && !availableConnectTypes.includes(ConnectType.WALLETCONNECT);
@@ -46,8 +46,8 @@ const WalletManagementDropdown: FC<WalletManagementDropdownProps> = ({
 
   function handleDropdownItemClick({ key }: any): void {
     const clickHandlersMap: { [key in DropdownItemsKeys]?: () => void } = {
-      [DropdownItemsKeys.CONNECT_EXTENSION]: () => connect(ConnectType.CHROME_EXTENSION),
-      [DropdownItemsKeys.INSTALL_EXTENSION]: () => install(ConnectType.CHROME_EXTENSION),
+      [DropdownItemsKeys.CONNECT_EXTENSION]: () => connect(ConnectType.EXTENSION),
+      [DropdownItemsKeys.INSTALL_EXTENSION]: () => install(ConnectType.EXTENSION),
       [DropdownItemsKeys.CONNECT_MOBILE]: () => connect(ConnectType.WALLETCONNECT),
       [DropdownItemsKeys.INSTALL_MOBILE]: () => install(ConnectType.WALLETCONNECT),
       [DropdownItemsKeys.DISCONNECT_WALLET]: disconnect,

@@ -44,13 +44,10 @@ body {
 }
 
 /* Wallet connect modal */
-section.desktop h1 {
+.wallet-wc-modal * {
   color: #000000 !important;
 }
 
-section.mobile h1 {
-  color: #000000 !important;
-}
 
 /* Ant dropdown re-style */
 .ant-dropdown-arrow {
@@ -111,6 +108,10 @@ section.mobile h1 {
 
 .flex-justify-between {
   justify-content: space-between;
+}
+
+.align-center {
+  text-align: center;
 }
 
 /* General utility classes */

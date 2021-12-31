@@ -1,7 +1,12 @@
 import { GamesDisplayMode } from '@/constants/coinflip';
 import { useAddress, useNetwork } from '@/hooks';
 import { useAppDispatch, useAppSelector } from '@/state';
-import { loadGames as loadGamesAction, LoadGamesPayload } from '@/state/coinflip';
+import {
+  loadGames as loadGamesAction,
+  LoadGamesPayload,
+  setIsResolveGameModalOpened,
+  setResolveModalGame,
+} from '@/state/coinflip';
 import { Game, OngoingGame } from '@/typings/coinflip';
 import { Partial } from '@/typings/general';
 import {
@@ -19,6 +24,7 @@ export function useGames() {
     isGamesLoading,
     games: allGames,
     canLoadMoreGames,
+    savedPasswords,
   } = useAppSelector((state) => state.coinflip);
   const { networkKey } = useNetwork();
   const userWalletAddress = useAddress();
@@ -70,6 +76,18 @@ export function useGames() {
     );
   }
 
+  function resolveGame(game: OngoingGame): void {
+    dispatch(setResolveModalGame({ ...game }));
+    dispatch(setIsResolveGameModalOpened(true));
+  }
+
+  function findSavedPassword(gameId: string): string | null {
+    const record = savedPasswords.find(
+      (recordItem) => recordItem.gameId === gameId && recordItem.address === userWalletAddress,
+    );
+    return record?.password || null;
+  }
+
   return {
     gamesDisplayMode,
     gamesWithBlanks,
@@ -93,5 +111,7 @@ export function useGames() {
     isResolveTimeLimitFilterEnabled,
     canLoadMoreGames: canLoadMoreGames && isGamesModePaginatable(gamesDisplayMode),
     loadGames,
+    resolveGame,
+    findSavedPassword,
   };
 }

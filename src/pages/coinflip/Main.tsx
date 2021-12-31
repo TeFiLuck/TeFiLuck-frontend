@@ -3,12 +3,13 @@ import GameFlowAlert from '@/components/coinflip/GameFlowAlert/GameFlowAlert';
 import GamesDisplay from '@/components/coinflip/GamesDisplay/GamesDisplay';
 import GamesDisplayModeSelect from '@/components/coinflip/GamesDisplayModeSelect/GamesDisplayModeSelect';
 import GamesFilters from '@/components/coinflip/GamesFilters/GamesFilters';
+import ResolveGameModal from '@/components/coinflip/ResolveGameModal/ResolveGameModal';
 import { UiButton } from '@/components/ui';
 import { useMediaQueries } from '@/hooks';
 import { useGames } from '@/hooks/coinflip';
 import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
 import { useAppDispatch, useAppSelector } from '@/state';
-import { setIsCreateGameModalOpened } from '@/state/coinflip';
+import { setIsCreateGameModalOpened, setIsResolveGameModalOpened } from '@/state/coinflip';
 import { FilterFilled } from '@ant-design/icons';
 import { Alert, Space } from 'antd';
 import { FC, useState } from 'react';
@@ -21,10 +22,13 @@ const Page: FC = () => {
 
   const dispatch = useAppDispatch();
   const { is800PxOrLess, is600PxOrLess, is440PxOrLess } = useMediaQueries();
-  const { isCreateGameModalOpened } = useAppSelector((state) => state.coinflip);
+  const { isCreateGameModalOpened, isResolveGameModalOpened, resolveModalGame } = useAppSelector(
+    (state) => state.coinflip,
+  );
   const { isGamesFiltersEnabled, isGamesDisplayModeSelectionEnabled, hasUnresolvedGames } = useGames();
 
   const [createGameModalKey, setCreateGameModalKey] = useState(uuidv4());
+  const [resolveGameModalKey, setResolveGameModalKey] = useState(uuidv4());
 
   const isMobileFiltersVisible = is800PxOrLess;
   const filtersSize = isMobileFiltersVisible ? 'small' : 'medium';
@@ -104,6 +108,14 @@ const Page: FC = () => {
         visible={isCreateGameModalOpened}
         onChange={(isVisible) => dispatch(setIsCreateGameModalOpened(isVisible))}
         onClosed={() => setCreateGameModalKey(uuidv4())}
+      />
+
+      <ResolveGameModal
+        key={resolveGameModalKey}
+        visible={isResolveGameModalOpened}
+        game={resolveModalGame}
+        onChange={(isVisible) => dispatch(setIsResolveGameModalOpened(isVisible))}
+        onClosed={() => setResolveGameModalKey(uuidv4())}
       />
     </BaseLayout>
   );

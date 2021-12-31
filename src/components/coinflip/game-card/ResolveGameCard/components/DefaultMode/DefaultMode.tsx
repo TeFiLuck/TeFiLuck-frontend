@@ -1,5 +1,7 @@
 import { APP_DANGER_COLOR } from '@/assets/styles/design';
 import { UiButton } from '@/components/ui';
+import { useGames } from '@/hooks/coinflip';
+import { OngoingGame } from '@/typings/coinflip';
 import { QuestionCircleFilled, WarningFilled } from '@ant-design/icons';
 import { Space, Tooltip } from 'antd';
 import { FC } from 'react';
@@ -17,7 +19,8 @@ import { useCardShared } from '../../hooks';
 import { ResolveGameCardProps } from '../../types';
 
 const ResolveGameCard: FC<ResolveGameCardProps> = (props) => {
-  const { game } = props;
+  const game = props.game as OngoingGame;
+  const { resolveGame } = useGames();
 
   const {
     cardTitle,
@@ -46,7 +49,7 @@ const ResolveGameCard: FC<ResolveGameCardProps> = (props) => {
           <Space direction="vertical">
             <AmountDisplay tokenSymbol={game.asset.denom} uAmount={game.asset.amount} />
 
-            <UiButton uppercase type="primary" size="small" shape="round">
+            <UiButton uppercase type="primary" size="small" shape="round" onClick={() => resolveGame(game)}>
               Resolve game
             </UiButton>
           </Space>
