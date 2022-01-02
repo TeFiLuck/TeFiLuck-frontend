@@ -1,3 +1,4 @@
+export * from './isGameCompletedByAnotherAddress';
 export * from './isGameLiquidated';
 export * from './isGameLiquidatedByAddress';
 export * from './isGameResolved';

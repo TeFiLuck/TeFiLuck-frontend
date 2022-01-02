@@ -7,15 +7,17 @@ import {
   setIsResolveGameModalOpened,
   setResolveModalGame,
 } from '@/state/coinflip';
-import { Game, OngoingGame } from '@/typings/coinflip';
+import { Game, HistoricalGame, OngoingGame } from '@/typings/coinflip';
 import { Partial } from '@/typings/general';
 import {
+  isAddressInvolvedInGame,
   isGameAcceptedByAddress,
   isGameCreatedByAddress,
   isGamesDisplayModeFiltersEnabled,
   isGamesModePaginatable,
   isGamesModeSpecificFilterEnabled,
 } from '@/utils/coinflip';
+import { sortDESC } from '@/utils/common';
 
 export function useGames() {
   const dispatch = useAppDispatch();
@@ -29,16 +31,57 @@ export function useGames() {
   const { networkKey } = useNetwork();
   const userWalletAddress = useAddress();
 
-  const gamesWithBlanks = allGames[gamesDisplayMode];
-  const games = gamesWithBlanks.filter((game) => !!game) as Game[];
+  const recentHistoryGamesGrid = (() => {
+    const gridCopy = [...allGames[GamesDisplayMode.RecentHistory]] as (HistoricalGame | null)[];
 
-  const myGames = allGames[GamesDisplayMode.My].filter((game) => !!game) as Game[];
+    gridCopy.sort((game1, game2) => {
+      // Latest completed games first
+      return sortDESC(game1?.completed_at || 0, game2?.completed_at || 0);
+    });
+
+    return gridCopy;
+  })();
+
+  const myGamesGrid = (() => {
+    const gridCopy = [...allGames[GamesDisplayMode.My]];
+
+    const isUnResolvedGame = (game: Game | null): boolean => {
+      return !!game && isGameCreatedByAddress(game, userWalletAddress) && 'responder' in game;
+    };
+
+    // Unresolved games first
+    const unresolved = gridCopy.filter(isUnResolvedGame);
+    const rest = gridCopy.filter((game) => !isUnResolvedGame(game));
+
+    return [...unresolved, ...rest];
+  })();
+
+  const gamesGrid = (() => {
+    const resultGames = allGames[gamesDisplayMode];
+
+    if (gamesDisplayMode === GamesDisplayMode.RecentHistory) {
+      return recentHistoryGamesGrid;
+    }
+
+    if (gamesDisplayMode === GamesDisplayMode.My) {
+      return myGamesGrid;
+    }
+
+    return resultGames;
+  })();
+  const games = gamesGrid.filter((game) => !!game) as Game[];
+
+  const myGames = myGamesGrid.filter((game) => !!game) as Game[];
   const ongoingGames = myGames.filter((game) => 'responder' in game) as OngoingGame[];
   const unresolvedGames = ongoingGames.filter((game) => isGameCreatedByAddress(game, userWalletAddress));
   const hasUnresolvedGames = !!unresolvedGames.length;
 
   function isOngoingGame(game: Game): game is OngoingGame {
     return ongoingGames.findIndex((item) => item.id === game.id) > -1;
+  }
+
+  function isUserInvolvedInGame(game: Game): boolean {
+    return isAddressInvolvedInGame(game, userWalletAddress);
   }
 
   function isGameCreatedByUser(game: Game): boolean {
@@ -90,12 +133,13 @@ export function useGames() {
 
   return {
     gamesDisplayMode,
-    gamesWithBlanks,
+    gamesGrid,
     games,
     myGames,
     unresolvedGames,
     hasUnresolvedGames,
     isOngoingGame,
+    isUserInvolvedInGame,
     isGameCreatedByUser,
     isGameAcceptedByUser,
     isGamesEmpty,

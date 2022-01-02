@@ -10,12 +10,14 @@ import {
 import { DEFAULT_MAIN_TOKEN_SYMBOL, SUPPORTED_TOKENS } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
 import { BetSizesRange, Game, OngoingGame, SavedPasswordRecord } from '@/typings/coinflip';
-import { createFreshBetSizesRangeBySymbol } from '@/utils/coinflip';
+import { createFreshBetSizesRangeBySymbol, isGamesDisplayModeAllowsGapGhosts } from '@/utils/coinflip';
+import { numberToArray } from '@/utils/common';
 import { createReducer } from '@reduxjs/toolkit';
 import {
   increasePaginationStep,
   removeGame,
   removePassword,
+  replaceGame,
   resetGames,
   resetPaginationStep,
   savePassword,
@@ -172,7 +174,14 @@ export default createReducer(initialState, (builder) =>
       if (removeGameIdx >= 0) {
         const isGamesAfterExist = games.length - 1 !== removeGameIdx && !!games[games.length - 1];
 
-        if (isGamesAfterExist || isPositionReservedByGhost(removeGameIdx)) {
+        if (!isGamesDisplayModeAllowsGapGhosts(mode)) {
+          // Remove ghosts which are gaps: GAME-GHOST-GAME
+          const gamesWithNoGaps = games.filter((game, index) => index !== removeGameIdx && game);
+          const possiblyNecessaryGaps = numberToArray(MIN_GAMES_GHOSTS_DISPLAY).map(() => null);
+          state.games[mode] = [...gamesWithNoGaps, ...possiblyNecessaryGaps].filter(
+            (game, index) => game || isPositionReservedByGhost(index),
+          );
+        } else if (isGamesAfterExist || isPositionReservedByGhost(removeGameIdx)) {
           // Remove game and replace it with ghost.
           state.games[mode].splice(removeGameIdx, 1, null);
         } else {
@@ -181,6 +190,15 @@ export default createReducer(initialState, (builder) =>
             return index < removeGameIdx && (game || isPositionReservedByGhost(index));
           });
         }
+      }
+    })
+    .addCase(replaceGame, (state, { payload }) => {
+      const { mode, game } = payload;
+      const games = state.games[mode];
+      const replaceGameIdx = games.findIndex((gameItem) => gameItem && gameItem.id === game.id);
+
+      if (replaceGameIdx >= 0) {
+        state.games[mode].splice(replaceGameIdx, 1, game);
       }
     }),
 );

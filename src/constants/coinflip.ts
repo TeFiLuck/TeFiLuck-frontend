@@ -33,6 +33,7 @@ export const GAMES_DISPLAY_MODES_CONFIGURATIONS: Record<GamesDisplayMode, GamesD
     private: false,
     preload: false,
     paginatable: true,
+    isGhostGapsAllowed: true,
     filters: {
       enabled: true,
     },
@@ -42,6 +43,7 @@ export const GAMES_DISPLAY_MODES_CONFIGURATIONS: Record<GamesDisplayMode, GamesD
     private: true,
     preload: true,
     paginatable: false,
+    isGhostGapsAllowed: false,
     filters: {
       enabled: false,
     },
@@ -51,6 +53,7 @@ export const GAMES_DISPLAY_MODES_CONFIGURATIONS: Record<GamesDisplayMode, GamesD
     private: false,
     preload: true,
     paginatable: true,
+    isGhostGapsAllowed: true,
     filters: {
       enabled: true,
       currencies: false,
@@ -65,6 +68,7 @@ export const GAMES_DISPLAY_MODES_CONFIGURATIONS: Record<GamesDisplayMode, GamesD
     private: true,
     preload: true,
     paginatable: true,
+    isGhostGapsAllowed: false,
     filters: {
       enabled: true,
       currencies: false,

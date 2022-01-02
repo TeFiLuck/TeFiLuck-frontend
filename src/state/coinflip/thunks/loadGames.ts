@@ -130,10 +130,7 @@ export const loadMyGames = createAsyncThunk(
       address: userWalletAddress,
     });
 
-    const creatorOngoingGames = ongoing.filter((game) => game.owner === userWalletAddress);
-    const responderOngoingGames = ongoing.filter((game) => game.owner !== userWalletAddress);
-
-    return [...creatorOngoingGames, ...responderOngoingGames, ...pending];
+    return [...ongoing, ...pending];
   },
 );
 

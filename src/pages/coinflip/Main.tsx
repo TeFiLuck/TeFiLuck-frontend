@@ -15,10 +15,11 @@ import { Alert, Space } from 'antd';
 import { FC, useState } from 'react';
 import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
-import { useGamesDisplayControl } from './hooks';
+import { useGamesDisplayControl, useGamesWSUpdates } from './hooks';
 
 const Page: FC = () => {
   useGamesDisplayControl();
+  useGamesWSUpdates();
 
   const dispatch = useAppDispatch();
   const { is800PxOrLess, is600PxOrLess, is440PxOrLess } = useMediaQueries();

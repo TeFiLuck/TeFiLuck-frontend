@@ -23,7 +23,7 @@ const GamesDisplay: FC = () => {
   const userWalletAddress = useAddress();
   const {
     gamesDisplayMode,
-    gamesWithBlanks,
+    gamesGrid,
     loadGames,
     isGamesEmpty,
     isGamesLoading,
@@ -76,7 +76,7 @@ const GamesDisplay: FC = () => {
       <GamesGridStyled cardsPerRow={cardsPerRow}>
         {!isFreshGamesLoading && !isGamesEmpty && (
           <>
-            {gamesWithBlanks.map((game, index) => (
+            {gamesGrid.map((game, index) => (
               <GameCardGhostStyled key={`ghost-game__${index}`}>
                 {game && <GameCardWrapperStyled>{displayCard(game)}</GameCardWrapperStyled>}
               </GameCardGhostStyled>

@@ -53,6 +53,7 @@ export type HistoricalGame = Game & {
   liquidator: string | null;
   responder_side: CoinSide;
   outcome: GameOutcome;
+  completed_at: number;
 };
 
 export type GamesDisplayModeConfig = {
@@ -60,6 +61,7 @@ export type GamesDisplayModeConfig = {
   preload: boolean;
   paginatable: boolean;
   private: boolean;
+  isGhostGapsAllowed: boolean;
   filters: {
     enabled: boolean;
     currencies?: boolean;

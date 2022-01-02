@@ -26,3 +26,4 @@ export const updateGames = createAction<{
   fresh?: boolean;
 }>('coinflip/updateGames');
 export const removeGame = createAction<{ mode: GamesDisplayMode; gameId: string }>('coinflip/removeGame');
+export const replaceGame = createAction<{ mode: GamesDisplayMode; game: Game }>('coinflip/replaceGame');
