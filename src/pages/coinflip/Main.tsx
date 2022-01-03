@@ -4,9 +4,9 @@ import GamesDisplay from '@/components/coinflip/GamesDisplay/GamesDisplay';
 import GamesDisplayModeSelect from '@/components/coinflip/GamesDisplayModeSelect/GamesDisplayModeSelect';
 import GamesFilters from '@/components/coinflip/GamesFilters/GamesFilters';
 import ResolveGameModal from '@/components/coinflip/ResolveGameModal/ResolveGameModal';
-import { UiButton } from '@/components/ui';
+import { UiButton, UiSkeleton } from '@/components/ui';
 import { useMediaQueries } from '@/hooks';
-import { useGames } from '@/hooks/coinflip';
+import { useGames, useOpenGamesCount } from '@/hooks/coinflip';
 import BaseLayout from '@/layouts/BaseLayout/BaseLayout';
 import { useAppDispatch, useAppSelector } from '@/state';
 import { setIsCreateGameModalOpened, setIsResolveGameModalOpened } from '@/state/coinflip';
@@ -27,6 +27,7 @@ const Page: FC = () => {
     (state) => state.coinflip,
   );
   const { isGamesFiltersEnabled, isGamesDisplayModeSelectionEnabled, hasUnresolvedGames } = useGames();
+  const { gamesCount, isGamesCountLoading } = useOpenGamesCount();
 
   const [createGameModalKey, setCreateGameModalKey] = useState(uuidv4());
   const [resolveGameModalKey, setResolveGameModalKey] = useState(uuidv4());
@@ -59,10 +60,18 @@ const Page: FC = () => {
 
         <GamesFiltersSectionStyled>
           <div>
-            <span className={`${gamesDisplayHeadingClass} text-color-white noselect`}>
-              Games&nbsp;&nbsp;
-              <span className="text-color-primary">777</span>
-            </span>
+            <div className={`${gamesDisplayHeadingClass} text-color-white noselect`}>
+              <Space>
+                <div>Open games</div>
+                <div>
+                  {isGamesCountLoading ? (
+                    <UiSkeleton width="40px" height="16px" />
+                  ) : (
+                    <span className="text-color-primary">{gamesCount}</span>
+                  )}
+                </div>
+              </Space>
+            </div>
           </div>
           <div>
             <Space>
