@@ -28,27 +28,34 @@ export function useCardShared(props: VictoryGameCardProps) {
 
   const isUserLiquidatedOpponent =
     isGameAcceptedByAddress(game, userAddress) && isGameLiquidatedByAddress(game, userAddress);
+
   const isUserPerformedPublicLiquidation =
     !isGameAcceptedByAddress(game, userAddress) && isGameLiquidatedByAddress(game, userAddress);
+
   const isGamePubliclyLiquidated = isGameLiquidated(game) && !isGameLiquidatedByAddress(game, userAddress);
 
   const mySideChoice = isGameAcceptedByAddress(game, userAddress)
     ? game.responder_side
     : getOppositeCoinSide(game.responder_side);
+
   const MyChoiceIcon = (() => {
     if (isUserPerformedPublicLiquidation) return QuestionOutlined;
     return getCoinSideIcon(mySideChoice);
   })();
+
   const myChoiceIconColor = (() => {
     if (isUserPerformedPublicLiquidation) return 'rgba(0,0,0,0.5)';
     return getCoinSideColor(mySideChoice);
   })();
+
   const myChoiceBorderColor = (() => {
     if (isUserPerformedPublicLiquidation) return 'transparent';
     return getCoinSideColor(mySideChoice);
   })();
 
-  const opponentChoiceWhenResolved = getOppositeCoinSide(mySideChoice);
+  const opponentChoiceWhenResolved = isGameAcceptedByAddress(game, game.winner)
+    ? mySideChoice
+    : getOppositeCoinSide(mySideChoice);
 
   function getCardTitle(): string {
     if (isUserPerformedPublicLiquidation) {
