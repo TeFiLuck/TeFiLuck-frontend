@@ -1,8 +1,7 @@
 import { TerraAPI } from '@/api/terra';
 import { CoinSide } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
-import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useAddress, useConnectedWallet, useNetwork, useTokens } from '@/hooks';
+import { useAddress, useConnectedWallet, useTokens } from '@/hooks';
 import { isGameCreatedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
 import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
@@ -10,7 +9,6 @@ import { PendingGameCardProps } from '../types';
 
 export function useCardShared({ game }: PendingGameCardProps) {
   const userAddress = useAddress();
-  const { network } = useNetwork();
   const { findToken } = useTokens();
   const { requestTransactionDispatch, connectedWallet, isWalletConnected } = useConnectedWallet();
 
@@ -53,7 +51,6 @@ export function useCardShared({ game }: PendingGameCardProps) {
         title: 'Accept game',
         executionAction: TerraAPI.coinflip.acceptGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [[game.asset.denom, TerraAPI.utils.fromUAmount(game.asset.amount)]],
           payload: {
             gameId: game.id,
@@ -71,9 +68,7 @@ export function useCardShared({ game }: PendingGameCardProps) {
         title: 'Cancel game',
         executionAction: TerraAPI.coinflip.cancelGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [],
-          maxGas: network.fee.intermediateGas,
           payload: {
             gameId: game.id,
           },

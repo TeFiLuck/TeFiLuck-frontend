@@ -14,7 +14,7 @@ export const Networks: Record<NetworkKey, Network> = <const>{
     id: 'columbus-5',
     mantle: 'https://fcd.terra.dev/',
     stats: 'https://fcd.terra.dev/',
-    fee: { maxGas: '2000000', intermediateGas: '1000000', lowGas: '666666' },
+    gasAdjustment: 1.75,
   },
   [NetworkKey.TESTNET]: {
     name: 'testnet',
@@ -24,7 +24,7 @@ export const Networks: Record<NetworkKey, Network> = <const>{
     id: 'bombay-12',
     mantle: 'https://bombay-mantle.terra.dev/',
     stats: 'https://bombay-fcd.terra.dev/',
-    fee: { maxGas: '2000000', intermediateGas: '1000000', lowGas: '666666' },
+    gasAdjustment: 1.75,
   },
 };
 

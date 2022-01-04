@@ -1,4 +1,6 @@
+export * from './estimateFee';
 export * from './evaluateContractCall';
+export * from './fetchAccountInfo';
 export * from './fetchGasPrices';
 export * from './fetchNativeTokensBalancesFromAddress';
 export * from './fetchTaxFee';

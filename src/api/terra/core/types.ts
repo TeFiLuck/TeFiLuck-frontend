@@ -1,5 +1,6 @@
 import { TokenSymbol } from '@/constants/tokens';
 import { NativeTokenSymbol } from '@/typings/finance-management';
+import { CreateTxOptions } from '@terra-money/terra.js';
 import { ConnectedWallet } from '@terra-money/wallet-provider';
 
 export interface GasPricesMap {
@@ -30,12 +31,15 @@ export type Token = [TokenSymbol, number];
 
 export interface ContractCallEvaluationParams {
   wallet: ConnectedWallet;
-  feeTokenSymbol: NativeTokenSymbol;
-  sendTokens: Token[];
+  txOptions: CreateTxOptions;
+  feeTokenSymbol?: NativeTokenSymbol;
   maxRetries?: number;
-  maxGas?: string;
 }
 
-export interface ContractCallExecutionParams<T> extends ContractCallEvaluationParams {
+export interface ContractCallExecutionParams<T> {
+  wallet: ConnectedWallet;
+  sendTokens: Token[];
   payload: T;
+  feeTokenSymbol?: NativeTokenSymbol;
+  evaluationRetries?: number;
 }

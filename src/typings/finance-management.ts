@@ -6,11 +6,7 @@ export type Network = NetworkInfo & {
   id: string;
   mantle: string;
   stats: string;
-  fee: {
-    maxGas: string;
-    intermediateGas: string;
-    lowGas: string;
-  };
+  gasAdjustment: number;
 };
 
 export type NativeTokenSymbol = typeof TERRA_NATIVE_TOKENS[number];

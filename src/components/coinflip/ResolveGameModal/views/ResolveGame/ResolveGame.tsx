@@ -2,8 +2,7 @@ import { TerraAPI } from '@/api/terra';
 import { APP_DANGER_COLOR } from '@/assets/styles/design';
 import { UiButton } from '@/components/ui';
 import { ENCRYPTION_PASSWORD_SEPARATOR } from '@/constants/coinflip';
-import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useConnectedWallet, useIsMounted, useNetwork } from '@/hooks';
+import { useConnectedWallet, useIsMounted } from '@/hooks';
 import { useGames } from '@/hooks/coinflip';
 import { PortalLocation, sha256, teleportTo } from '@/utils/common';
 import { CheckOutlined, FileTextOutlined } from '@ant-design/icons';
@@ -16,7 +15,6 @@ import { ModalView, ModalViewsProps } from '../../common';
 
 const ResolveGame: FC<ModalViewsProps<Record<any, any>>> = ({ game, setIsModalClosable, changeView }) => {
   useIsMounted();
-  const { network } = useNetwork();
   const { connectedWallet } = useConnectedWallet();
   const { findSavedPassword } = useGames();
   const [resolvePassword, setResolvePassword] = useState('');
@@ -75,9 +73,7 @@ const ResolveGame: FC<ModalViewsProps<Record<any, any>>> = ({ game, setIsModalCl
 
         const { success, result } = await TerraAPI.coinflip.resolveGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [],
-          maxGas: network.fee.intermediateGas,
           payload: {
             gameId: game.id,
             encryptionPassword: resolvePassword,

@@ -6,8 +6,7 @@ import {
   PRIVATE_LIQUIDATION_TIME_LIMIT_BLOCKS,
 } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
-import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useConnectedWallet, useCurrentBlockNumber, useNetwork } from '@/hooks';
+import { useConnectedWallet, useCurrentBlockNumber } from '@/hooks';
 import { OngoingGame } from '@/typings/coinflip';
 import { getCoinSideColor, getCoinSideIcon } from '@/utils/coinflip';
 import { BlocksTimer, FooterLink } from '../../shared';
@@ -15,7 +14,6 @@ import { displayBlocksTimeLimit, shortenAddress } from '../../utils';
 import { AcceptedGameCardProps } from '../types';
 
 export function useCardShared(props: AcceptedGameCardProps) {
-  const { network } = useNetwork();
   const { requestTransactionDispatch, connectedWallet } = useConnectedWallet();
   const { currentBlockNumber, isCurrentBlockNumberLoading } = useCurrentBlockNumber();
   const game = props.game as OngoingGame;
@@ -95,9 +93,7 @@ export function useCardShared(props: AcceptedGameCardProps) {
         title: 'Liquidate opponent',
         executionAction: TerraAPI.coinflip.liquidateGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [],
-          maxGas: network.fee.intermediateGas,
           payload: {
             gameId: game.id,
           },

@@ -9,7 +9,6 @@ import {
   ENCRYPTION_PASSWORD_SEPARATOR,
   MIN_BLOCKS_BEFORE_LIQUIDABLE,
 } from '@/constants/coinflip';
-import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
 import { TokenSymbol } from '@/constants/tokens';
 import { useConnectedWallet, useMediaQueries, useTokens } from '@/hooks';
 import { Token } from '@/typings/finance-management';
@@ -77,7 +76,6 @@ const CreateGame: FC<ModalViewsProps<Record<any, any>>> = ({ changeView, setIsMo
 
         const { success, result } = await TerraAPI.coinflip.createGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [[selectedTokenSymbol, betSizeNumber]],
           payload: {
             signature: await encryptChosenSide(chosenSide, password),

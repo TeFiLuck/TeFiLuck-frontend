@@ -1,8 +1,7 @@
 import { TerraAPI } from '@/api/terra';
 import { LIQUIDATOR_FEE_PERCENT, MAX_LIQUIDATION_PROFIT_PERCENTAGE } from '@/constants/coinflip';
 import { GAME_FLOW_DESCRIPTION_ARTICLE_LINK } from '@/constants/company';
-import { DEFAULT_FEES_TOKEN_SYMBOL } from '@/constants/finance-management';
-import { useAddress, useConnectedWallet, useNetwork } from '@/hooks';
+import { useAddress, useConnectedWallet } from '@/hooks';
 import { PubliclyLiquidatableGame } from '@/typings/coinflip';
 import { isGameAcceptedByAddress } from '@/utils/coinflip';
 import { FooterLink } from '../../shared';
@@ -10,7 +9,6 @@ import { shortenAddress } from '../../utils';
 import { PublicLiquidationGameCardProps } from '../types';
 
 export function useCardShared(props: PublicLiquidationGameCardProps) {
-  const { network } = useNetwork();
   const { requestTransactionDispatch, connectedWallet, isWalletConnected } = useConnectedWallet();
   const game = props.game as PubliclyLiquidatableGame;
   const currentUserAddress = useAddress();
@@ -64,9 +62,7 @@ export function useCardShared(props: PublicLiquidationGameCardProps) {
         title: 'Public liquidation',
         executionAction: TerraAPI.coinflip.liquidateGame({
           wallet: connectedWallet,
-          feeTokenSymbol: DEFAULT_FEES_TOKEN_SYMBOL,
           sendTokens: [],
-          maxGas: network.fee.intermediateGas,
           payload: {
             gameId: game.id,
           },

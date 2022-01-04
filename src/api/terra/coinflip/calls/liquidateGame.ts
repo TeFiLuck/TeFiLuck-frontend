@@ -1,4 +1,5 @@
-import { TxResult } from '@/typings/finance-management';
+import { Network, TxResult } from '@/typings/finance-management';
+import { getKeyByNetwork } from '@/utils/networks';
 import { MsgExecuteContract } from '@terra-money/terra.js';
 import { ContractCallExecutionParams, evaluateContractCall } from '../../core';
 import { convertTokensToCoins } from '../../utils';
@@ -9,13 +10,12 @@ export type LiquidateGameParams = ContractCallExecutionParams<{
 }>;
 
 export async function liquidateGame(params: LiquidateGameParams): Promise<TxResult> {
-  const { wallet, payload, sendTokens } = params;
-
-  const transactionEvaluation = await evaluateContractCall(params);
+  const { wallet, payload, sendTokens, feeTokenSymbol, evaluationRetries } = params;
+  const networkKey = getKeyByNetwork(wallet.network as Network);
 
   const message = new MsgExecuteContract(
     wallet.terraAddress,
-    MAIN_CONTRACT_ADDRESS[transactionEvaluation.networkKey],
+    MAIN_CONTRACT_ADDRESS[networkKey],
     {
       [ActionType.LIQUIDATE_BET]: {
         bet_id: payload.gameId,
@@ -24,10 +24,21 @@ export async function liquidateGame(params: LiquidateGameParams): Promise<TxResu
     convertTokensToCoins(sendTokens),
   );
 
-  return wallet.post({
+  const txOptions = {
     msgs: [message],
     memo: undefined,
-    gasPrices: transactionEvaluation.gasPrices,
-    fee: transactionEvaluation.fee,
+  };
+
+  const { gasPrices, fee } = await evaluateContractCall({
+    wallet,
+    txOptions,
+    feeTokenSymbol,
+    maxRetries: evaluationRetries,
+  });
+
+  return wallet.post({
+    ...txOptions,
+    gasPrices,
+    fee,
   });
 }
