@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from '@/state';
 import { printInfo } from '@/state/app';
 import { removeGame, replaceGame, updateGames } from '@/state/coinflip';
 import { Game, HistoricalGame, OngoingGame } from '@/typings/coinflip';
-import { isGameCompletedByAnotherAddress, isGamesModePaginatable } from '@/utils/coinflip';
+import { isAddressInvolvedInGame, isGameCompletedByAnotherAddress, isGamesModePaginatable } from '@/utils/coinflip';
 import { useEffect } from 'react';
 
 export function useGamesWSUpdates() {
@@ -38,7 +38,7 @@ export function useGamesWSUpdates() {
   });
 
   function handleGameCompletion({ game }: { game: HistoricalGame }): void {
-    if (isGameCompletedByAnotherAddress(game, userWalletAddress)) {
+    if (isAddressInvolvedInGame(game, userWalletAddress) && isGameCompletedByAnotherAddress(game, userWalletAddress)) {
       notifyGameCompleted(game);
       updateBalances();
     }
